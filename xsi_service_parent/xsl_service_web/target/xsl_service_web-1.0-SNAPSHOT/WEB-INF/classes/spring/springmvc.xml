@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/task
+      http://www.springframework.org/schema/task/spring-task-4.1.xsd">
+    <!--springmvc的配置文件，包含网站跳转的控制-->
+    <context:component-scan base-package="controller" use-default-filters="false">
+        <!--false只扫描控制器-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--两个标准配置-->
+    <!--将springMVC不能处理的请求交给Tomcat-->
+    <mvc:default-servlet-handler/>
+    <!--能支持springmvc更高级的一些功能-->
+    <mvc:annotation-driven/>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="UTF-8">
+        <property name="maxUploadSize" value="2097152"/>
+        <property name="resolveLazily" value="true"/>
+    </bean>
+</beans>

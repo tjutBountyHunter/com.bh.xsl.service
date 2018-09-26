@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslTagClassMapper">
+    <resultMap id="BaseResultMap" type="pojo.XslTag">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="useNum" property="usenum" jdbcType="SMALLINT"/>
+        <result column="createDate" property="createdate" jdbcType="DATE"/>
+    </resultMap>
+    <select id="selectByXslTag" resultType="java.lang.String">
+         select
+           xsl_task_category.name
+        from
+           xsl_task_category
+    </select>
+    <select id="selectByName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select
+           id
+        from
+           xsl_task_category
+        where
+           xsl_task_category.name=#{name}
+    </select>
+
+</mapper>

@@ -1,0 +1,2 @@
+0:0:0:0:0:0:0:1 - - [26/Sep/2018:11:06:00 +0800] "GET /xsl/task/decidedaccept?json=%7B%0A%09%22hunterid%22:1,%0A%09%22taskid%22:1%0A%7D HTTP/1.1" 200 89 http-bio-8081-exec-2 1673
+0:0:0:0:0:0:0:1 - - [26/Sep/2018:11:06:42 +0800] "GET /xsl/task/decidedaccept?json=%7B%0A%09%22hunterid%22:1,%0A%09%22taskid%22:2%0A%7D HTTP/1.1" 200 89 http-bio-8081-exec-3 381

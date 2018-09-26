@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslHunterShopMapper">
+    <select id="selectByThree" resultType="pojo.XslHistoryHunter">
+        select
+        xsl_user.name,xsl_tag.name
+        'tag_name',xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr
+        from
+        xsl_user,xsl_hunter,xsl_tag
+        <where>
+            xsl_user.hunterId=xsl_hunter.id
+            and
+            xsl_tag.id=(
+            select
+            xsl_hunter_tag.tagId
+            from
+            xsl_hunter_tag
+            where
+            xsl_hunter_tag.hunterId = xsl_hunter.id)
+            and
+            xsl_hunter.id>0 ORDER BY xsl_hunter.id limit #{start},#{size}
+        </where>
+    </select>
+    <select id="getXslHunterCount" resultType="java.lang.Integer">
+        select
+        count(*)
+        from xsl_hunter
+    </select>
+
+</mapper>

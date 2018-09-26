@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslTokenFindMapper">
+    <resultMap id="BaseResultMap" type="pojo.XslToken">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="token" property="token" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="TINYINT"/>
+        <result column="createDate" property="createdate" jdbcType="DATE"/>
+    </resultMap>
+    <select id="selectByTokenphoneTot" resultType="java.lang.String" parameterType="String">
+           token
+        from xsl_token
+        where
+           token=#{token}
+    </select>
+    <update id="updataByTokenphone" parameterType="map">
+        xsl_token
+        <set>
+            token=#{token}
+            createDate=#{createDate}
+        </set>
+    </update>
+
+</mapper>

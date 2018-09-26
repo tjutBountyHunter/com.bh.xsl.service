@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XsloldTime">
+    <select id="selectbyMap" parameterType="map">
+        select
+         xsl_datetime.createDate
+        from
+          xsl_datetime
+        where
+          xsl_datetime.hunterId={hunterId,jdbcType=TINYINT}
+        and
+          xsl_datetime.taskId={taskId,jdbcType=TINYINT}
+    </select>
+</mapper>

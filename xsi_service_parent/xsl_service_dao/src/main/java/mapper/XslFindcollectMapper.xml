@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslFindcollectMapper">
+    <select id="selectByuserId" resultType="pojo.XslHistoryHunter">
+    SELECT
+	  xsl_user.`name`,
+	  xsl_tag. NAME 'tag_name',
+	  xsl_hunter.`level`,
+	  xsl_hunter.taskAccNum,
+	  xsl_hunter.taskFailNum,
+	  xsl_hunter.credit,
+	  xsl_hunter.descr
+    FROM
+	  xsl_user,
+	  xsl_hunter,
+	  xsl_tag
+    WHERE
+	  xsl_hunter.id = ANY (
+		SELECT
+			xsl_collecth.hunterId
+		FROM
+			xsl_collecth
+		WHERE
+			xsl_collecth.userId = #{userId,jdbcType=INTEGER}
+	  )
+    AND xsl_user.hunterId = xsl_hunter.id
+    AND xsl_tag.id = (
+	SELECT
+		xsl_hunter_tag.tagId
+	FROM
+		xsl_hunter_tag
+	WHERE
+		xsl_hunter_tag.hunterId = xsl_hunter.id
+    )
+    </select>
+
+</mapper>
