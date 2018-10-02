@@ -1,6 +1,7 @@
 package service;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +32,8 @@ public interface UserService {
      * @param password
      * @return
      */
-    XslResult userLogin(@Param("username") String username, @Param("password") String password);
+    XslResult userLogin(@Param("username") String username, @Param("password") String password, @ProbeParam("token") String token
+            , HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 检查Token被更换

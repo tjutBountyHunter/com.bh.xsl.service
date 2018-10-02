@@ -1,10 +1,5 @@
 package service;
 
-import pojo.XslTag;
-import pojo.XslTask;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 
 public interface TaskTopush {
@@ -21,12 +16,9 @@ public interface TaskTopush {
      * 任务和任务种类初始化
      *
      * @param xslTask
-     * @param xslTag
-     * @param request
-     * @param response
      * @return
      */
-    String accertdata(XslTask xslTask, XslTag xslTag, HttpServletRequest request, HttpServletResponse response);
+    String accertdata(String xslTask);
 
     /**
      * 分页查询
@@ -46,4 +38,6 @@ public interface TaskTopush {
      * @return
      */
     PageDataResult searchPage(Integer pageno, Integer pagesize) throws ParseException;
+
+    String deleteTaskMQ(Integer taskId);
 }

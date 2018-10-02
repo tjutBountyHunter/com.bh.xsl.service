@@ -94,9 +94,9 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult userLogin(String username, String password) {
+    public XslResult userLogin(String username, String password, String token, HttpServletRequest request, HttpServletResponse response) {
         try {
-            XslResult result = userService.userLogin(username, password);
+            XslResult result = userService.userLogin(username, password, token, request, response);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,7 +158,6 @@ public class UserController {
             return XslResult.ok(JsonUtils.objectToJson(message));
         } else {
             SendSmsResponse q = userService.excute(phone);
-            System.out.println(q.getCode());
             if (q.getCode().equals("OK")) {
                 message = "短信验证请求成功";
                 return XslResult.ok(JsonUtils.objectToJson(message));

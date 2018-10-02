@@ -1,11 +1,17 @@
 package pojo;
 
+import java.util.Date;
+
 public class XslHistoryh {
     private Integer id;
 
     private Integer userid;
 
     private Integer hunterid;
+
+    private Integer taskid;
+
+    private Date createdate;
 
     public Integer getId() {
         return id;
@@ -29,5 +35,21 @@ public class XslHistoryh {
 
     public void setHunterid(Integer hunterid) {
         this.hunterid = hunterid;
+    }
+
+    public Integer getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(Integer taskid) {
+        this.taskid = taskid;
+    }
+
+    public Date getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
     }
 }

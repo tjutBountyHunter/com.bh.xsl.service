@@ -19,6 +19,7 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslMaste
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\IbmUserExample.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslMajorExample.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHunterTagExample.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\AlipayReturn.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslCollege.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHunterExample.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslTokenExample.java
@@ -26,6 +27,7 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslColle
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslFindCollectTask.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslOrder.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslCollecthExample.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\AlipayExtendParams.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\IbmUser.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslCollectt.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHunterLevelExample.java
@@ -36,6 +38,7 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHisto
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslOrderExample.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslSchoolinfoExample.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslTaskExample.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\AlipayExternalUserInfo.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHunterLevelRule.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslScore.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslTagExample.java
@@ -52,6 +55,7 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslCodeE
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslSchool.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslTaskCategory.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslDatetimeExample.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslWaitTask.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslToken.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslFile.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHunterShop.java
@@ -63,3 +67,4 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslFileE
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslMasterLevelRuleExample.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslHistoryh.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\XslSchoolExample.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_pojo\src\main\java\pojo\AlipayPayInfo.java

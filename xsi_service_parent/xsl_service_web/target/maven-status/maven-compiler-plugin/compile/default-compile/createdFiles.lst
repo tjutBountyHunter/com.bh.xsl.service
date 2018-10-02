@@ -1,5 +1,6 @@
 com\test\IATask.class
 controller\UserController.class
+controller\SearchDubbo.class
 controller\TaskController.class
 controller\HunterController.class
 com\test\ATask.class

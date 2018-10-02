@@ -7,10 +7,10 @@ import pojo.*;
 import service.JsonUtils;
 import service.PageDataResult;
 import service.TaskTopush;
+import service.searchTaskMQ;
+//import service.searchTaskMQ;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,66 +66,21 @@ public class TaskTopushImpl implements TaskTopush {
 
     /**
      * 任务和任务种类初始化
-     *
      * @param xslTask
-     * @param xslTag
-     * @param request
-     * @param response
      * @return
      */
     @Override
-    public String accertdata(XslTask xslTask, XslTag xslTag, HttpServletRequest request, HttpServletResponse response) {
-        String name = request.getParameter("类别");
-        XslTaskCategoryExample xslTaskCategoryExample = new XslTaskCategoryExample();
-        XslTaskCategoryExample.Criteria criteria1 = xslTaskCategoryExample.createCriteria();
-        criteria1.andNameEqualTo(name);
-        List<XslTaskCategory> list1 = xslTaskCategoryMapper.selectByExample(xslTaskCategoryExample);
-        XslTaskCategory xslTaskCategory = list1.get(0);
-        //任务
-        xslTask.setCreatedate(new Date());
-        xslTask.setUpdatedate(new Date());
-        xslTask.setCid(xslTaskCategory.getId());
-        XslHunterExample xslHunterExample = new XslHunterExample();
-        XslHunterExample.Criteria criteria = xslHunterExample.createCriteria();
-        List<XslHunter> list = xslHunterMapper.selectByExample(xslHunterExample);
-        XslHunter xslHunter = list.get(0);
-        xslTask.setDeadline(xslHunter.getLastaccdate());
-        xslTaskMapper.insert(xslTask);
-        //类别
-        xslTaskCategory.setCreatedate(new Date());
-        xslTaskCategory.setTasknum(xslTaskCategory.getTasknum() + 1);
-        xslTaskCategoryMapper.updateByPrimaryKey(xslTaskCategory);
-        //标签
-        XslTagExample xslTagExample = new XslTagExample();
-        XslTagExample.Criteria criteria2 = xslTagExample.createCriteria();
-        criteria2.andNameEqualTo(xslTag.getName());
-        List<XslTag> list2 = xslTagMapper.selectByExample(xslTagExample);
-        xslTag = list2.get(0);
-        xslTag.setUsenum((short) (xslTag.getUsenum() + 1));
-        xslTag.setCreatedate(new Date());
-        xslTagMapper.insert(xslTag);
-        //任务标签id
-        XslTaskExample xslTaskExample = new XslTaskExample();
-        XslTaskExample.Criteria criterion = xslTaskExample.createCriteria();
-        criterion.andDescrEqualTo(xslTask.getDescr());
-        List<XslTask> list3 = xslTaskMapper.selectByExample(xslTaskExample);
-        XslTaskTag xslTaskTag = new XslTaskTag();
-        xslTaskTag.setTagid(xslTag.getId());
-        xslTaskTag.setTaskid(list3.get(0).getId());
-        xslTaskTag.setCreatedate(new Date());
-        //插入数据库
-        xslTaskTagMapper.insert(xslTaskTag);
-        Map<Object, Object> map = new HashMap<Object, Object>();
-        map.put("XslTaskSendId", xslTask.getSendid());
-        map.put("XslTaskdescr", xslTask.getDescr());
-        map.put("XslTaskMoney", xslTask.getMoney());
-        map.put("XslTaskname", xslTaskCategory.getName());
-        map.put("XslTagname", xslTag.getName());
-        map.put("XslTaskstate", xslTask.getState());
-        String json = JsonUtils.objectToJson(map);
-        HttpSession session = request.getSession();
-        session.setAttribute("任务", json);
-        return json;
+    public String accertdata(String xslTask) {
+        try {
+            xslTask = new String(xslTask.getBytes("iso-8859-1"), "utf-8");
+            searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
+            searchTaskMQ.addTaskJson(xslTask);
+            return xslTask;
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "fu";
+        }
     }
 
 
@@ -226,6 +181,15 @@ public class TaskTopushImpl implements TaskTopush {
         masterlevelPage.setTotalsize(totalsize);
         masterlevelPage.setPageno(pageno);
         return masterlevelPage;
+    }
+
+    @Override
+    public String deleteTaskMQ(Integer taskId) {
+        System.out.println(taskId);
+        String q = taskId + "";
+        searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
+        searchTaskMQ.numberTaskJson(q);
+        return q;
     }
 }
 

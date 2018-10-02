@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslDoneTaskMapper">
+    <select id="selectByuseId" parameterType="java.lang.Integer" resultType="pojo.XslWaitTask">
+        SELECT
+        xsl_user.`name`,
+        xsl_task_category.`name` 'task_name',
+        xsl_task.descr,
+        xsl_task.money,
+        xsl_task.createDate,
+        xsl_task.deadline
+        FROM
+        xsl_user,
+        xsl_task_category,
+        xsl_task,
+        xsl_historyh
+        WHERE
+        	xsl_historyh.hunterId = ANY (
+		SELECT
+			xsl_user.hunterId
+		FROM
+			xsl_user
+		WHERE
+			xsl_user.id = #{userId,jdbcType=INTEGER}
+	    )
+        AND xsl_historyh.userId = xsl_user.id
+        AND xsl_task.id = xsl_historyh.taskId
+        AND xsl_task_category.id = xsl_task.cid
+        AND xsl_task.state=(3)
+    </select>
+</mapper>

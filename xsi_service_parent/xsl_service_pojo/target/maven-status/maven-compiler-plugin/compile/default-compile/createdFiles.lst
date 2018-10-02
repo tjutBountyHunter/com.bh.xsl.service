@@ -10,6 +10,7 @@ classify\SendTalk.class
 pojo\XslTokenExample$GeneratedCriteria.class
 pojo\XslCollectt.class
 pojo\XslOrderExample$GeneratedCriteria.class
+pojo\AlipayExternalUserInfo.class
 pojo\XslCollege.class
 pojo\XslHunterLevel.class
 pojo\XslMasterLevelRuleExample$Criteria.class
@@ -52,6 +53,7 @@ pojo\XslFileExample$Criteria.class
 pojo\XslHunterLevelRuleExample$Criteria.class
 pojo\IbmCommercialExample$Criteria.class
 pojo\XslMajor.class
+pojo\XslWaitTask.class
 pojo\XslTokenExample$Criteria.class
 pojo\XslMasterTagExample$GeneratedCriteria.class
 pojo\XslOrder.class
@@ -98,6 +100,7 @@ pojo\XslMasterLevelExample$GeneratedCriteria.class
 pojo\IbmUser.class
 pojo\XslCollecttExample$GeneratedCriteria.class
 pojo\XslHunterTagExample$Criteria.class
+pojo\AlipayExtendParams.class
 pojo\XslMasterLevelExample$Criterion.class
 pojo\XslSchoolExample$Criterion.class
 pojo\IbmCommercialExample.class
@@ -138,6 +141,8 @@ pojo\XslMasterTagExample$Criterion.class
 pojo\XslFileExample$GeneratedCriteria.class
 pojo\XslMasterExample$Criteria.class
 pojo\XslMasterLevelExample.class
+pojo\AlipayReturn.class
+pojo\AlipayPayInfo.class
 pojo\XslCollecttExample.class
 pojo\XslHunterTagExample$GeneratedCriteria.class
 pojo\XslMaster.class

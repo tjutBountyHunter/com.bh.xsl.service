@@ -16,13 +16,16 @@ mapper\XslMasterTagMapper.class
 mapper\XslUserMapper.class
 mapper\XslMajorMapper.class
 mapper\XslTaskClassMapper.class
+mapper\XslWaitHunterTaskMapper.class
 mapper\XslCollecthMapper.class
 mapper\XslSchoolMessageMapper.class
 mapper\XslHunterMapper.class
 mapper\XslHunterLevelRuleMapper.class
 mapper\XslCodePhone.class
+mapper\XslDoneTaskMapper.class
 mapper\XslMasterLevelMapper.class
 mapper\IbmUserMapper.class
+mapper\XslDoneTaskMasterMapper.class
 mapper\XslCollegeMapper.class
 mapper\XslMasterMapper.class
 mapper\IbmCommercialMapper.class
@@ -30,6 +33,7 @@ mapper\XslHunterTagMapper.class
 mapper\XslHunterShopMapper.class
 mapper\XslCollegeMessageMapper.class
 mapper\XslCollecttMapper.class
+mapper\XslWaitTaskMapper.class
 mapper\XslDatetimeMapper.class
 mapper\XslFindcollectMapper.class
 mapper\XslFindCollectTaskMapper.class

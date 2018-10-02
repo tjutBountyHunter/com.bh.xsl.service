@@ -2,11 +2,14 @@ service\JiGuangPushUtil.class
 service\JsonUtils.class
 service\HttpClientUtil.class
 service\TimeDemo$1.class
+service\Message.class
 service\CookieUtils.class
 service\FtpUtil.class
 service\byte2hex.class
 service\timeDate.class
+service\SearchItem.class
 service\TimeDemo.class
+service\SearchResult.class
 service\PageDataResult.class
 service\Md5Utils.class
 service\Token.class

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.JsonUtils;
+import service.Message;
 import service.TaskAccept;
 import service.XslResult;
 
@@ -35,7 +36,8 @@ public class TaskAcceptImpl implements TaskAccept {
     private XsloldTime xsloldTime;
     @Autowired
     private XslCollecthMapper xslCollecthMapper;
-
+    @Autowired
+    private XslHistoryhMapper xslHistoryhMapper;
     /**
      * 接受任务
      *
@@ -47,11 +49,13 @@ public class TaskAcceptImpl implements TaskAccept {
         Date date = new Date();
         XslDatetime xslDatetime = JsonUtils.jsonToPojo(json, XslDatetime.class);
         xslDatetime.setCreatedate(date);
+
         //插入任务时间
         xslDatetimeMapper.insert(xslDatetime);
         XslTaskExample xslTaskExample = new XslTaskExample();
         XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
         criteria.andIdEqualTo(xslDatetime.getTaskid());
+        System.out.println(xslDatetime.getTaskid());
         List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
         XslTask xslTask = list.get(0);
         if (xslTask.getState() == 0) {
@@ -68,20 +72,17 @@ public class TaskAcceptImpl implements TaskAccept {
             System.out.println(list1.get(0).getNumber());
             if (list1.get(0).getNumber() > 1) {
                 //发送推送
-                pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
+                String jsonJudge = pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
                 //判断是否发送成功
-
+                System.out.println(jsonJudge);
                 return XslResult.ok();
             } else {
                 //短信加推送
                 SendSmsResponse sendSmsResponse = excuteMaster(list2.get(0).getPhone());
-                System.out.println(sendSmsResponse.getCode());
                 if (sendSmsResponse.getCode().equals("OK")) {
                     //推送
                     pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
                     //判断是否发送成功
-
-
                     return XslResult.ok();
                 } else {
                     return XslResult.build(400, "短信发送失败");
@@ -90,12 +91,10 @@ public class TaskAcceptImpl implements TaskAccept {
         } else {
             return XslResult.ok("该任务已经被接");
         }
-
     }
 
     /**
      * 任务接受成功后，通知猎人
-     *
      * @param json
      * @return
      */
@@ -117,15 +116,16 @@ public class TaskAcceptImpl implements TaskAccept {
         criteria1.andHunteridEqualTo(xslDatetime.getHunterid());
         List<XslUser> list2 = xslUserMapper.selectByExample(xslUserExample);
         SendSmsResponse response = excuteMessage(list2.get(0).getPhone());
-        XslCollecth xslCollecth = new XslCollecth();
+        XslHistoryh xslHistoryh = new XslHistoryh();
         /**
          * 历史猎人
          */
-        xslCollecth.setUserid(xslTask.getSendid());
-        xslCollecth.setHunterid(xslDatetime.getHunterid());
+        xslHistoryh.setUserid(xslTask.getSendid());
+        xslHistoryh.setHunterid(xslDatetime.getHunterid());
+        xslHistoryh.setTaskid(xslDatetime.getTaskid());
         Date date = new Date();
-        xslCollecth.setCollectdate(date);
-        xslCollecthMapper.insert(xslCollecth);
+        xslHistoryh.setCreatedate(new Date());
+        xslHistoryhMapper.insert(xslHistoryh);
         if (response.getCode().equals("OK")) {
             return XslResult.ok("发送成功，已经通知猎人");
         } else {

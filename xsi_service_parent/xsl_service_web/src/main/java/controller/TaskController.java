@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,18 +66,13 @@ public class TaskController {
 
     /**
      * 任务推送
-     *
-     * @param xslTask
-     * @param xslTag
-     * @param request
-     * @param response
      * @return
      */
     @RequestMapping("/push")
     @ResponseBody
-    public XslResult accertdata(XslTask xslTask, XslTag xslTag, HttpServletRequest request, HttpServletResponse response) {
+    public XslResult accertdata(@ProbeParam("taskId") int taskId) {
         try {
-            String json = taskTopush.accertdata(xslTask, xslTag, request, response);
+            String json = taskTopush.deleteTaskMQ(taskId);
             return XslResult.format(json);
         } catch (Exception e) {
             e.printStackTrace();

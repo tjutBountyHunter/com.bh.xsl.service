@@ -3,9 +3,12 @@ package service.impl;
 import classify.LocalMacAddress;
 import classify.SchoolClassied;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import dao.JedisClient;
 import mapper.*;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,7 +52,12 @@ public class UserviceImpl implements UserService {
     private XslUserMapper xslUserMapper;
     @Autowired
     private XslSchoolinfoMapper xslSchoollinfoMapper;
-
+    @Autowired
+    private JedisClient jedisClient;
+    @Value("${REDIS_USER_SESSION_KEY}")
+    private String REDIS_USER_SESSION_KEY;
+    @Value("${Login_SESSION_EXPIRE}")
+    private Integer Login_SESSION_EXPIRE;
     //注册
     @Override
     public XslResult createUser(String user, String schoolUser, MultipartFile uploadFile, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -116,16 +124,16 @@ public class UserviceImpl implements UserService {
      * @return
      */
     @Override
-    public XslResult userLogin(String phone, String password) {
-        LocalMacAddress localMacAddress = new LocalMacAddress();
+    public XslResult userLogin(String phone, String password, String token,
+                               HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(phone);
         XslUserExample example = new XslUserExample();
         XslUserExample.Criteria criteria = example.createCriteria();
         criteria.andPhoneEqualTo(phone);
         List<XslUser> list = xslUserMapper.selectByExample(example);
-
         //没有此用户
         if (list.isEmpty() && list.size() == 0) {
-            return XslResult.build(400, "用户名或密码错误");
+            return XslResult.build(400, "meiyoi用户名或密码错误");
         }
         XslUser user = list.get(0);
         if (user.getState() == 1 || user.getState() == 0) {
@@ -135,28 +143,13 @@ public class UserviceImpl implements UserService {
                 return XslResult.build(400, "用户名或密码错误");
             }
             //生成token
-            XslTokenExample example1 = new XslTokenExample();
-            XslTokenExample.Criteria criteria1 = example1.createCriteria();
-            criteria1.andPhoneEqualTo(phone);
-            List<XslToken> list1 = xslTokenMapper.selectByExample(example1);
-            String token = "";
-            if (list1 != null && list1.size() != 0) {
-//                token = localMacAddress.getLocalMacAddress() + user.getName();
-                token = "SDSCSDDC15655615D6CD";
-                XslToken xslToken = new XslToken();
-                xslToken.setToken(token);
-                xslToken.setCreatedate(new Date());
-                xslTokenMapper.updateByExampleSelective(xslToken, example1);
-            } else {
-//                token = localMacAddress.getLocalMacAddress() + user.getName();
-                token = "SDSCSDDC15655615D6CD";
-                XslToken xslToken = new XslToken();
-                xslToken.setToken(token);
-                xslToken.setCreatedate(new Date());
-                xslToken.setState((byte) 1);
-                xslToken.setPhone(phone);
-                xslTokenMapper.insert(xslToken);
-            }
+            user.setPassword(null);
+            //用户信息写入redis
+            jedisClient.set(REDIS_USER_SESSION_KEY + ":" + token, JsonUtils.objectToJson(user));
+            //设置session过期时间
+            jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + token, Login_SESSION_EXPIRE);
+            //添加写Cookie的逻辑,cookie的有效期是关闭浏览器就失效
+            CookieUtils.setCookie(request, response, "TT_TOKEN", token);
             return XslResult.ok(token);
         } else {
             return XslResult.build(400, "审核未通过");
@@ -166,23 +159,20 @@ public class UserviceImpl implements UserService {
 
     /**
      * 检查Token被更换
-     *
      * @param token
      * @return
      */
     @Override
     public XslResult getUserByToken(String token) {
-        XslTokenExample xslTokenExample = new XslTokenExample();
-        XslTokenExample.Criteria criteria = xslTokenExample.createCriteria();
-        criteria.andTokenEqualTo(token);
-        List<XslToken> list = xslTokenMapper.selectByExample(xslTokenExample);
-        // 判断是否存在Token
+        String json = jedisClient.get(REDIS_USER_SESSION_KEY + ":" + token);
         //判断是否为空
-        if (list.size() == 0 && list.isEmpty()) {
-            return XslResult.build(400, "异地登录，如若非本人操作，请修改密码");
-        } else {
-            return XslResult.ok("ok");
+        if (StringUtils.isBlank(json)) {
+            return XslResult.build(400, "登陆时间已经过期。请重新登录");
         }
+        //更新过期时间
+        jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + token, Login_SESSION_EXPIRE);
+        //返回此用户信息
+        return XslResult.ok(JsonUtils.jsonToPojo(json, XslUser.class));
     }
 
     /**

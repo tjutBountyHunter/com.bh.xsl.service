@@ -54,43 +54,6 @@ public class JiGuangPushUtil {
             return "发送失败";
         }
     }
-
-    /**
-     * 自定义消息推送
-     * 备注：推送方式不为空时，推送的值也不能为空；推送方式为空时，推送值不做要求
-     *
-     * @param type  推送方式：1、“tag”标签推送，2、“alias”别名推送
-     * @param value 推送的标签或别名值
-     * @param alert 推送的内容
-     */
-    private static void pushMsg(String type, String value, String alert) {
-        Builder builder = PushPayload.newBuilder();
-        //设置接受的平台
-        builder.setPlatform(Platform.all());
-        if (type.equals("alias")) {
-            //别名推送
-            builder.setAudience(Audience.alias(value));
-        } else if (type.equals("tag")) {
-            //标签推送
-            builder.setAudience(Audience.tag(value));
-        } else {
-            //Audience设置为all，说明采用广播方式推送，所有用户都可以接收到
-            builder.setAudience(Audience.all());
-        }
-        Message.Builder newBuilder = Message.newBuilder();
-        //消息内容
-        newBuilder.setMsgContent(alert);
-        Message message = newBuilder.build();
-        builder.setMessage(message);
-        PushPayload pushPayload = builder.build();
-        try {
-            PushResult pushResult = jPushClient.sendPush(pushPayload);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public static void main(String[] args) {
         //给标签为kefu的用户进行消息推送
         String s = JiGuangPushUtil.pushNotice("tag", "kefu", "你有新的任务，请及时处理");
