@@ -7,7 +7,7 @@ public class XslDatetime {
 
     private Integer hunterid;
 
-    private Integer taskid;
+    private String taskid;
 
     private Date createdate;
 
@@ -27,13 +27,6 @@ public class XslDatetime {
         this.hunterid = hunterid;
     }
 
-    public Integer getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(Integer taskid) {
-        this.taskid = taskid;
-    }
 
     public Date getCreatedate() {
         return createdate;
@@ -41,5 +34,13 @@ public class XslDatetime {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public String getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(String taskid) {
+        this.taskid = taskid;
     }
 }

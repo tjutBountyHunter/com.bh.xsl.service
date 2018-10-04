@@ -29,26 +29,39 @@ public class UserController {
     /**
      * 注册
      *
-     * @param user
-     * @param schoolUser
-     * @param uploadFile
-     * @param request
-     * @param response
+     * @param all
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult register(@ProbeParam("user") String user, @ProbeParam("schoolUser") String schoolUser, @ProbeParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpServletResponse response) {
+    public XslResult register(@ProbeParam("all") String all) {
         XslResult xslResult = null;
-        try {
-            xslResult = userService.createUser(user, schoolUser, uploadFile, request, response);
-            return xslResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
+        xslResult = userService.createUser(all);
+        return xslResult;
     }
 
+    /**
+     * 下一步
+     *
+     * @param json
+     * @param code
+     * @return
+     */
+    @RequestMapping(value = "/neststep", method = RequestMethod.POST)
+    @ResponseBody
+    public XslResult neststep(@ProbeParam("json") String json, @ProbeParam("code") String code) {
+        XslResult xslResult = null;
+        xslResult = userService.nextStep(json, code);
+        return xslResult;
+    }
+
+    @RequestMapping(value = "/file", method = RequestMethod.POST)
+    @ResponseBody
+    public XslResult fileUp(@ProbeParam("uploadFile") MultipartFile uploadFile, @ProbeParam("phone") String phone) {
+        XslResult xslResult = null;
+        xslResult = userService.createFile(uploadFile, phone);
+        return xslResult;
+    }
     /**
      * 学校类别
      *
@@ -70,7 +83,9 @@ public class UserController {
     @RequestMapping("/collegeClasses")
     @ResponseBody
     public XslResult collegeMessage(@ProbeParam("schoolName") String schoolName) {
-        return XslResult.ok(userService.collegMessage(schoolName));
+        XslResult xslResult = null;
+        xslResult = userService.collegMessage(schoolName);
+        return xslResult;
     }
 
     /**
@@ -81,8 +96,14 @@ public class UserController {
      */
     @RequestMapping("/majorClasses")
     @ResponseBody
-    public XslResult majorMessage(@ProbeParam("majorName") String majorName) {
-        return XslResult.ok(userService.majorMessage(majorName));
+    public XslResult majorMessage(@ProbeParam("majorName") String majorName, @ProbeParam("schoolId") Integer schoolId) {
+        XslResult xslResult = null;
+        try {
+            xslResult = userService.majorMessage(majorName, schoolId);
+            return xslResult;
+        } catch (Exception e) {
+            return XslResult.build(500, "服务器异常");
+        }
     }
 
     /**
@@ -110,12 +131,12 @@ public class UserController {
      * @param token
      * @return
      */
-    @RequestMapping(value = "/token/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/token", method = RequestMethod.GET)
     @ResponseBody
-    public Object getUserByToken(@PathVariable String token) {
+    public Object getUserByToken(@ProbeParam("token") String token, @ProbeParam("phone") String phone) {
         XslResult result = null;
         try {
-            result = userService.getUserByToken(token);
+            result = userService.getUserByToken(token,phone);
         } catch (Exception e) {
             e.printStackTrace();
             result = XslResult.build(500, "服务器异常");
@@ -151,21 +172,8 @@ public class UserController {
     @RequestMapping(value = "/message", method = RequestMethod.GET)
     @ResponseBody
     public XslResult sendMessage(@RequestParam("phone") String phone) {
-        String message;
-        boolean bool = (boolean) userService.checkData(phone, "u_account").getData();
-        if (bool != true) {
-            message = "手机号码填写错误,请检查手机号码格式是否正确";
-            return XslResult.ok(JsonUtils.objectToJson(message));
-        } else {
-            SendSmsResponse q = userService.excute(phone);
-            if (q.getCode().equals("OK")) {
-                message = "短信验证请求成功";
-                return XslResult.ok(JsonUtils.objectToJson(message));
-            } else {
-                message = "短信验证未请求成功,请联系工作人员";
-                return XslResult.ok(JsonUtils.objectToJson(message));
-            }
-        }
+        XslResult xslResult = userService.sendMessageCode(phone);
+        return xslResult;
     }
 
     /**
@@ -178,11 +186,7 @@ public class UserController {
     @RequestMapping(value = "/checkmessage", method = RequestMethod.GET)
     @ResponseBody
     public XslResult checkMessage(@RequestParam("phone") String phone, @RequestParam("code") String code) {
-        String num = userService.checkcode(phone);
-        if (!code.equals(num)) {
-            return XslResult.ok("验证码错误");
-        } else {
-            return XslResult.ok("验证码正确");
-        }
+        XslResult xslResult = userService.checkcode(phone, code);
+        return xslResult;
     }
 }

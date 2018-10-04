@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.XslDateTaskMapper">
+
+    <update id="UpdateTaskNumByName">
+        UPDATE xsl_task_category
+            SET taskNum = #{taskNum}
+            WHERE
+                NAME = #{name}
+    </update>
+
+
+    <update id="UpdateTagNumByName">
+        UPDATE xsl_tag
+            SET useNum = #{useNum}
+            WHERE
+                NAME = #{name}
+    </update>
+
+    <select id="getTagIdByName" resultType="java.lang.Integer">
+        SELECT
+              id
+          FROM
+              xsl_tag
+            WHERE
+              NAME = #{name};
+    </select>
+</mapper>

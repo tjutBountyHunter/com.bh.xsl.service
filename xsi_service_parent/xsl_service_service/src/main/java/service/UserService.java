@@ -4,10 +4,10 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
+import pojo.XslUserRegister;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 
 /**
  * 用户注册
@@ -15,15 +15,28 @@ import java.io.UnsupportedEncodingException;
 public interface UserService {
     /**
      * 注册
-     *
-     * @param user
-     * @param schoolUser
-     * @param request
-     * @param response
+     * @param all
      * @return
      * @throws Exception
      */
-    XslResult createUser(String user, String schoolUser, MultipartFile uploadFile, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    XslResult createUser(String all);
+
+    /**
+     * 上传图片
+     *
+     * @param uploadFile
+     * @param phone
+     * @return
+     */
+    XslResult createFile(MultipartFile uploadFile, String phone);
+
+    /**
+     * 账号密码，验证码
+     *
+     * @param json
+     * @return
+     */
+    XslResult nextStep(String json, String code);
 
     /**
      * 登录
@@ -41,16 +54,15 @@ public interface UserService {
      * @param token
      * @return
      */
-    XslResult getUserByToken(String token);
+    XslResult getUserByToken(String token, String phone);
 
     /**
      * 账号密码核对
      *
      * @param content
-     * @param type
      * @return
      */
-    XslResult checkData(String content, String type);
+    XslResult checkData(String content);
 
     /**
      * 发送短信验证码
@@ -58,22 +70,43 @@ public interface UserService {
      * @param phone
      * @return
      */
-    SendSmsResponse excute(@Param("phone") String phone);
+    SendSmsResponse verifyCode(@Param("phone") String phone);
 
     /**
-     * 短信验证码验证
+     * 传递验证码
      *
      * @param phone
      * @return
      */
-    String checkcode(String phone);
+    XslResult sendMessageCode(String phone);
+    /**
+     * 短信验证码验证
+     * @param phone
+     * @return
+     */
+    XslResult checkcode(String phone, String code);
 
     /**
-     * 学校种类
+     * 用户数据库表
      *
+     * @param xslUserRegister
+     * @param schoolId
+     * @return
+     */
+    XslResult createUseruser(XslUserRegister xslUserRegister, Integer schoolId);
+    /**
+     * 学校种类
      * @return
      */
     XslResult Password(String phone, String password);
+
+    /**
+     * 学校表
+     *
+     * @param xslUserRegister
+     * @return
+     */
+    XslResult createUserSchool(XslUserRegister xslUserRegister);
 
     /**
      * 学校，大学，专业种类
@@ -82,7 +115,7 @@ public interface UserService {
      */
     String schoolMessage();
 
-    String collegMessage(String school);
+    XslResult collegMessage(String school);
 
-    String majorMessage(String college);
+    XslResult majorMessage(String college,Integer schoolId);
 }

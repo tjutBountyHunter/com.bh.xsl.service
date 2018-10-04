@@ -2,12 +2,15 @@ service\impl\TaskStatefindImpl.class
 service\impl\HunterShopImpl.class
 service\impl\CollectImpl.class
 service\impl\searchTaskMQImpl.class
+service\impl\UpTaskServiceImpl.class
 service\UserService.class
+service\SupplementDataService.class
 service\impl\ImageSaveImpl.class
 service\impl\RandomNum.class
 service\impl\TaskTopushImpl.class
 service\impl\TaskAcceptImpl.class
 service\searchTaskMQ.class
+service\UpTaskService.class
 service\TaskAccept.class
 service\impl\SerchDubboImpl.class
 service\TaskStatefind.class
@@ -16,6 +19,7 @@ dao\JedisClient.class
 service\ImageSave.class
 com\search\service\SearchService.class
 service\TaskTopush.class
+service\impl\SupplementDataServiceImpl.class
 service\HunterShop.class
 service\OrderMoney.class
 service\HunMaster.class

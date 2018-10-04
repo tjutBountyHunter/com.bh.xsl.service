@@ -7,9 +7,8 @@ service\CookieUtils.class
 service\FtpUtil.class
 service\byte2hex.class
 service\timeDate.class
-service\SearchItem.class
+service\UuidTaskId.class
 service\TimeDemo.class
-service\SearchResult.class
 service\PageDataResult.class
 service\Md5Utils.class
 service\Token.class

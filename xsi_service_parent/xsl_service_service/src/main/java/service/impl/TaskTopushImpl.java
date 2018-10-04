@@ -4,10 +4,7 @@ import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.*;
-import service.JsonUtils;
-import service.PageDataResult;
-import service.TaskTopush;
-import service.searchTaskMQ;
+import service.*;
 //import service.searchTaskMQ;
 
 import java.io.UnsupportedEncodingException;
@@ -70,61 +67,17 @@ public class TaskTopushImpl implements TaskTopush {
      * @return
      */
     @Override
-    public String accertdata(String xslTask) {
+    public XslResult accertdata(String xslTask) {
         try {
             xslTask = new String(xslTask.getBytes("iso-8859-1"), "utf-8");
             searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
             searchTaskMQ.addTaskJson(xslTask);
-            return xslTask;
-
+            return XslResult.ok(xslTask);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            return "fu";
+            return XslResult.build(500, "服务器异常");
         }
     }
-
-
-    /**
-     * 分页查询
-     *
-     * @param queryText
-     * @param pageno
-     * @param pagesize
-     * @return
-     */
-    @Override
-    public PageDataResult searchPage(String queryText, Integer pageno, Integer pagesize) {
-        if (queryText == null) {
-            List<String> list = xslTaskClassMapper.selectByXslTaskCategory(new XslTaskCategory());
-            int i = list.size();
-            int random = (int) (Math.random() * i);
-            queryText = list.get(random);
-
-        }
-        //取到分页信息
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("start", (pageno - 1) * pagesize);
-        map.put("size", pagesize);
-        map.put("queryText", queryText);
-        List<XslTask> masterlevelList = xslTaskshowMapper.getXslTaskList(map);
-        // 当前页码
-        // 总的数据条数
-        int totalsize = xslTaskshowMapper.getXslTaskCount(map);
-        // 最大页码（总页码）
-        int totalno = 0;
-        if (totalsize % pagesize == 0) {
-            totalno = totalsize / pagesize;
-        } else {
-            totalno = totalsize / pagesize + 1;
-        }
-        PageDataResult<XslTask> masterlevelPage = new PageDataResult<XslTask>();
-        masterlevelPage.setDatas(masterlevelList);
-        masterlevelPage.setTotalno(totalno);
-        masterlevelPage.setTotalsize(totalsize);
-        masterlevelPage.setPageno(pageno);
-        return masterlevelPage;
-    }
-
     /**
      * 点击任务大厅展示
      *
@@ -181,15 +134,6 @@ public class TaskTopushImpl implements TaskTopush {
         masterlevelPage.setTotalsize(totalsize);
         masterlevelPage.setPageno(pageno);
         return masterlevelPage;
-    }
-
-    @Override
-    public String deleteTaskMQ(Integer taskId) {
-        System.out.println(taskId);
-        String q = taskId + "";
-        searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
-        searchTaskMQ.numberTaskJson(q);
-        return q;
     }
 }
 

@@ -14,12 +14,14 @@
         where
            schoolId=#{id}
     </select>
-    <select id="selectBycollegeName" resultType="java.lang.Integer" parameterType="java.lang.String">
+    <select id="selectBycollegeName" resultType="java.lang.Integer" parameterType="map">
         select
            id
         from xsl_college
         where
            collegeName=#{collegeName}
+           and
+           schoolId=#{schoolId}
     </select>
 
 </mapper>

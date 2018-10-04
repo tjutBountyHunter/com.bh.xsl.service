@@ -1,16 +1,19 @@
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\TaskStatefindImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\SerchDubbo.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\UpTaskServiceImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\SerchDubboImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\dao\impl\JedisClientSingle.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\OrderMoney.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\TaskStatefind.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\com\search\service\SearchService.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\HunMaster.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\UpTaskService.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\Collect.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\CollectImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\TaskAcceptImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\TaskTopushImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\ImageSaveImpl.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\SupplementDataServiceImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\searchTaskMQImpl.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\HunterShop.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\UserviceImpl.java
@@ -18,6 +21,7 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\Ta
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\TaskTopush.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\searchTaskMQ.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\HunterShopImpl.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\SupplementDataService.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\dao\JedisClient.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\ImageSave.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_service\src\main\java\service\impl\RandomNum.java

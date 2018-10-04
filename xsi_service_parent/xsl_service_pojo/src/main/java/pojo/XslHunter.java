@@ -5,6 +5,8 @@ import java.util.Date;
 public class XslHunter {
     private Integer id;
 
+    private Integer userid;
+
     private Short level;
 
     private Integer empirical;
@@ -25,6 +27,14 @@ public class XslHunter {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public Short getLevel() {
@@ -67,11 +77,11 @@ public class XslHunter {
         this.credit = credit;
     }
 
-    public String getDesc() {
+    public String getDescr() {
         return descr;
     }
 
-    public void setDesc(String descr) {
+    public void setDescr(String descr) {
         this.descr = descr == null ? null : descr.trim();
     }
 

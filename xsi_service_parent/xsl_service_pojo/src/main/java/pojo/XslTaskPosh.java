@@ -2,20 +2,23 @@ package pojo;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
 public class XslTaskPosh {
-    private Integer id;
-    private Integer cid;
     private String descr;
-    private Integer sendid;
     private BigDecimal money;
     private Byte state;
     private String createdate;
-    private String revokedate;
+    private String deadline;
     private String name;
+    private String taskId;
+    private Short level;
+    private String userName;
+    private String tag_name;
+    private String url;
 
     public String getCreatedate() {
         return createdate;
@@ -25,36 +28,12 @@ public class XslTaskPosh {
         this.createdate = createdate;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getCid() {
-        return cid;
-    }
-
-    public void setCid(Integer cid) {
-        this.cid = cid;
-    }
-
     public String getDescr() {
         return descr;
     }
 
     public void setDescr(String descr) {
         this.descr = descr;
-    }
-
-    public Integer getSendid() {
-        return sendid;
-    }
-
-    public void setSendid(Integer sendid) {
-        this.sendid = sendid;
     }
 
     public BigDecimal getMoney() {
@@ -73,19 +52,60 @@ public class XslTaskPosh {
         this.state = state;
     }
 
-    public String getRevokedate() {
-        return revokedate;
-    }
-
-    public void setRevokedate(String revokedate) {
-        this.revokedate = revokedate;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        deadline = deadline.substring(0, deadline.indexOf("."));
+        DateFormat format4 = new SimpleDateFormat("yyyy-MM-dd kk:mm");
+        System.out.println(deadline);
+        String dead = null;
+        try {
+            dead = format4.format(DateFormat.getDateInstance().parse(deadline));
+            this.deadline = dead;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public Short getLevel() {
+        return level;
+    }
+
+    public void setLevel(Short level) {
+        this.level = level;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

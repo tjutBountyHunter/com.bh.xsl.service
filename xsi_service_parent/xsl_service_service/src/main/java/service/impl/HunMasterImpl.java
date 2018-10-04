@@ -6,13 +6,14 @@ import mapper.XslMasterLevelMapper;
 import mapper.XslMasterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pojo.XslHunter;
-import pojo.XslHunterLevel;
-import pojo.XslMaster;
-import pojo.XslMasterLevel;
+import pojo.*;
 import service.HunMaster;
+import service.UserService;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 猎人初始化
@@ -27,19 +28,22 @@ public class HunMasterImpl implements HunMaster {
     private XslHunterMapper xslHunterMapper;
     @Autowired
     private XslMasterMapper xslMasterMapper;
-
+    @Autowired
+    private UserService userService;
     @Override
-    public void insertPeople() {
+    public Map<String, Integer> insertPeople(Integer userId) {
         XslHunter xslHunter = new XslHunter();
         XslMaster xslMaster = new XslMaster();
-        xslHunter.setLevel((short) 0);
+        xslHunter.setLevel((short) 1);
+        xslHunter.setUserid(userId);
         xslHunter.setTaskaccnum(0);
         xslHunter.setTaskfailnum(0);
         xslHunter.setEmpirical(0);
         xslHunter.setCredit((short) 100);
         xslHunter.setLastaccdate(new Date());
-        xslHunter.setDesc("");
-        xslMaster.setLevel((short) 0);
+        xslHunter.setDescr("");
+        xslMaster.setLevel((short) 1);
+        xslMaster.setUserid(userId);
         xslMaster.setTaskaccnum(0);
         xslMaster.setTaskrevokenum(0);
         xslMaster.setCredit((short) 100);
@@ -48,6 +52,18 @@ public class HunMasterImpl implements HunMaster {
         xslMaster.setDesc("");
         xslHunterMapper.insert(xslHunter);
         xslMasterMapper.insert(xslMaster);
+        XslHunterExample xslHunterExample = new XslHunterExample();
+        XslHunterExample.Criteria criteria = xslHunterExample.createCriteria();
+        criteria.andUseridEqualTo(userId);
+        List<XslHunter> list = xslHunterMapper.selectByExample(xslHunterExample);
+        XslMasterExample xslMasterExample = new XslMasterExample();
+        XslMasterExample.Criteria criteria1 = xslMasterExample.createCriteria();
+        criteria1.andUseridEqualTo(userId);
+        List<XslHunter> list1 = xslHunterMapper.selectByExample(xslHunterExample);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("masterId", list1.get(0).getId());
+        map.put("hunterId", list.get(0).getId());
+        return map;
     }
 
     @Override

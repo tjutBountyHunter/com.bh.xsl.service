@@ -3,8 +3,10 @@ package service;
 import pojo.XslHunter;
 import pojo.XslMaster;
 
+import java.util.Map;
+
 public interface HunMaster {
-    void insertPeople();
+    Map<String, Integer> insertPeople(Integer userId);
 
     void insertLevel();
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 public class XslMaster {
     private Integer id;
 
+    private Integer userid;
+
     private Short level;
 
     private Integer empirical;
@@ -25,6 +27,14 @@ public class XslMaster {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public Short getLevel() {

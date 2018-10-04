@@ -21,7 +21,7 @@ public interface Collect {
      * @param userId
      * @return
      */
-    String historyHunter(int userId);
+    PageDataResult historyHunter(int userId, int pageno, int pagesize);
 
     /**
      * 查看收藏猎人
@@ -29,7 +29,7 @@ public interface Collect {
      * @param userId
      * @return
      */
-    String findCollectHunter(int userId);
+    PageDataResult findCollectHunter(int userId, Integer pageno, Integer pagesize);
 
     /**
      * 收藏任务

@@ -6,6 +6,8 @@ import java.util.Date;
 public class XslTask {
     private Integer id;
 
+    private String taskid;
+
     private Integer cid;
 
     private String descr;
@@ -16,13 +18,13 @@ public class XslTask {
 
     private Byte state;
 
-    private Integer number;
-
     private Date createdate;
 
     private Date updatedate;
 
     private Date deadline;
+
+    private Integer number;
 
     public Integer getId() {
         return id;
@@ -30,6 +32,14 @@ public class XslTask {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(String taskid) {
+        this.taskid = taskid == null ? null : taskid.trim();
     }
 
     public Integer getCid() {
@@ -72,14 +82,6 @@ public class XslTask {
         this.state = state;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public Date getCreatedate() {
         return createdate;
     }
@@ -102,5 +104,13 @@ public class XslTask {
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }

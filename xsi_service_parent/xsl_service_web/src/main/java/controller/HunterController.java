@@ -60,11 +60,9 @@ public class HunterController {
      */
     @RequestMapping("/history")
     @ResponseBody
-    public XslResult hunterShop(Integer userId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("userId", userId);
+    public XslResult histotyHunterShop(Integer userId, Integer pageno, Integer pagesize) {
         try {
-            String json = collectl.historyHunter(userId);
+            PageDataResult json = collectl.historyHunter(userId, pageno, pagesize);
             return XslResult.build(200, "历史猎人信息分页查询成功", json);
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,10 +98,10 @@ public class HunterController {
      */
     @RequestMapping("/findcollecth")
     @ResponseBody
-    public XslResult collectHunter(int userId) {
+    public XslResult collectHunter(int userId, int pageo, int rows) {
         try {
-            String json = collectl.findCollectHunter(userId);
-            return XslResult.ok(json);
+            PageDataResult<XslHistoryHunter> masterlevelPage = collectl.findCollectHunter(userId, pageo, rows);
+            return XslResult.ok(masterlevelPage);
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");

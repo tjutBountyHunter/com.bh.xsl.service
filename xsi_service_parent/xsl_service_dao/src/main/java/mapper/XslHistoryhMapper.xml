@@ -5,7 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="userId" property="userid" jdbcType="INTEGER"/>
         <result column="hunterId" property="hunterid" jdbcType="INTEGER"/>
-        <result column="taskId" property="taskid" jdbcType="INTEGER"/>
+        <result column="taskId" property="taskid" jdbcType="VARCHAR"/>
         <result column="createDate" property="createdate" jdbcType="DATE"/>
     </resultMap>
     <sql id="Example_Where_Clause">

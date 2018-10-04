@@ -5,10 +5,7 @@ import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.*;
-import service.JsonUtils;
-import service.Message;
-import service.TaskAccept;
-import service.XslResult;
+import service.*;
 
 import java.util.*;
 
@@ -38,23 +35,25 @@ public class TaskAcceptImpl implements TaskAccept {
     private XslCollecthMapper xslCollecthMapper;
     @Autowired
     private XslHistoryhMapper xslHistoryhMapper;
+
     /**
      * 接受任务
-     *
-     * @param json
+     * @param hunterId
+     * @param taskId
      * @return
      */
     @Override
-    public XslResult acceptTask(String json) {
+    public XslResult acceptTask(Integer hunterId, String taskId) {
         Date date = new Date();
-        XslDatetime xslDatetime = JsonUtils.jsonToPojo(json, XslDatetime.class);
+        XslDatetime xslDatetime = new XslDatetime();
+        xslDatetime.setHunterid(hunterId);
+        xslDatetime.setTaskid(taskId);
         xslDatetime.setCreatedate(date);
-
         //插入任务时间
         xslDatetimeMapper.insert(xslDatetime);
         XslTaskExample xslTaskExample = new XslTaskExample();
         XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
-        criteria.andIdEqualTo(xslDatetime.getTaskid());
+        criteria.andTaskidEqualTo(xslDatetime.getTaskid());
         System.out.println(xslDatetime.getTaskid());
         List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
         XslTask xslTask = list.get(0);
@@ -63,25 +62,29 @@ public class TaskAcceptImpl implements TaskAccept {
             xslTask.setNumber(i);
             //更新任务接受任务总数
             xslTaskMapper.updateByExampleSelective(xslTask, xslTaskExample);
+            searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
+            searchTaskMQ.numberTaskJson(JsonUtils.objectToJson(xslTask));
             List<XslTask> list1 = xslTaskMapper.selectByExample(xslTaskExample);
             XslUserExample xslUserExample = new XslUserExample();
             XslUserExample.Criteria criteria1 = xslUserExample.createCriteria();
             criteria1.andHunteridEqualTo(xslDatetime.getHunterid());
             List<XslUser> list2 = xslUserMapper.selectByExample(xslUserExample);
             //发送短信和推送
+            System.out.println(list2.get(0).getPhone());
             System.out.println(list1.get(0).getNumber());
             if (list1.get(0).getNumber() > 1) {
                 //发送推送
-                String jsonJudge = pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
-                //判断是否发送成功
-                System.out.println(jsonJudge);
+//                String jsonJudge = pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
+//                //判断是否发送成功
+//                System.out.println(jsonJudge);
                 return XslResult.ok();
             } else {
                 //短信加推送
                 SendSmsResponse sendSmsResponse = excuteMaster(list2.get(0).getPhone());
+
                 if (sendSmsResponse.getCode().equals("OK")) {
                     //推送
-                    pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
+//                    pushNotice("tag", list1.get(0).getSendid() + "", "昵称为" + list2.get(0).getName() + "正在请求接取您的任务请您同意");
                     //判断是否发送成功
                     return XslResult.ok();
                 } else {
@@ -95,15 +98,15 @@ public class TaskAcceptImpl implements TaskAccept {
 
     /**
      * 任务接受成功后，通知猎人
-     * @param json
+     * @param hunterId
+     * @param taskId
      * @return
      */
     @Override
-    public XslResult decidedTask(String json) {
-        XslDatetime xslDatetime = JsonUtils.jsonToPojo(json, XslDatetime.class);
+    public XslResult decidedTask(Integer hunterId, String taskId) {
         XslTaskExample xslTaskExample = new XslTaskExample();
         XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
-        criteria.andIdEqualTo(xslDatetime.getTaskid());
+        criteria.andTaskidEqualTo(taskId);
         List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
         XslTask xslTask = list.get(0);
         xslTask.setState((byte) 2);
@@ -113,7 +116,7 @@ public class TaskAcceptImpl implements TaskAccept {
         xslTaskUpdate.updataByTaskId(map);
         XslUserExample xslUserExample = new XslUserExample();
         XslUserExample.Criteria criteria1 = xslUserExample.createCriteria();
-        criteria1.andHunteridEqualTo(xslDatetime.getHunterid());
+        criteria1.andHunteridEqualTo(hunterId);
         List<XslUser> list2 = xslUserMapper.selectByExample(xslUserExample);
         SendSmsResponse response = excuteMessage(list2.get(0).getPhone());
         XslHistoryh xslHistoryh = new XslHistoryh();
@@ -121,8 +124,8 @@ public class TaskAcceptImpl implements TaskAccept {
          * 历史猎人
          */
         xslHistoryh.setUserid(xslTask.getSendid());
-        xslHistoryh.setHunterid(xslDatetime.getHunterid());
-        xslHistoryh.setTaskid(xslDatetime.getTaskid());
+        xslHistoryh.setHunterid(hunterId);
+        xslHistoryh.setTaskid(taskId);
         Date date = new Date();
         xslHistoryh.setCreatedate(new Date());
         xslHistoryhMapper.insert(xslHistoryh);

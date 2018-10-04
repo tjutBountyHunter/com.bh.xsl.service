@@ -13,7 +13,7 @@
         FROM
           xsl_collectt
         WHERE
-          xsl_collectt.userId=#{userId,jdbcType=INTEGER})
+          xsl_collectt.userId=#{userId,jdbcType=INTEGER}))
         AND
           xsl_user.id=xsl_task.sendId
     </select>

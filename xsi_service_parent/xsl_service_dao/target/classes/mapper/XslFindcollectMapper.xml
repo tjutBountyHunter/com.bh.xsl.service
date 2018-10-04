@@ -33,5 +33,12 @@
 		xsl_hunter_tag.hunterId = xsl_hunter.id
     )
     </select>
+	<select id="selectCountByuserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select
+        count(*)
+        from xsl_collecth
+        where
+         userId=#{userId}
+    </select>
 
 </mapper>

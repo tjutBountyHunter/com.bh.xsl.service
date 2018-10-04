@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 public interface TaskAccept {
-    XslResult acceptTask(String json);
+    XslResult acceptTask(Integer hunterId, String taskId);
 
-    XslResult decidedTask(String json);
+    XslResult decidedTask(Integer hunterId, String taskId);
 
     String oldTime(String json);
 

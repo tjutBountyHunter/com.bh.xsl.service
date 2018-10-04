@@ -12,7 +12,7 @@
     <artifactId>xsl_service_web</artifactId>
     <packaging>war</packaging>
 
-    <name>xsl_service_web Maven Webapp</name>
+    <name>xsl_service_web</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -87,12 +87,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.zookeeper</groupId>

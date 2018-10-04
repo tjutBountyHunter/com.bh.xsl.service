@@ -18,18 +18,7 @@ public interface TaskTopush {
      * @param xslTask
      * @return
      */
-    String accertdata(String xslTask);
-
-    /**
-     * 分页查询
-     *
-     * @param queryText
-     * @param pageno
-     * @param pagesize
-     * @return
-     */
-    PageDataResult searchPage(String queryText, Integer pageno, Integer pagesize);
-
+    XslResult accertdata(String xslTask);
     /**
      * 点击任务大厅展示
      *
@@ -38,6 +27,4 @@ public interface TaskTopush {
      * @return
      */
     PageDataResult searchPage(Integer pageno, Integer pagesize) throws ParseException;
-
-    String deleteTaskMQ(Integer taskId);
 }

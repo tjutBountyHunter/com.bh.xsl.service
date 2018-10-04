@@ -14,16 +14,26 @@ public class SearchDubbo {
     @Autowired
     private SerchDubbo serchDubbo;
 
-    @RequestMapping("/search")
+    /**
+     * 搜索框查找任务
+     *
+     * @param keyword
+     * @param page
+     * @param rows
+     * @param sort_type
+     * @return
+     */
+    @RequestMapping("/searchitem")
     @ResponseBody
-    public XslResult searchDubbo(@ProbeParam("keyword") String keyword, @ProbeParam("page") int page, @ProbeParam("rows") int rows, @ProbeParam("sort_type") int sort_type) {
-        try {
-            XslResult xslResult = serchDubbo.searchDubbo(keyword, page, rows, sort_type);
-            return xslResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
+    public XslResult searchDubbo_item(@ProbeParam("keyword") String keyword, @ProbeParam("page") int page, @ProbeParam("rows") int rows, @ProbeParam("sort_type") int sort_type) {
+        XslResult xslResult = serchDubbo.searchDubbo_item(keyword, page, rows, sort_type);
+        return xslResult;
     }
 
+    @RequestMapping("/searchhunter")
+    @ResponseBody
+    public XslResult searchDubbo_hunter(@ProbeParam("keyword") String keyword, @ProbeParam("page") int page, @ProbeParam("rows") int rows, @ProbeParam("sort_type") int sort_type) {
+        XslResult xslResult = serchDubbo.searchDubbo_hunter(keyword, page, rows, sort_type);
+        return xslResult;
+    }
 }

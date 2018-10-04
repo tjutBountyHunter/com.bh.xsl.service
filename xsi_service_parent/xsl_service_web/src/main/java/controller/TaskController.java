@@ -7,12 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pojo.XslTag;
-import pojo.XslTask;
 import service.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
@@ -29,6 +25,10 @@ public class TaskController {
     private TaskAccept taskAccept;
     @Autowired
     private Collect collect;
+    @Autowired
+    private UpTaskService upTaskService;
+    @Autowired
+    private SupplementDataService supplementDataService;
 
     /**
      * 任务分类
@@ -64,41 +64,21 @@ public class TaskController {
         }
     }
 
-    /**
-     * 任务推送
-     * @return
-     */
-    @RequestMapping("/push")
-    @ResponseBody
-    public XslResult accertdata(@ProbeParam("taskId") int taskId) {
-        try {
-            String json = taskTopush.deleteTaskMQ(taskId);
-            return XslResult.format(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
-
-    /**
-     * 分页默认查询
-     *
-     * @param queryText
-     * @param pageno
-     * @param pagesize
-     * @return
-     */
-    @RequestMapping("/pageQuery")
-    @ResponseBody
-    public XslResult pageQuery(String queryText, Integer pageno, Integer pagesize) {
-        try {
-            PageDataResult result = taskTopush.searchPage(queryText, pageno, pagesize);
-            return XslResult.build(200, "任务信息分页查询成功", result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(400, "任务信息分页信息查询失败");
-        }
-    }
+//    /**
+//     * 任务推送
+//     * @return
+//     */
+//    @RequestMapping("/push")
+//    @ResponseBody
+//    public XslResult accertdata(@ProbeParam("taskId") int taskId) {
+//        try {
+//            String json = taskTopush.accertdata(taskId);
+//            return XslResult.format(json);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return XslResult.build(500, "服务器异常");
+//        }
+//    }
 
     /**
      * 分页直接查询
@@ -121,16 +101,16 @@ public class TaskController {
 
     /**
      * 任务接收
-     *
-     * @param json
+     * @param hunterId
+     * @param taskId
      * @return
      */
     @RequestMapping(value = "/accept", method = RequestMethod.GET)
     @ResponseBody
-    public XslResult acceptTask(@RequestParam("json") String json) {
+    public XslResult acceptTask(@RequestParam("hunterId") int hunterId, @ProbeParam("taskId") String taskId) {
         XslResult xslResult = null;
         try {
-            xslResult = taskAccept.acceptTask(json);
+            xslResult = taskAccept.acceptTask(hunterId, taskId);
             return xslResult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,16 +120,16 @@ public class TaskController {
 
     /**
      * 任务接收成功
-     *
-     * @param json
+     * @param hunterId
+     * @param taskId
      * @return
      */
     @RequestMapping(value = "/decidedaccept", method = RequestMethod.GET)
     @ResponseBody
-    public XslResult decidedTask(@RequestParam("json") String json) {
+    public XslResult decidedTask(@RequestParam("hunterId") int hunterId, @ProbeParam("taskId") String taskId) {
         XslResult xslResult = null;
         try {
-            xslResult = taskAccept.decidedTask(json);
+            xslResult = taskAccept.decidedTask(hunterId, taskId);
             return xslResult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,6 +192,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * 查找收藏任务
+     *
+     * @param userId
+     * @return
+     */
     @RequestMapping("/findcollecttask")
     @ResponseBody
     public XslResult findCollectTask(Integer userId) {
@@ -223,4 +209,33 @@ public class TaskController {
             return XslResult.build(500, "服务器异常");
         }
     }
+
+    /**
+     * 发送任务
+     *
+     * @param json
+     * @return
+     */
+    @RequestMapping("/sendtask")
+    @ResponseBody
+    public XslResult sendTask(String json) {
+        XslResult xslResult = upTaskService.UpuseTask(json);
+        return xslResult;
+    }
+
+    /**
+     * 自定义标签
+     *
+     * @param json
+     * @return
+     */
+    @RequestMapping("/makeselftag")
+    @ResponseBody
+    public XslResult makeTag(String json) {
+        XslResult xslResult = supplementDataService.SupplementTagWrite(json);
+        return xslResult;
+    }
+//    @RequestMapping("/donetask")
+////    @ResponseBody
+////    public
 }

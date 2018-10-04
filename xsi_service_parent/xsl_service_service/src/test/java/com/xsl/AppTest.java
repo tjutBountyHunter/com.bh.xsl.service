@@ -2,6 +2,8 @@ package com.xsl;
 
 import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pojo.XslDatetime;
@@ -9,6 +11,8 @@ import pojo.XslTask;
 import pojo.XslTaskExample;
 import service.JsonUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.HashSet;
@@ -65,4 +69,17 @@ public class AppTest {
 //        jedis.close();
 //        pool.close();
 //    }
+public static void main(String[] args) throws Exception {
+    FTPClient ftpClient = new FTPClient();
+    ftpClient.connect("47.93.200.190");
+    ftpClient.login("myftpuse", "myftpuse");
+    FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\ASUS\\Desktop\\test.png"));
+    ftpClient.changeWorkingDirectory("/home/ftp/images");
+    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+    ftpClient.storeFile("test1.png", inputStream);
+    inputStream.close();
+
+    ftpClient.logout();
+}
+
 }

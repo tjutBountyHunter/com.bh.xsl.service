@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 import pojo.*;
 import service.Collect;
 import service.JsonUtils;
+import service.PageDataResult;
 import service.XslResult;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 收藏历史系列
@@ -64,12 +62,33 @@ public class CollectImpl implements Collect {
      * @return
      */
     @Override
-    public String historyHunter(int userId) {
+    public PageDataResult historyHunter(int userId, int pageno, int pagesize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
         List<XslHistoryHunter> list = xslHistoryHunterMap.selectByHunterid(map);
-        String json = JsonUtils.objectToJson(list);
-        return json;
+        PageDataResult<XslHistoryHunter> masterlevelPage = new PageDataResult<XslHistoryHunter>();
+        List<XslHistoryHunter> list_change = new ArrayList<>();
+        if (list.size() < pagesize) {
+            pagesize = list.size();
+        }
+        for (int i = (pageno - 1) * pagesize; i < pagesize; i++) {
+            list_change.add(list.get(i));
+        }
+        // 当前页码
+        // 总的数据条数
+        int totalsize = xslFindcollectMapper.selectCountByuserId(userId);
+        // 最大页码（总页码）
+        int totalno = 0;
+        if (totalsize % pagesize == 0) {
+            totalno = totalsize / pagesize;
+        } else {
+            totalno = totalsize / pagesize + 1;
+        }
+        masterlevelPage.setDatas(list_change);
+        masterlevelPage.setTotalno(totalno);
+        masterlevelPage.setTotalsize(totalsize);
+        masterlevelPage.setPageno(pageno);
+        return masterlevelPage;
     }
 
     /**
@@ -79,10 +98,31 @@ public class CollectImpl implements Collect {
      * @return
      */
     @Override
-    public String findCollectHunter(int userId) {
+    public PageDataResult findCollectHunter(int userId, Integer pageno, Integer pagesize) {
         List<XslHistoryHunter> list = xslFindcollectMapper.selectByuserId(userId);
-        String json = JsonUtils.objectToJson(list);
-        return json;
+        PageDataResult<XslHistoryHunter> masterlevelPage = new PageDataResult<XslHistoryHunter>();
+        List<XslHistoryHunter> list_change = new ArrayList<>();
+        if (list.size() < pagesize) {
+            pagesize = list.size();
+        }
+        for (int i = (pageno - 1) * pagesize; i < pagesize; i++) {
+            list_change.add(list.get(i));
+        }
+        // 当前页码
+        // 总的数据条数
+        int totalsize = xslFindcollectMapper.selectCountByuserId(userId);
+        // 最大页码（总页码）
+        int totalno = 0;
+        if (totalsize % pagesize == 0) {
+            totalno = totalsize / pagesize;
+        } else {
+            totalno = totalsize / pagesize + 1;
+        }
+        masterlevelPage.setDatas(list_change);
+        masterlevelPage.setTotalno(totalno);
+        masterlevelPage.setTotalsize(totalsize);
+        masterlevelPage.setPageno(pageno);
+        return masterlevelPage;
     }
 
     /**
@@ -117,7 +157,7 @@ public class CollectImpl implements Collect {
     @Override
     public String findcollectTask(Integer userId) {
         try {
-            List<XslFindCollectTask> list = xslFindCollectTaskMapper.selectByuserId(userId);
+            List<XslHistoryHunter> list = xslFindcollectMapper.selectByuserId(userId);
             if (list.size() == 0 && list.isEmpty()) {
                 return "您还没有收藏猎人";
             } else {
