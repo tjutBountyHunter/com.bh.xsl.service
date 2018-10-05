@@ -8,6 +8,7 @@ import java.util.Date;
 
 
 public class XslTaskPosh {
+    private Integer id;
     private String descr;
     private BigDecimal money;
     private Byte state;
@@ -107,5 +108,13 @@ public class XslTaskPosh {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

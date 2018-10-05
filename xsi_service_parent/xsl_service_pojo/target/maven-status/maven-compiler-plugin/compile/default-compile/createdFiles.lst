@@ -7,6 +7,7 @@ pojo\XslCollecthExample$Criteria.class
 pojo\XslHunterLevelRuleExample.class
 pojo\XslTagExample$Criterion.class
 classify\SendTalk.class
+pojo\XslAllHistoryHunter.class
 pojo\XslTokenExample$GeneratedCriteria.class
 pojo\XslCollectt.class
 pojo\XslOrderExample$GeneratedCriteria.class
@@ -120,6 +121,7 @@ pojo\XslFileExample.class
 pojo\XslUserRegister.class
 pojo\XslFileExample$Criterion.class
 pojo\XslHistoryhExample$GeneratedCriteria.class
+pojo\XslHunterhistoryDefault.class
 pojo\XslOrderExample$Criterion.class
 pojo\XslScore.class
 pojo\XslTokenExample$Criterion.class
@@ -133,9 +135,11 @@ pojo\XslTaskCategoryExample$GeneratedCriteria.class
 pojo\XslFindCollectTask.class
 pojo\XslnextStep.class
 pojo\XslCollecth.class
+pojo\XslHotHisory.class
 pojo\XslScoreExample$Criteria.class
 pojo\XslTaskExample$Criterion.class
 pojo\XslMasterLevelRuleExample$GeneratedCriteria.class
+pojo\XslOneHunter.class
 pojo\XslSchoolinfoExample.class
 pojo\XslTaskTagExample$GeneratedCriteria.class
 pojo\SearchItem.class

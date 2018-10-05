@@ -33,22 +33,21 @@ public class HunterController {
     private Collect collectl;
 
     /**
-     * 猎人市场
-     *
-     * @param pageno
-     * @param pagesize
+     * 全部历史猎人
+     * @param rows
      * @param userId
+     * @param hunterId
      * @return
      */
     @RequestMapping("/shop")
     @ResponseBody
-    public XslResult hunterShop(Integer pageno, Integer pagesize, Integer userId) {
+    public XslResult hunterShop(Integer rows, Integer userId, Integer hunterId) {
         try {
-            PageDataResult result = hunterShop.hunterShop(pageno, pagesize, userId);
-            return XslResult.build(200, "猎人信息分页查询成功", result);
+            XslResult result = hunterShop.hunterShop(rows, userId, hunterId);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return XslResult.build(400, "猎人信息分页信息查询失败");
+            return XslResult.build(500, "猎人信息分页信息查询失败");
         }
     }
 
@@ -70,6 +69,38 @@ public class HunterController {
         }
     }
 
+    /**
+     * 单击猎人
+     *
+     * @param hunterId
+     * @return
+     */
+    @RequestMapping("/onehunter")
+    @ResponseBody
+    public XslResult oneHunter(int hunterId) {
+        XslResult xslResult = hunterShop.hunterOne(hunterId);
+        return xslResult;
+    }
+
+    /**
+     * 猎人市场二
+     *
+     * @param userId
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/hothunter")
+    @ResponseBody
+    public XslResult hotHunter(int userId, int rows) {
+        XslResult xslResult = null;
+        try {
+            xslResult = hunterShop.hunterShopCount(userId, rows);
+            return xslResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
+    }
     /**
      * 收藏猎人
      *

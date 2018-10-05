@@ -23,8 +23,9 @@
         </where>
     </select>
 
-    <select id="getXslTaskListC" resultType="pojo.XslTaskPosh">
+    <select id="getXslTaskListfirst" resultType="pojo.XslTaskPosh">
         select
+        xsl_task.id,
         xsl_task_category.`name`,
         xsl_task.descr,
         xsl_task.money,
@@ -43,24 +44,73 @@
         xsl_task_category,
         xsl_file
         <where>
-            xsl_file.userId=xsl_user.id
-            And
-            xsl_task_category.id=xsl_task.cid
-            AND
-            xsl_user.id=xsl_task.sendId
-            AND
-            xsl_user.id=xsl_master.userId
-            AND
-            xsl_task.id>0 ORDER BY xsl_task.id limit #{start},#{size}
+            xsl_file.userId = xsl_user.id
+            AND xsl_task_category.id = xsl_task.cid
+            AND xsl_user.id = xsl_task.sendId
+            AND xsl_user.id = xsl_master.userId
+            AND xsl_task.id > 0
+            ORDER BY xsl_task.id
+            desc  limit 0,#{rows}
         </where>
     </select>
-
-    <select id="getXslTaskCountC" resultType="java.lang.Integer">
-        select
-        count(*)
-        from xsl_task,xsl_user
-        <where>
-            xsl_user.id=xsl_task.cid
-        </where>
+    <select id="getXslTaskOld" resultType="pojo.XslTaskPosh">
+        SELECT
+        xsl_task.id,
+        xsl_task_category.`name`,
+        xsl_task.descr,
+        xsl_task.money,
+        xsl_task.state,
+        xsl_task.createDate,
+        xsl_task.updateDate,
+        xsl_task.deadline,
+        xsl_task.taskId,
+        xsl_user.`name` 'userName',
+        xsl_master.`level`,
+        xsl_file.url
+        FROM
+        xsl_task,
+        xsl_user,
+        xsl_master,
+        xsl_task_category,
+        xsl_file
+        WHERE
+        xsl_file.userId = xsl_user.id
+        AND xsl_task_category.id = xsl_task.cid
+        AND xsl_user.id = xsl_task.sendId
+        AND xsl_user.id = xsl_master.userId
+        AND (#{flagid})>xsl_task.id
+        ORDER BY
+        xsl_task.id DESC
+        LIMIT 0,#{rows}
+    </select>
+    <select id="getXslTaskNew" resultType="pojo.XslTaskPosh">
+      SELECT
+        xsl_task.id,
+        xsl_task_category.`name`,
+        xsl_task.descr,
+        xsl_task.money,
+        xsl_task.state,
+        xsl_task.createDate,
+        xsl_task.updateDate,
+        xsl_task.deadline,
+        xsl_task.taskId,
+        xsl_user.`name` 'userName',
+        xsl_master.`level`,
+        xsl_file.url
+        FROM
+        xsl_task,
+        xsl_user,
+        xsl_master,
+        xsl_task_category,
+        xsl_file
+        WHERE
+        xsl_file.userId = xsl_user.id
+        AND xsl_task_category.id = xsl_task.cid
+        AND xsl_user.id = xsl_task.sendId
+        AND xsl_user.id = xsl_master.userId
+        AND xsl_task.id > (#{flagid})
+        ORDER BY
+        xsl_task.id
+        LIMIT 0,#{rows}
     </select>
 </mapper>

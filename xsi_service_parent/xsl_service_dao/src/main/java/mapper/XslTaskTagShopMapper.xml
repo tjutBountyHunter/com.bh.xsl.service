@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslTaskTagShopMapper">
+    <select id="selectById" resultType="String">
+        SELECT
+        xsl_tag.`name`
+        FROM
+        xsl_tag,
+        xsl_task,
+        xsl_task_tag
+        <where>
+            xsl_task.taskId=#{taskId}
+            AND
+            xsl_task_tag.taskId=xsl_task.id
+            AND
+            xsl_tag.id=xsl_task_tag.tagId
+        </where>
+    </select>
+</mapper>

@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.XslTaskMapper" >
-    <resultMap id="BaseResultMap" type="pojo.XslTask" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="taskId" property="taskid" jdbcType="VARCHAR" />
-        <result column="cid" property="cid" jdbcType="INTEGER" />
-        <result column="descr" property="descr" jdbcType="VARCHAR" />
-        <result column="sendId" property="sendid" jdbcType="INTEGER" />
-        <result column="money" property="money" jdbcType="DECIMAL" />
-        <result column="state" property="state" jdbcType="TINYINT" />
-        <result column="createDate" property="createdate" jdbcType="DATE" />
-        <result column="updateDate" property="updatedate" jdbcType="DATE" />
-        <result column="deadline" property="deadline" jdbcType="DATE" />
-        <result column="number" property="number" jdbcType="INTEGER" />
+<mapper namespace="mapper.XslTaskMapper">
+    <resultMap id="BaseResultMap" type="pojo.XslTask">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="taskId" property="taskid" jdbcType="VARCHAR"/>
+        <result column="cid" property="cid" jdbcType="INTEGER"/>
+        <result column="descr" property="descr" jdbcType="VARCHAR"/>
+        <result column="sendId" property="sendid" jdbcType="INTEGER"/>
+        <result column="money" property="money" jdbcType="DECIMAL"/>
+        <result column="state" property="state" jdbcType="TINYINT"/>
+        <result column="createDate" property="createdate" jdbcType="DATE"/>
+        <result column="updateDate" property="updatedate" jdbcType="DATE"/>
+        <result column="deadline" property="deadline" jdbcType="DATE"/>
+        <result column="number" property="number" jdbcType="INTEGER"/>
     </resultMap>
-    <sql id="Example_Where_Clause" >
-        <where >
-            <foreach collection="oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
                                     and ${criterion.condition}
                                 </when>
-                                <when test="criterion.singleValue" >
+                                <when test="criterion.singleValue">
                                     and ${criterion.condition} #{criterion.value}
                                 </when>
-                                <when test="criterion.betweenValue" >
+                                <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.listValue" >
+                                <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -43,25 +44,26 @@
             </foreach>
         </where>
     </sql>
-    <sql id="Update_By_Example_Where_Clause" >
-        <where >
-            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
                                     and ${criterion.condition}
                                 </when>
-                                <when test="criterion.singleValue" >
+                                <when test="criterion.singleValue">
                                     and ${criterion.condition} #{criterion.value}
                                 </when>
-                                <when test="criterion.betweenValue" >
+                                <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.listValue" >
+                                <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -72,40 +74,40 @@
             </foreach>
         </where>
     </sql>
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
     id, taskId, cid, descr, sendId, money, state, createDate, updateDate, deadline, number
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskExample">
         select
-        <if test="distinct" >
+        <if test="distinct">
             distinct
         </if>
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from xsl_task
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
-        <if test="orderByClause != null" >
+        <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from xsl_task
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from xsl_task
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslTaskExample" >
+    <delete id="deleteByExample" parameterType="pojo.XslTaskExample">
         delete from xsl_task
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="pojo.XslTask" >
+    <insert id="insert" parameterType="pojo.XslTask">
     insert into xsl_task (id, taskId, cid,
       descr, sendId, money,
       state, createDate, updateDate,
@@ -115,127 +117,127 @@
       #{state,jdbcType=TINYINT}, #{createdate,jdbcType=DATE}, #{updatedate,jdbcType=DATE},
       #{deadline,jdbcType=DATE}, #{number,jdbcType=INTEGER})
   </insert>
-    <insert id="insertSelective" parameterType="pojo.XslTask" >
+    <insert id="insertSelective" parameterType="pojo.XslTask">
         insert into xsl_task
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 id,
             </if>
-            <if test="taskid != null" >
+            <if test="taskid != null">
                 taskId,
             </if>
-            <if test="cid != null" >
+            <if test="cid != null">
                 cid,
             </if>
-            <if test="descr != null" >
+            <if test="descr != null">
                 descr,
             </if>
-            <if test="sendid != null" >
+            <if test="sendid != null">
                 sendId,
             </if>
-            <if test="money != null" >
+            <if test="money != null">
                 money,
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 state,
             </if>
-            <if test="createdate != null" >
+            <if test="createdate != null">
                 createDate,
             </if>
-            <if test="updatedate != null" >
+            <if test="updatedate != null">
                 updateDate,
             </if>
-            <if test="deadline != null" >
+            <if test="deadline != null">
                 deadline,
             </if>
-            <if test="number != null" >
+            <if test="number != null">
                 number,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="taskid != null" >
+            <if test="taskid != null">
                 #{taskid,jdbcType=VARCHAR},
             </if>
-            <if test="cid != null" >
+            <if test="cid != null">
                 #{cid,jdbcType=INTEGER},
             </if>
-            <if test="descr != null" >
+            <if test="descr != null">
                 #{descr,jdbcType=VARCHAR},
             </if>
-            <if test="sendid != null" >
+            <if test="sendid != null">
                 #{sendid,jdbcType=INTEGER},
             </if>
-            <if test="money != null" >
+            <if test="money != null">
                 #{money,jdbcType=DECIMAL},
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 #{state,jdbcType=TINYINT},
             </if>
-            <if test="createdate != null" >
+            <if test="createdate != null">
                 #{createdate,jdbcType=DATE},
             </if>
-            <if test="updatedate != null" >
+            <if test="updatedate != null">
                 #{updatedate,jdbcType=DATE},
             </if>
-            <if test="deadline != null" >
+            <if test="deadline != null">
                 #{deadline,jdbcType=DATE},
             </if>
-            <if test="number != null" >
+            <if test="number != null">
                 #{number,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslTaskExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="pojo.XslTaskExample" resultType="java.lang.Integer">
         select count(*) from xsl_task
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
     </select>
-    <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByExampleSelective" parameterType="map">
         update xsl_task
-        <set >
-            <if test="record.id != null" >
+        <set>
+            <if test="record.id != null">
                 id = #{record.id,jdbcType=INTEGER},
             </if>
-            <if test="record.taskid != null" >
+            <if test="record.taskid != null">
                 taskId = #{record.taskid,jdbcType=VARCHAR},
             </if>
-            <if test="record.cid != null" >
+            <if test="record.cid != null">
                 cid = #{record.cid,jdbcType=INTEGER},
             </if>
-            <if test="record.descr != null" >
+            <if test="record.descr != null">
                 descr = #{record.descr,jdbcType=VARCHAR},
             </if>
-            <if test="record.sendid != null" >
+            <if test="record.sendid != null">
                 sendId = #{record.sendid,jdbcType=INTEGER},
             </if>
-            <if test="record.money != null" >
+            <if test="record.money != null">
                 money = #{record.money,jdbcType=DECIMAL},
             </if>
-            <if test="record.state != null" >
+            <if test="record.state != null">
                 state = #{record.state,jdbcType=TINYINT},
             </if>
-            <if test="record.createdate != null" >
+            <if test="record.createdate != null">
                 createDate = #{record.createdate,jdbcType=DATE},
             </if>
-            <if test="record.updatedate != null" >
+            <if test="record.updatedate != null">
                 updateDate = #{record.updatedate,jdbcType=DATE},
             </if>
-            <if test="record.deadline != null" >
+            <if test="record.deadline != null">
                 deadline = #{record.deadline,jdbcType=DATE},
             </if>
-            <if test="record.number != null" >
+            <if test="record.number != null">
                 number = #{record.number,jdbcType=INTEGER},
             </if>
         </set>
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByExample" parameterType="map" >
+    <update id="updateByExample" parameterType="map">
         update xsl_task
         set id = #{record.id,jdbcType=INTEGER},
         taskId = #{record.taskid,jdbcType=VARCHAR},
@@ -248,47 +250,47 @@
         updateDate = #{record.updatedate,jdbcType=DATE},
         deadline = #{record.deadline,jdbcType=DATE},
         number = #{record.number,jdbcType=INTEGER}
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="pojo.XslTask" >
+    <update id="updateByPrimaryKeySelective" parameterType="pojo.XslTask">
         update xsl_task
-        <set >
-            <if test="taskid != null" >
+        <set>
+            <if test="taskid != null">
                 taskId = #{taskid,jdbcType=VARCHAR},
             </if>
-            <if test="cid != null" >
+            <if test="cid != null">
                 cid = #{cid,jdbcType=INTEGER},
             </if>
-            <if test="descr != null" >
+            <if test="descr != null">
                 descr = #{descr,jdbcType=VARCHAR},
             </if>
-            <if test="sendid != null" >
+            <if test="sendid != null">
                 sendId = #{sendid,jdbcType=INTEGER},
             </if>
-            <if test="money != null" >
+            <if test="money != null">
                 money = #{money,jdbcType=DECIMAL},
             </if>
-            <if test="state != null" >
+            <if test="state != null">
                 state = #{state,jdbcType=TINYINT},
             </if>
-            <if test="createdate != null" >
+            <if test="createdate != null">
                 createDate = #{createdate,jdbcType=DATE},
             </if>
-            <if test="updatedate != null" >
+            <if test="updatedate != null">
                 updateDate = #{updatedate,jdbcType=DATE},
             </if>
-            <if test="deadline != null" >
+            <if test="deadline != null">
                 deadline = #{deadline,jdbcType=DATE},
             </if>
-            <if test="number != null" >
+            <if test="number != null">
                 number = #{number,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="pojo.XslTask" >
+    <update id="updateByPrimaryKey" parameterType="pojo.XslTask">
     update xsl_task
     set taskId = #{taskid,jdbcType=VARCHAR},
       cid = #{cid,jdbcType=INTEGER},

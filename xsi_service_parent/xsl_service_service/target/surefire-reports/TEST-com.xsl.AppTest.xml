@@ -6,7 +6,7 @@
     <property name="sun.boot.library.path" value="E:\电脑安装软件1\idea\IntelliJ IDEA 2018.1.4\jre64\bin"/>
     <property name="java.vm.version" value="25.152-b39"/>
     <property name="java.vm.vendor" value="JetBrains s.r.o"/>
-    <property name="maven.multiModuleProjectDirectory" value="E:\ID-workspeace\xsi_service_parent"/>
+    <property name="maven.multiModuleProjectDirectory" value="E:\ID-workspeace\xsi_service_parent\xsl_service_service"/>
     <property name="java.vendor.url" value="https://www.jetbrains.com/"/>
     <property name="path.separator" value=";"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -17,7 +17,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="E:\ID-workspeace\xsi_service_parent"/>
+    <property name="user.dir" value="E:\ID-workspeace\xsi_service_parent\xsl_service_service"/>
     <property name="java.runtime.version" value="1.8.0_152-release-1136-b39"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="E:\电脑安装软件1\idea\IntelliJ IDEA 2018.1.4\jre64\lib\endorsed"/>

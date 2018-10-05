@@ -19,12 +19,14 @@ public interface TaskTopush {
      * @return
      */
     XslResult accertdata(String xslTask);
+
     /**
      * 点击任务大厅展示
-     *
-     * @param pageno
-     * @param pagesize
+     * @param flagid
+     * @param type
+     * @param rows
      * @return
+     * @throws ParseException
      */
-    PageDataResult searchPage(Integer pageno, Integer pagesize) throws ParseException;
+    XslResult searchPage(Integer flagid, Integer type, Integer rows) throws ParseException;
 }

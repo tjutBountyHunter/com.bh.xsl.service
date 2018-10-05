@@ -9,9 +9,9 @@ import java.util.Map;
 public interface XslTaskshowMapper {
     List<XslTask> getXslTaskList(Map<String, Object> map);
 
-    Integer getXslTaskCount(Map<String, Object> map);
+    List<XslTaskPosh> getXslTaskListfirst(Integer rows);
 
-    List<XslTaskPosh> getXslTaskListC(Map<String, Object> map);
+    List<XslTaskPosh> getXslTaskOld(Map<String, Object> map);
 
-    Integer getXslTaskCountC(Map<String, Object> map);
+    List<XslTaskPosh> getXslTaskNew(Map<String, Object> map);
 }

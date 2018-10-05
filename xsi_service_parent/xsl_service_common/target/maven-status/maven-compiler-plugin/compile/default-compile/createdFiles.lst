@@ -14,5 +14,6 @@ service\Md5Utils.class
 service\Token.class
 service\App.class
 service\IdUtil.class
+service\RandomWriter.class
 service\PageBean.class
 service\XslResult.class

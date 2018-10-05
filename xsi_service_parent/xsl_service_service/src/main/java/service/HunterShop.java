@@ -1,5 +1,9 @@
 package service;
 
 public interface HunterShop {
-    PageDataResult hunterShop(Integer pageno, Integer pagesize, Integer userId);
+    XslResult hunterShop(Integer rows, Integer userId, Integer hunterId);
+
+    XslResult hunterShopCount(Integer useId, Integer rows);
+
+    XslResult hunterOne(Integer hunterid);
 }

@@ -10,6 +10,7 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslScor
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTagClassMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslFileMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskCategoryMapper.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskTagShopMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslFindcollectMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskClassMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHistoryHunterMap.java
@@ -19,10 +20,8 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslColl
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterShopMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterLevelRuleMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslSchoolMapper.java
-E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\IbmCommercialMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslCollegeMessageMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslDoneTaskMasterMapper.java
-E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\IbmUserMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTokenMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskUpdate.java

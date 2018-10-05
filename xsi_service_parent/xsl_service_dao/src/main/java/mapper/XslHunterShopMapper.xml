@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mapper.XslHunterShopMapper">
-    <select id="selectByThree" resultType="pojo.XslHistoryHunter">
+    <select id="selectByThree" resultType="pojo.XslAllHistoryHunter">
         select
-        xsl_user.name,xsl_tag.name
-        'tag_name',xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr
+        xsl_hunter.id,xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr,xsl_historyh.createDate
         from
-        xsl_user,xsl_hunter,xsl_tag
+        xsl_user,
+        xsl_hunter,
+        xsl_historyh
         <where>
-            xsl_user.hunterId=xsl_hunter.id
+            xsl_historyh.hunterId = xsl_hunter.id
+            and xsl_historyh.userId = #{userId}
+            and xsl_historyh.hunterId = xsl_user.hunterId
             and
-            xsl_tag.id=(
-            select
-            xsl_hunter_tag.tagId
-            from
-            xsl_hunter_tag
-            where
-            xsl_hunter_tag.hunterId = xsl_hunter.id)
-            and
-            xsl_hunter.id>0 ORDER BY xsl_hunter.id limit #{start},#{size}
+            xsl_hunter.id>#{hunterId} ORDER BY xsl_hunter.id desc limit 0,#{rows}
         </where>
     </select>
     <select id="getXslHunterCount" resultType="java.lang.Integer">
@@ -26,5 +21,71 @@
         count(*)
         from xsl_hunter
     </select>
-
+    <select id="selectBydefault" resultType="pojo.XslHunterhistoryDefault" parameterType="java.lang.Integer">
+        select
+        xsl_hunter.id,
+        xsl_user. name,
+        xsl_hunter.credit,
+        xsl_hunter.descr,
+        xsl_historyh.createDate
+        from
+        xsl_user,
+        xsl_hunter,
+        xsl_historyh
+        <where>
+            xsl_historyh.hunterId = xsl_hunter.id
+            and xsl_historyh.userId = #{userId}
+            and xsl_historyh.hunterId = xsl_user.hunterId
+            and
+            xsl_hunter.id>0 ORDER BY xsl_hunter.id desc limit 0,3
+        </where>
+    </select>
+    <select id="selectByHot" resultType="pojo.XslHotHisory">
+          SELECT
+	        xsl_user.name,
+	        xsl_hunter.id
+          FROM
+	        xsl_hunter,xsl_user
+          WHERE
+            xsl_user.hunterId=xsl_hunter.id
+-- 	        xsl_hunter.id >= (
+-- 		  SELECT
+-- 			  floor(
+-- 				  RAND() * (
+-- 					  SELECT
+-- 					      MAX(xsl_hunter.id)
+-- 					  FROM
+-- 						  xsl_hunter
+-- 				  )
+-- 			  )
+-- 	      )
+          ORDER BY
+            RAND()
+-- 	        xsl_hunter.id
+            LIMIT #{rows}
+    </select>
+    <select id="selectHotTag" resultType="String">
+        SELECT
+xsl_tag.`name`
+FROM
+xsl_hunter,
+xsl_hunter_tag,
+xsl_tag
+WHERE
+xsl_hunter.id=#{hunterId}
+AND
+xsl_hunter.id=xsl_hunter_tag.hunterId
+AND
+xsl_tag.id=xsl_hunter_tag.tagId
+    </select>
+    <select id="selectByhunterId" resultType="pojo.XslOneHunter">
+        select
+        xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr
+        from
+        xsl_user,xsl_hunter
+        <where>
+            xsl_user.hunterId = xsl_hunter.id
+            and xsl_hunter.id= #{hunterId}
+        </where>
+    </select>
 </mapper>

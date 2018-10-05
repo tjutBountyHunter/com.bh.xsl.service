@@ -82,20 +82,20 @@ public class TaskController {
 
     /**
      * 分页直接查询
-     *
-     * @param pageno
-     * @param pagesize
+     * @param flagid
+     * @param type
+     * @param rows
      * @return
      */
     @RequestMapping("/pageQueryC")
     @ResponseBody
-    public XslResult pageQuery(Integer pageno, Integer pagesize) {
+    public XslResult pageQuery(Integer flagid, Integer type, Integer rows) {
         try {
-            PageDataResult result = taskTopush.searchPage(pageno, pagesize);
-            return XslResult.build(200, "任务信息分页查询成功", result);
+            XslResult result = taskTopush.searchPage(flagid, type, rows);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return XslResult.build(400, "任务信息分页信息查询失败");
+            return XslResult.build(500, "任务信息分页信息查询失败");
         }
     }
 

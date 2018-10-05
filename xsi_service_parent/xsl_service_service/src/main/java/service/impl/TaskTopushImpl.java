@@ -10,10 +10,7 @@ import service.*;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 任务
@@ -38,7 +35,8 @@ public class TaskTopushImpl implements TaskTopush {
     private XslTaskTagMapper xslTaskTagMapper;
     @Autowired
     private XslTaskshowMapper xslTaskshowMapper;
-
+    @Autowired
+    private XslTaskTagShopMapper xslTaskTagShopMapper;
     /**
      * 任务种类
      *
@@ -78,21 +76,65 @@ public class TaskTopushImpl implements TaskTopush {
             return XslResult.build(500, "服务器异常");
         }
     }
+
     /**
-     * 点击任务大厅展示
-     *
-     * @param pageno
-     * @param pagesize
+     * 任务大厅展示
+     * @param flagid
+     * @param type
+     * @param rows
      * @return
+     * @throws ParseException
+     *     Map<String, Object> map=new HashMap<>(2);
+     *         map.put("flagid",flagid);
+     *         map.put("rows", rows);
+     *         if(type==0){
+     *
+     *         }else if (type==1){
+     *
+     *         }else{
+     *
+     *         }
      */
     @Override
-    public PageDataResult searchPage(Integer pageno, Integer pagesize) throws ParseException {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("start", (pageno - 1) * pagesize);
-        map.put("size", pagesize);
-        List<XslTaskPosh> masterlevelList = xslTaskshowMapper.getXslTaskListC(map);
+    public XslResult searchPage(Integer flagid, Integer type, Integer rows) throws ParseException {
+        try {
+            Map<String, Object> map = new HashMap<>(2);
+            map.put("flagid", flagid);
+            map.put("rows", rows);
+            List<XslTaskPosh> masterlevelList = null;
+            if (type == 0) {
+                masterlevelList = xslTaskshowMapper.getXslTaskListfirst(rows);
+                XslResult xslResult = findPage(masterlevelList);
+                return xslResult;
+            } else if (type == 1) {
+                masterlevelList = xslTaskshowMapper.getXslTaskOld(map);
+                XslResult xslResult = findPage(masterlevelList);
+                return xslResult;
+            } else {
+                masterlevelList = xslTaskshowMapper.getXslTaskNew(map);
+                XslResult xslResult = findPage(masterlevelList);
+                return xslResult;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
+    }
+
+    /**
+     * 获取查询值
+     *
+     * @param masterlevelList
+     * @return
+     */
+    public XslResult findPage(List<XslTaskPosh> masterlevelList) {
+        int userid = 0;
+        List<String> tag_list = new ArrayList<>();
         for (int i = 0; i < masterlevelList.size(); i++) {
             String data_string = masterlevelList.get(i).getCreatedate();
+            List<String> tagList = xslTaskTagShopMapper.selectById(masterlevelList.get(i).getTaskId());
+            String json = JsonUtils.objectToJson(tagList);
+            tag_list.add(json);
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = formatter.parse(data_string);
@@ -105,35 +147,36 @@ public class TaskTopushImpl implements TaskTopush {
                 int totalSeconds = (int) (milliSeconds / 1000);
                 //得到总天数
                 int days = totalSeconds / (3600 * 24);
-                int days_remains = totalSeconds % (3600 * 24);
-                //得到总小时数
-                int hours = days_remains / 3600;
-                int remains_hours = days_remains % 3600;
-                //得到分种数
-                int minutes = remains_hours / 60;
-                //得到总秒数
-                int seconds = remains_hours % 60;
+//                int days_remains = totalSeconds % (3600 * 24);
+//                //得到总小时数
+//                int hours = days_remains / 3600;
+//                int remains_hours = days_remains % 3600;
+//                //得到分种数
+//                int minutes = remains_hours / 60;
+//                //得到总秒数
+//                int seconds = remains_hours % 60;
                 masterlevelList.get(i).setCreatedate("前" + days + "天");
+                if (i == masterlevelList.size() - 1) {
+                    userid = masterlevelList.get(i).getId();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+                return XslResult.build(500, "服务器异常");
             }
         }
-        // 当前页码
-        // 总的数据条数
-        int totalsize = xslTaskshowMapper.getXslTaskCountC(map);
-        // 最大页码（总页码）
-        int totalno = 0;
-        if (totalsize % pagesize == 0) {
-            totalno = totalsize / pagesize;
-        } else {
-            totalno = totalsize / pagesize + 1;
+        return changeFormat(masterlevelList, userid, tag_list);
+    }
+
+    public XslResult changeFormat(List<XslTaskPosh> masterlevelPage, Integer userId, List<String> tag_List) {
+        try {
+            Map<String, Object> map = new HashMap<>(2);
+            map.put("userId", userId);
+            map.put("findPage", masterlevelPage);
+            map.put("tag_List", tag_List);
+            return XslResult.ok(map);
+        } catch (Exception e) {
+            return XslResult.build(500, "服务器异常");
         }
-        PageDataResult<XslTaskPosh> masterlevelPage = new PageDataResult<XslTaskPosh>();
-        masterlevelPage.setDatas(masterlevelList);
-        masterlevelPage.setTotalno(totalno);
-        masterlevelPage.setTotalsize(totalsize);
-        masterlevelPage.setPageno(pageno);
-        return masterlevelPage;
     }
 }
 
