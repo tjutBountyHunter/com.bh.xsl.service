@@ -13,6 +13,8 @@ public class XslOneHunter {
 
     private String descr;
 
+    private String url;
+
     public String getName() {
         return name;
     }
@@ -59,5 +61,13 @@ public class XslOneHunter {
 
     public void setLevel(Short level) {
         this.level = level;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
