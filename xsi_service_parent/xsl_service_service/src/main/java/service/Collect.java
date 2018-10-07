@@ -16,22 +16,6 @@ public interface Collect {
     XslResult collectHunter(int hunterId, int userId);
 
     /**
-     * 历史猎人
-     *
-     * @param userId
-     * @return
-     */
-    PageDataResult historyHunter(int userId, int pageno, int pagesize);
-
-    /**
-     * 查看收藏猎人
-     *
-     * @param userId
-     * @return
-     */
-    PageDataResult findCollectHunter(int userId, Integer pageno, Integer pagesize);
-
-    /**
      * 收藏任务
      *
      * @param userId
@@ -46,5 +30,7 @@ public interface Collect {
      * @param userId
      * @return
      */
-    String findcollectTask(Integer userId);
+    XslResult findcollectThunter(Integer userId, Integer page, Integer rows);
+
+    XslResult findcollectTask(Integer userId, Integer page, Integer rows);
 }

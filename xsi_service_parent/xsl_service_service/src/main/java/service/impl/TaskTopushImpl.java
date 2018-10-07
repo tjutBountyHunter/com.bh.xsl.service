@@ -83,17 +83,6 @@ public class TaskTopushImpl implements TaskTopush {
      * @param type
      * @param rows
      * @return
-     * @throws ParseException
-     *     Map<String, Object> map=new HashMap<>(2);
-     *         map.put("flagid",flagid);
-     *         map.put("rows", rows);
-     *         if(type==0){
-     *
-     *         }else if (type==1){
-     *
-     *         }else{
-     *
-     *         }
      */
     @Override
     public XslResult searchPage(Integer flagid, Integer type, Integer rows) throws ParseException {
@@ -167,6 +156,14 @@ public class TaskTopushImpl implements TaskTopush {
         return changeFormat(masterlevelList, userid, tag_list);
     }
 
+    /**
+     * 整合内容
+     *
+     * @param masterlevelPage
+     * @param userId
+     * @param tag_List
+     * @return
+     */
     public XslResult changeFormat(List<XslTaskPosh> masterlevelPage, Integer userId, List<String> tag_List) {
         try {
             Map<String, Object> map = new HashMap<>(2);

@@ -1,4 +1,4 @@
-package com.search.service;
+package com.xsl.search.export;
 
 import pojo.SearchResult;
 

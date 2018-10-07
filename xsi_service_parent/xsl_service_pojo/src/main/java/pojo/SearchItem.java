@@ -20,9 +20,9 @@ public class SearchItem implements Serializable {
 
     private Date updatedate;
 
-    private Date revokedate;
+    private Date deadline;
 
-    private Integer click;
+    private Integer num;
 
     public Integer getId() {
         return id;
@@ -88,19 +88,19 @@ public class SearchItem implements Serializable {
         this.updatedate = updatedate;
     }
 
-    public Date getRevokedate() {
-        return revokedate;
+    public Date getDeadline() {
+        return deadline;
     }
 
-    public void setRevokedate(Date revokedate) {
-        this.revokedate = revokedate;
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
-    public Integer getClick() {
-        return click;
+    public Integer getNum() {
+        return num;
     }
 
-    public void setClick(Integer click) {
-        this.click = click;
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

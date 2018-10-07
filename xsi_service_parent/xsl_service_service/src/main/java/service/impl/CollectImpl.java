@@ -31,7 +31,10 @@ public class CollectImpl implements Collect {
     private XslCollecttMapper xslCollecttMapper;
     @Autowired
     private XslFindCollectTaskMapper xslFindCollectTaskMapper;
-
+    @Autowired
+    private XslHunterShopMapper xslHunterShopMapper;
+    @Autowired
+    private XslFileUrlMapper xslFileUrlMapper;
     /**
      * 收藏猎人
      *
@@ -41,90 +44,29 @@ public class CollectImpl implements Collect {
      */
     @Override
     public XslResult collectHunter(int hunterId, int userId) {
-        XslCollecth xslCollecth = new XslCollecth();
-        Date date = new Date();
-        xslCollecth.setCollectdate(date);
-        xslCollecth.setHunterid(hunterId);
-        xslCollecth.setUserid(userId);
-        xslCollecthMapper.insert(xslCollecth);
-        XslHunterExample xslHunterExample = new XslHunterExample();
-        XslHunterExample.Criteria criteria = xslHunterExample.createCriteria();
-        criteria.andIdEqualTo(hunterId);
-        List<XslHunter> list = xslHunterMapper.selectByExample(xslHunterExample);
-        XslHunter xslHunter = list.get(0);
-        return XslResult.ok(xslHunter);
-    }
 
-    /**
-     * 历史猎人
-     *
-     * @param userId
-     * @return
-     */
-    @Override
-    public PageDataResult historyHunter(int userId, int pageno, int pagesize) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("userId", userId);
-        List<XslHistoryHunter> list = xslHistoryHunterMap.selectByHunterid(map);
-        PageDataResult<XslHistoryHunter> masterlevelPage = new PageDataResult<XslHistoryHunter>();
-        List<XslHistoryHunter> list_change = new ArrayList<>();
-        if (list.size() < pagesize) {
-            pagesize = list.size();
+        try {
+            XslCollecthExample xslCollecthExample = new XslCollecthExample();
+            XslCollecthExample.Criteria criteria = xslCollecthExample.createCriteria();
+            criteria.andUseridEqualTo(userId);
+            List<XslCollecth> list = xslCollecthMapper.selectByExample(xslCollecthExample);
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getHunterid().equals(hunterId)) {
+                    return XslResult.ok("已经收藏");
+                }
+            }
+            XslCollecth xslCollecth = new XslCollecth();
+            Date date = new Date();
+            xslCollecth.setCollectdate(date);
+            xslCollecth.setHunterid(hunterId);
+            xslCollecth.setUserid(userId);
+            xslCollecthMapper.insert(xslCollecth);
+            return XslResult.ok("收藏成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
         }
-        for (int i = (pageno - 1) * pagesize; i < pagesize; i++) {
-            list_change.add(list.get(i));
-        }
-        // 当前页码
-        // 总的数据条数
-        int totalsize = xslFindcollectMapper.selectCountByuserId(userId);
-        // 最大页码（总页码）
-        int totalno = 0;
-        if (totalsize % pagesize == 0) {
-            totalno = totalsize / pagesize;
-        } else {
-            totalno = totalsize / pagesize + 1;
-        }
-        masterlevelPage.setDatas(list_change);
-        masterlevelPage.setTotalno(totalno);
-        masterlevelPage.setTotalsize(totalsize);
-        masterlevelPage.setPageno(pageno);
-        return masterlevelPage;
     }
-
-    /**
-     * 查看收藏猎人
-     *
-     * @param userId
-     * @return
-     */
-    @Override
-    public PageDataResult findCollectHunter(int userId, Integer pageno, Integer pagesize) {
-        List<XslHistoryHunter> list = xslFindcollectMapper.selectByuserId(userId);
-        PageDataResult<XslHistoryHunter> masterlevelPage = new PageDataResult<XslHistoryHunter>();
-        List<XslHistoryHunter> list_change = new ArrayList<>();
-        if (list.size() < pagesize) {
-            pagesize = list.size();
-        }
-        for (int i = (pageno - 1) * pagesize; i < pagesize; i++) {
-            list_change.add(list.get(i));
-        }
-        // 当前页码
-        // 总的数据条数
-        int totalsize = xslFindcollectMapper.selectCountByuserId(userId);
-        // 最大页码（总页码）
-        int totalno = 0;
-        if (totalsize % pagesize == 0) {
-            totalno = totalsize / pagesize;
-        } else {
-            totalno = totalsize / pagesize + 1;
-        }
-        masterlevelPage.setDatas(list_change);
-        masterlevelPage.setTotalno(totalno);
-        masterlevelPage.setTotalsize(totalsize);
-        masterlevelPage.setPageno(pageno);
-        return masterlevelPage;
-    }
-
     /**
      * 收藏任务
      *
@@ -134,6 +76,15 @@ public class CollectImpl implements Collect {
      */
     @Override
     public XslResult collectTask(Integer userId, Integer taskId) {
+        XslCollecttExample xslCollecttExample = new XslCollecttExample();
+        XslCollecttExample.Criteria criteria = xslCollecttExample.createCriteria();
+        criteria.andTaskidEqualTo(taskId);
+        List<XslCollectt> list = xslCollecttMapper.selectByExample(xslCollecttExample);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUserid().equals(userId)) {
+                return XslResult.ok("已经收藏");
+            }
+        }
         Date date = new Date();
         XslCollectt xslCollectt = new XslCollectt();
         xslCollectt.setCollectdate(date);
@@ -141,7 +92,7 @@ public class CollectImpl implements Collect {
         xslCollectt.setTaskid(taskId);
         try {
             xslCollecttMapper.insertSelective(xslCollectt);
-            return XslResult.ok();
+            return XslResult.ok("收藏成功");
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
@@ -155,18 +106,70 @@ public class CollectImpl implements Collect {
      * @return
      */
     @Override
-    public String findcollectTask(Integer userId) {
+    public XslResult findcollectThunter(Integer userId, Integer page, Integer rows) {
         try {
             List<XslHistoryHunter> list = xslFindcollectMapper.selectByuserId(userId);
             if (list.size() == 0 && list.isEmpty()) {
-                return "您还没有收藏猎人";
+                return XslResult.ok("您还没有收藏猎人");
             } else {
-                String json = JsonUtils.objectToJson(list);
-                return json;
+                if (rows > list.size()) {
+                    rows = list.size();
+                }
+                List<XslHistoryHunter> list_change = new ArrayList<>();
+                List<Map> mapList = new ArrayList<>();
+                for (int i = (page - 1); i < rows; i++) {
+                    list_change.add(list.get(i));
+                    mapList.add(findTagfile(list.get(i).getId()));
+                }
+                Map<String, Object> map = new HashMap<>(2);
+                map.put("basicList", list_change);
+                map.put("mapList", mapList);
+                return XslResult.ok(map);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "服务器异常";
+            return XslResult.build(500, "服务器异常");
         }
+    }
+
+    /**
+     * 查看收藏任务
+     *
+     * @param userId
+     * @param page
+     * @param rows
+     * @return
+     */
+    @Override
+    public XslResult findcollectTask(Integer userId, Integer page, Integer rows) {
+        try {
+            List<XslcollectTask> list = xslFindcollectMapper.selectByUserIdTask(userId);
+            if (list.size() == 0 && list.isEmpty()) {
+                return XslResult.ok("您还没有收藏猎人");
+            } else {
+                if (rows > list.size()) {
+                    rows = list.size();
+                }
+                List<XslcollectTask> list_change = new ArrayList<>();
+                List<Map> mapList = new ArrayList<>();
+                for (int i = (page - 1); i < rows; i++) {
+                    list_change.add(list.get(i));
+                }
+                return XslResult.ok(list_change);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
+    }
+
+    public Map<String, Object> findTagfile(Integer hunterId) {
+        Map<String, Object> map = new HashMap<>();
+        List<String> list = xslHunterShopMapper.selectHotTag(hunterId);
+        String tag_json = JsonUtils.objectToJson(list);
+        String imageUrl = xslFileUrlMapper.selectByhunterId(hunterId);
+        map.put("hunterTag", tag_json);
+        map.put("url", imageUrl);
+        return map;
     }
 }

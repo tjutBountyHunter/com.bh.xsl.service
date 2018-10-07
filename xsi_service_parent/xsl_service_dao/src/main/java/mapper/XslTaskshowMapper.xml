@@ -12,16 +12,7 @@
             id>0 ORDER BY id limit #{start},#{size}
         </where>
     </select>
-    <select id="getXslTaskCount" resultType="java.lang.Integer">
-        select
-        count(*)
-        from xsl_task
-        <where>
-            <if test="queryText != null">
-                and name like concat('%', #{queryText}, '%')
-            </if>
-        </where>
-    </select>
+
 
     <select id="getXslTaskListfirst" resultType="pojo.XslTaskPosh">
         select

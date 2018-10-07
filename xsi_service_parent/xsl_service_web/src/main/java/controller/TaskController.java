@@ -64,38 +64,19 @@ public class TaskController {
         }
     }
 
-//    /**
-//     * 任务推送
-//     * @return
-//     */
-//    @RequestMapping("/push")
-//    @ResponseBody
-//    public XslResult accertdata(@ProbeParam("taskId") int taskId) {
-//        try {
-//            String json = taskTopush.accertdata(taskId);
-//            return XslResult.format(json);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return XslResult.build(500, "服务器异常");
-//        }
-//    }
-
     /**
-     * 分页直接查询
-     * @param flagid
-     * @param type
-     * @param rows
+     * 任务推送
      * @return
      */
-    @RequestMapping("/pageQueryC")
+    @RequestMapping("/push")
     @ResponseBody
-    public XslResult pageQuery(Integer flagid, Integer type, Integer rows) {
+    public XslResult accertdata(@ProbeParam("userId") String json) {
         try {
-            XslResult result = taskTopush.searchPage(flagid, type, rows);
-            return result;
+            XslResult xslResult = supplementDataService.SupplementTaskData(json);
+            return xslResult;
         } catch (Exception e) {
             e.printStackTrace();
-            return XslResult.build(500, "任务信息分页信息查询失败");
+            return XslResult.build(500, "服务器异常");
         }
     }
 
@@ -146,8 +127,7 @@ public class TaskController {
     @ResponseBody
     public XslResult nowDatetime() {
         try {
-            Date date = taskAccept.timeDate();
-            String json = JsonUtils.objectToJson(date);
+            String json = taskAccept.timeDate();
             return XslResult.ok(json);
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,15 +137,15 @@ public class TaskController {
 
     /**
      * 获取猎人在接任务的时候的时间
-     *
-     * @param json
+     * @param hunterId
+     * @param taskId
      * @return
      */
     @RequestMapping("/olddatetime")
     @ResponseBody
-    public XslResult oldDatetime(String json) {
+    public XslResult oldDatetime(Integer hunterId, String taskId) {
         try {
-            String jsonTime = taskAccept.oldTime(json);
+            String jsonTime = taskAccept.oldTime(hunterId, taskId);
             return XslResult.ok(jsonTime);
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,10 +180,10 @@ public class TaskController {
      */
     @RequestMapping("/findcollecttask")
     @ResponseBody
-    public XslResult findCollectTask(Integer userId) {
+    public XslResult findCollectTask(Integer userId, Integer page, Integer rows) {
         try {
-            String json = collect.findcollectTask(userId);
-            return XslResult.ok(json);
+            XslResult xslResult = collect.findcollectTask(userId, page, rows);
+            return xslResult;
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");

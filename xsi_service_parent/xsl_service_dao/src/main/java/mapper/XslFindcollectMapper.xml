@@ -3,6 +3,7 @@
 <mapper namespace="mapper.XslFindcollectMapper">
     <select id="selectByuserId" resultType="pojo.XslHistoryHunter">
     SELECT
+      xsl_hunter.id,
 	  xsl_user.`name`,
 	  xsl_tag. NAME 'tag_name',
 	  xsl_hunter.`level`,
@@ -32,6 +33,27 @@
 	WHERE
 		xsl_hunter_tag.hunterId = xsl_hunter.id
     )
+    </select>
+    <select id="selectByUserIdTask" resultType="pojo.XslcollectTask">
+   SELECT
+   xsl_task.id,
+	xsl_user.`name`,
+	xsl_file.url,
+	xsl_task.deadline,
+	xsl_task.descr,
+	xsl_task.money,
+	xsl_task.number,
+	xsl_task.state
+FROM
+	xsl_user,
+	xsl_task,
+	xsl_file,
+	xsl_collectt
+WHERE
+	xsl_collectt.userId = #{userId}
+AND xsl_collectt.taskId = xsl_task.id
+AND xsl_user.id = xsl_task.sendId
+AND xsl_file.userId = xsl_user.id
     </select>
     <select id="selectCountByuserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         select

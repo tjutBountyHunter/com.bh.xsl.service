@@ -1,12 +1,17 @@
 package service.impl;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import dao.JedisClient;
 import mapper.*;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static service.JiGuangPushUtil.pushNotice;
@@ -34,8 +39,13 @@ public class TaskAcceptImpl implements TaskAccept {
     @Autowired
     private XslCollecthMapper xslCollecthMapper;
     @Autowired
+    private JedisClient jedisClient;
+    @Autowired
     private XslHistoryhMapper xslHistoryhMapper;
-
+    @Value("${REDIS_USER_SESSION_ACCEPTTASK_KEY}")
+    private String REDIS_USER_SESSION_ACCEPTTASK_KEY;
+    @Value("${Login_SESSION_EXPIRE_ACCEPTTASK}")
+    private Integer Login_SESSION_EXPIRE_ACCEPTTASK;
     /**
      * 接受任务
      * @param hunterId
@@ -44,17 +54,16 @@ public class TaskAcceptImpl implements TaskAccept {
      */
     @Override
     public XslResult acceptTask(Integer hunterId, String taskId) {
-        Date date = new Date();
-        XslDatetime xslDatetime = new XslDatetime();
-        xslDatetime.setHunterid(hunterId);
-        xslDatetime.setTaskid(taskId);
-        xslDatetime.setCreatedate(date);
-        //插入任务时间
-        xslDatetimeMapper.insert(xslDatetime);
+        Date dateTime = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = df.format(dateTime);
+        jedisClient.set(REDIS_USER_SESSION_ACCEPTTASK_KEY + ":" + hunterId + "" + taskId, dateStr);
+        //设置session过期时间
+        jedisClient.expire(REDIS_USER_SESSION_ACCEPTTASK_KEY + ":" + hunterId + "" + taskId, Login_SESSION_EXPIRE_ACCEPTTASK);
         XslTaskExample xslTaskExample = new XslTaskExample();
         XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
-        criteria.andTaskidEqualTo(xslDatetime.getTaskid());
-        System.out.println(xslDatetime.getTaskid());
+        criteria.andTaskidEqualTo(taskId);
+        System.out.println(taskId);
         List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
         XslTask xslTask = list.get(0);
         if (xslTask.getState() == 0) {
@@ -67,7 +76,7 @@ public class TaskAcceptImpl implements TaskAccept {
             List<XslTask> list1 = xslTaskMapper.selectByExample(xslTaskExample);
             XslUserExample xslUserExample = new XslUserExample();
             XslUserExample.Criteria criteria1 = xslUserExample.createCriteria();
-            criteria1.andHunteridEqualTo(xslDatetime.getHunterid());
+            criteria1.andHunteridEqualTo(hunterId);
             List<XslUser> list2 = xslUserMapper.selectByExample(xslUserExample);
             //发送短信和推送
             System.out.println(list2.get(0).getPhone());
@@ -137,20 +146,14 @@ public class TaskAcceptImpl implements TaskAccept {
     }
 
     /**
-     * 获取猎人在接任务时的时间
-     *
-     * @param json
+     *获取猎人接收任务时间
+     * @param hunterId
+     * @param taskId
      * @return
      */
     @Override
-    public String oldTime(String json) {
-        Date date = new Date();
-        XslDatetime xslDatetime = JsonUtils.jsonToPojo(json, XslDatetime.class);
-        Map<String, Object> map = new HashMap<>();
-        map.put("hunterId", xslDatetime.getHunterid());
-        map.put("taskId", xslDatetime.getTaskid());
-        date = xsloldTime.selectbyMap(map);
-        String timeDate = JsonUtils.objectToJson(date);
+    public String oldTime(Integer hunterId, String taskId) {
+        String timeDate = jedisClient.get(REDIS_USER_SESSION_ACCEPTTASK_KEY + ":" + hunterId + "" + taskId);
         return timeDate;
     }
 
@@ -182,7 +185,11 @@ public class TaskAcceptImpl implements TaskAccept {
      * @return
      */
     @Override
-    public Date timeDate() {
-        return new Date();
+    public String timeDate() {
+
+        Date dateTime = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = df.format(dateTime);
+        return dateStr;
     }
 }

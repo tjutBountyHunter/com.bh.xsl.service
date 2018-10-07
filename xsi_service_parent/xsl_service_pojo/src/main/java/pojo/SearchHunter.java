@@ -1,9 +1,10 @@
 package pojo;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SearchHunter {
+public class SearchHunter implements Serializable {
     private Integer id;
 
     private Integer level;

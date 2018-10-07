@@ -13,7 +13,7 @@ public class XslAllHistoryHunter {
 
     private String descr;
     private String createDate;
-
+    private String url;
     public Integer getId() {
         return id;
     }
@@ -76,5 +76,13 @@ public class XslAllHistoryHunter {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

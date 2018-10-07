@@ -1,5 +1,6 @@
 service\JiGuangPushUtil.class
 service\JsonUtils.class
+service\StringTransitionInt.class
 service\HttpClientUtil.class
 service\TimeDemo$1.class
 service\Message.class

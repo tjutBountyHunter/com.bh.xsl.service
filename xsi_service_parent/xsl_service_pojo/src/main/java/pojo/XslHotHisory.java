@@ -1,6 +1,7 @@
 package pojo;
 
 public class XslHotHisory {
+    private String url;
     private String name;
     private String evaluate;
     private Integer id;
@@ -27,5 +28,13 @@ public class XslHotHisory {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

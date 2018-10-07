@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslHuntershowMapper">
+
+    <select id="getXslHunterListfirst" resultType="pojo.XslOneHunter">
+        select
+        xsl_user.name,
+        xsl_hunter.level,
+        xsl_hunter.taskAccNum,
+        xsl_hunter.taskFailNum,
+        xsl_hunter.credit,
+        xsl_hunter.descr,
+        xsl_file.url
+        from
+        xsl_hunter,
+        xsl_user,
+        xsl_file,
+				xsl_tag,
+				xsl_hunter_tag
+        WHERE
+            xsl_file.userId = xsl_user.id
+            AND xsl_tag.id = xsl_hunter_tag.tagId
+            AND xsl_user.id = xsl_hunter.userId
+            AND xsl_hunter_tag.hunterid = xsl_hunter.id
+            AND xsl_tag.name = #{tagName}
+            AND xsl_hunter.id > 0
+            ORDER BY xsl_hunter.id
+            desc limit 0,#{rows}
+    </select>
+    <select id="getXslHunterOld" resultType="pojo.XslOneHunter">
+        select
+        xsl_user.name,
+        xsl_hunter.level,
+        xsl_hunter.taskAccNum,
+        xsl_hunter.taskFailNum,
+        xsl_hunter.credit,
+        xsl_hunter.descr,
+        xsl_file.url
+        from
+                xsl_hunter,
+                xsl_user,
+                xsl_file,
+				xsl_tag,
+				xsl_hunter_tag
+        WHERE
+            xsl_file.userId = xsl_user.id
+            AND xsl_tag.id = xsl_hunter_tag.tagId
+            AND xsl_user.id = xsl_hunter.userId
+            AND xsl_hunter_tag.hunterid = xsl_hunter.id
+            AND xsl_tag.name = #{tagName}
+            ORDER BY xsl_hunter.id
+            limit 0,#{rows}
+    </select>
+    <select id="getXslHunterNew" resultType="pojo.XslOneHunter">
+         select
+        xsl_user.name,
+        xsl_hunter.level,
+        xsl_hunter.taskAccNum,
+        xsl_hunter.taskFailNum,
+        xsl_hunter.credit,
+        xsl_hunter.descr,
+        xsl_file.url
+        from
+                xsl_hunter,
+                xsl_user,
+                xsl_file,
+				xsl_tag,
+				xsl_hunter_tag
+        WHERE
+            xsl_file.userId = xsl_user.id
+            AND xsl_tag.id = xsl_hunter_tag.tagId
+            AND xsl_user.id = xsl_hunter.userId
+            AND xsl_hunter_tag.hunterid = xsl_hunter.id
+            AND xsl_tag.name = #{tagName}
+            ORDER BY xsl_hunter.id
+            limit 0,#{rows}
+    </select>
+</mapper>

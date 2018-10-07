@@ -8,6 +8,7 @@ import java.util.Map;
 public interface XslHunterShopMapper {
     List<XslAllHistoryHunter> selectByThree(Map<String, Object> map);
 
+    List<XslAllHistoryHunter> selectByThreenew(Map<String, Object> map);
     List<XslHunterhistoryDefault> selectBydefault(Integer userId);
     Integer getXslHunterCount(Map<String, Object> map);
 

@@ -4,12 +4,16 @@ import java.text.ParseException;
 
 public interface TaskTopush {
     /**
-     * 种类
-     *
+     * 任务种类
      * @return
      */
     String taskClassied();
 
+    /**
+     * 标签种类
+     *
+     * @return
+     */
     String tagClassied();
 
     /**

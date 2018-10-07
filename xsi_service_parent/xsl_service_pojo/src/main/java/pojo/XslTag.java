@@ -11,6 +11,8 @@ public class XslTag {
 
     private Date createdate;
 
+    private Boolean state;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +43,14 @@ public class XslTag {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

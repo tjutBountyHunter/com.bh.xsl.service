@@ -9,6 +9,7 @@ public class XslWaitTask {
     private BigDecimal money;
     private String createDate;
     private String deadline;
+    private String url;
 
     public String getName() {
         return name;
@@ -56,5 +57,13 @@ public class XslWaitTask {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

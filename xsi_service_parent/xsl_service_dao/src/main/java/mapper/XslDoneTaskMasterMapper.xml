@@ -8,17 +8,21 @@
 	    xsl_task.descr,
 	    xsl_task.money,
 	    xsl_task.createDate,
-	    xsl_task.deadline
+	    xsl_task.deadline,
+	    xsl_file.url
       FROM
 	    xsl_user,
 	    xsl_task,
-	    xsl_task_category
+	    xsl_task_category,
+	    xsl_file
       WHERE
 	    xsl_user.id = #{userId,jdbcType=INTEGER}
       AND
         xsl_task.sendId = xsl_user.id
       AND
         xsl_task_category.id = xsl_task.cid
+      AND
+        xsl_file.userId=xsl_user.id
       AND
         xsl_task.state=3
     </select>

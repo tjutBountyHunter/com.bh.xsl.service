@@ -1,13 +1,35 @@
 package service;
 
+import pojo.XslWaitTask;
+
+import java.util.List;
+
 public interface TaskStatefind {
+    /**
+     * 已经发送人任务
+     *
+     * @param usrId
+     * @return
+     */
+    XslResult sendTask(Integer usrId, Integer page, Integer rows);
+
+    /**
+     * 已接受任务
+     *
+     * @param usrId
+     * @param page
+     * @param rows
+     * @return
+     */
+    XslResult accectTask(Integer usrId, Integer page, Integer rows);
+
     /**
      * 雇主发送的未完成任务
      *
      * @param userId
      * @return
      */
-    String waitAccomplish(Integer userId);
+    List<XslWaitTask> waitAccomplish(Integer userId);
 
     /**
      * 用户作为猎人接受的未完成任务
@@ -15,7 +37,7 @@ public interface TaskStatefind {
      * @param userId
      * @return
      */
-    String waitHunterAccomplish(Integer userId);
+    List<XslWaitTask> waitHunterAccomplish(Integer userId);
 
     /**
      * 总的未完成成任务
@@ -25,7 +47,7 @@ public interface TaskStatefind {
      * @param rows
      * @return
      */
-    String coutWaitTask(Integer userId, Integer page, Integer rows);
+    XslResult coutWaitTask(Integer userId, Integer page, Integer rows);
 
     /**
      * 用户作为猎人完成任务
@@ -33,7 +55,7 @@ public interface TaskStatefind {
      * @param userId
      * @return
      */
-    String doneTaskHunter(Integer userId);
+    List<XslWaitTask> doneTaskHunter(Integer userId);
 
     /**
      * 用户作为雇主发送任务完成
@@ -41,7 +63,7 @@ public interface TaskStatefind {
      * @param userId
      * @return
      */
-    String doneTaskMaster(Integer userId);
+    List<XslWaitTask> doneTaskMaster(Integer userId);
 
     /**
      * 总的完成任务
@@ -51,5 +73,5 @@ public interface TaskStatefind {
      * @param rows
      * @return
      */
-    String coutDoneTask(Integer userId, Integer page, Integer rows);
+    XslResult coutDoneTask(Integer userId, Integer page, Integer rows);
 }

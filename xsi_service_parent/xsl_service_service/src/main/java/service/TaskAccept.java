@@ -9,7 +9,7 @@ public interface TaskAccept {
 
     XslResult decidedTask(Integer hunterId, String taskId);
 
-    String oldTime(String json);
+    String oldTime(Integer hunterId, String taskId);
 
-    Date timeDate();
+    String timeDate();
 }

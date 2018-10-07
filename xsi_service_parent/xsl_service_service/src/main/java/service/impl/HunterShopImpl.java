@@ -31,9 +31,7 @@ public class HunterShopImpl implements HunterShop {
      */
     @Override
     public XslResult hunterShop(Integer rows, Integer userId, Integer hunterId) {
-        if (hunterId == null) {
-            hunterId = 0;
-        }
+
         List<String> list_Tag = new ArrayList<>();
         Map<String, Object> map = new HashMap<>(3);
         Map<String, Object> map1 = new HashMap<>(3);
@@ -41,17 +39,28 @@ public class HunterShopImpl implements HunterShop {
         map.put("userId", userId);
         map.put("hunterId", hunterId);
         try {
-            List<XslAllHistoryHunter> list = xslHunterShopMapper.selectByThree(map);
+            List<XslAllHistoryHunter> list = new ArrayList<>();
+            if (hunterId == null) {
+                hunterId = 0;
+                list = xslHunterShopMapper.selectByThree(map);
+            } else {
+                list = xslHunterShopMapper.selectByThreenew(map);
+            }
             for (int i = 0; i < list.size(); i++) {
                 List<String> listTag = xslHunterShopMapper.selectHotTag(list.get(0).getId());
                 String json = JsonUtils.objectToJson(listTag);
                 list_Tag.add(json);
             }
-            hunterId = list.get(list.size() - 1).getId();
-            map1.put("hunterId", hunterId);
-            map1.put("xslAllHistoryHunter", list);
-            map1.put("list_Tag", list_Tag);
-            return XslResult.ok(map1);
+            if (list.size() == 0 && list.isEmpty()) {
+                return XslResult.ok("您还有历史猎人，请去发布任务");
+            } else {
+                hunterId = list.get(list.size() - 1).getId();
+                map1.put("hunterId", hunterId);
+                map1.put("xslAllHistoryHunter", list);
+                map1.put("list_Tag", list_Tag);
+                return XslResult.ok(map1);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器错误");
@@ -111,6 +120,9 @@ public class HunterShopImpl implements HunterShop {
     public XslResult historyDefault(Integer useId) {
         try {
             List<XslHunterhistoryDefault> list = xslHunterShopMapper.selectBydefault(useId);
+            if (list.size() == 0 && list.isEmpty()) {
+                return XslResult.ok("您还有历史猎人，请去发布任务");
+            }
             return XslResult.ok(list);
         } catch (Exception e) {
             e.printStackTrace();

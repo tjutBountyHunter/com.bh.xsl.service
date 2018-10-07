@@ -8,12 +8,14 @@
         xsl_task.descr,
         xsl_task.money,
         xsl_task.createDate,
-        xsl_task.deadline
+        xsl_task.deadline,
+        xsl_file.url
         FROM
         xsl_user,
         xsl_task_category,
         xsl_task,
-        xsl_historyh
+        xsl_historyh,
+        xsl_file
         WHERE
         	xsl_historyh.hunterId = ANY (
 		SELECT
@@ -23,9 +25,12 @@
 		WHERE
 			xsl_user.id = #{userId,jdbcType=INTEGER}
 	    )
+	    AND xsl_user.id=xsl_file.userId
         AND xsl_historyh.userId = xsl_user.id
         AND xsl_task.id = xsl_historyh.taskId
         AND xsl_task_category.id = xsl_task.cid
-        AND xsl_task.state!=(3)
+        AND xsl_task.state!=3
+        AND xsl_task.state!= -1
+        AND xsl_task.state!= -2
     </select>
 </mapper>

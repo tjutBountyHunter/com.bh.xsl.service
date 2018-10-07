@@ -3,17 +3,37 @@
 <mapper namespace="mapper.XslHunterShopMapper">
     <select id="selectByThree" resultType="pojo.XslAllHistoryHunter">
         select
-        xsl_hunter.id,xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr,xsl_historyh.createDate
+        xsl_hunter.id,xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr,xsl_historyh.createDate,xsl_file.url
         from
         xsl_user,
         xsl_hunter,
-        xsl_historyh
+        xsl_historyh,
+        xsl_file
         <where>
             xsl_historyh.hunterId = xsl_hunter.id
             and xsl_historyh.userId = #{userId}
             and xsl_historyh.hunterId = xsl_user.hunterId
+            and xsl_file.userId=xsl_user.id
             and
-            xsl_hunter.id>#{hunterId} ORDER BY xsl_hunter.id desc limit 0,#{rows}
+            xsl_hunter.id>0
+            ORDER BY xsl_hunter.id desc limit 0,#{rows}
+        </where>
+    </select>
+    <select id="selectByThreenew" resultType="pojo.XslAllHistoryHunter">
+        select
+        xsl_hunter.id,xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr,xsl_historyh.createDate,xsl_file.url
+        from
+        xsl_user,
+        xsl_hunter,
+        xsl_historyh,
+        xsl_file
+        <where>
+            xsl_historyh.hunterId = xsl_hunter.id
+            and xsl_historyh.userId = #{userId}
+            and xsl_historyh.hunterId = xsl_user.hunterId
+            and xsl_file.userId=xsl_user.id
+            and
+            #{hunterId}>xsl_hunter.id ORDER BY xsl_hunter.id desc limit 0,#{rows}
         </where>
     </select>
     <select id="getXslHunterCount" resultType="java.lang.Integer">
@@ -27,42 +47,37 @@
         xsl_user. name,
         xsl_hunter.credit,
         xsl_hunter.descr,
-        xsl_historyh.createDate
+        xsl_historyh.createDate,
+        xsl_file.url
         from
         xsl_user,
         xsl_hunter,
-        xsl_historyh
+        xsl_historyh,
+        xsl_file
         <where>
             xsl_historyh.hunterId = xsl_hunter.id
             and xsl_historyh.userId = #{userId}
             and xsl_historyh.hunterId = xsl_user.hunterId
-            and
-            xsl_hunter.id>0 ORDER BY xsl_hunter.id desc limit 0,3
+            and xsl_file.userId=xsl_user.id
+            and xsl_hunter.id>0 ORDER BY xsl_hunter.id desc limit 0,3
         </where>
     </select>
     <select id="selectByHot" resultType="pojo.XslHotHisory">
-          SELECT
-	        xsl_user.name,
-	        xsl_hunter.id
-          FROM
-	        xsl_hunter,xsl_user
-          WHERE
-            xsl_user.hunterId=xsl_hunter.id
--- 	        xsl_hunter.id >= (
--- 		  SELECT
--- 			  floor(
--- 				  RAND() * (
--- 					  SELECT
--- 					      MAX(xsl_hunter.id)
--- 					  FROM
--- 						  xsl_hunter
--- 				  )
--- 			  )
--- 	      )
-          ORDER BY
-            RAND()
--- 	        xsl_hunter.id
-            LIMIT #{rows}
+      SELECT
+	      xsl_user. NAME,
+	      xsl_hunter.id,
+	      xsl_file.url
+      FROM
+	      xsl_hunter,
+	      xsl_user,
+	      xsl_file
+      WHERE
+	      xsl_user.hunterId = xsl_hunter.id
+      AND
+	      xsl_file.userId=xsl_user.id
+      ORDER BY
+	      RAND()
+          LIMIT #{rows}
     </select>
     <select id="selectHotTag" resultType="String">
         SELECT
@@ -80,12 +95,13 @@ xsl_tag.id=xsl_hunter_tag.tagId
     </select>
     <select id="selectByhunterId" resultType="pojo.XslOneHunter">
         select
-        xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr
+        xsl_user.name,xsl_hunter.`level`,xsl_hunter.taskAccNum,xsl_hunter.taskFailNum,xsl_hunter.credit,xsl_hunter.descr,xsl_file.url
         from
-        xsl_user,xsl_hunter
+        xsl_user,xsl_hunter,xsl_file
         <where>
             xsl_user.hunterId = xsl_hunter.id
             and xsl_hunter.id= #{hunterId}
+            and xsl_file.userId=xsl_user.id
         </where>
     </select>
 </mapper>

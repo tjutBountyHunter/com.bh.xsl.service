@@ -1,6 +1,8 @@
 package pojo;
 
 public class XslHistoryHunter {
+    private Integer id;
+
     private String name;
 
     private String tag_name;
@@ -69,5 +71,13 @@ public class XslHistoryHunter {
 
     public void setLevel(Short level) {
         this.level = level;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

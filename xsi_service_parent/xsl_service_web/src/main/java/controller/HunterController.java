@@ -28,8 +28,6 @@ public class HunterController {
     @Autowired
     private HunterShop hunterShop;
     @Autowired
-    private XslHistoryHunterMap xslHistoryHunterMap;
-    @Autowired
     private Collect collectl;
 
     /**
@@ -51,23 +49,6 @@ public class HunterController {
         }
     }
 
-    /**
-     * 查看历史猎人
-     *
-     * @param userId
-     * @return
-     */
-    @RequestMapping("/history")
-    @ResponseBody
-    public XslResult histotyHunterShop(Integer userId, Integer pageno, Integer pagesize) {
-        try {
-            PageDataResult json = collectl.historyHunter(userId, pageno, pagesize);
-            return XslResult.build(200, "历史猎人信息分页查询成功", json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(400, "历史猎人信息分页信息查询失败");
-        }
-    }
 
     /**
      * 单击猎人
@@ -120,19 +101,18 @@ public class HunterController {
             return XslResult.build(500, "服务器异常");
         }
     }
-
     /**
-     * 查看收藏猎人
+     * 查找收藏猎人
      *
      * @param userId
      * @return
      */
-    @RequestMapping("/findcollecth")
+    @RequestMapping("/findcollecthunter")
     @ResponseBody
-    public XslResult collectHunter(int userId, int pageo, int rows) {
+    public XslResult findCollectTask(Integer userId, Integer page, Integer rows) {
         try {
-            PageDataResult<XslHistoryHunter> masterlevelPage = collectl.findCollectHunter(userId, pageo, rows);
-            return XslResult.ok(masterlevelPage);
+            XslResult xslResult = collectl.findcollectThunter(userId, page, rows);
+            return xslResult;
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");

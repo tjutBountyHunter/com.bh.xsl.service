@@ -6,6 +6,7 @@ public class XslHunterhistoryDefault {
     private Integer credit;
     private String descr;
     private String createdate;
+    private String url;
 
     public String getName() {
         return name;
@@ -45,5 +46,13 @@ public class XslHunterhistoryDefault {
 
     public void setHunterid(int id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

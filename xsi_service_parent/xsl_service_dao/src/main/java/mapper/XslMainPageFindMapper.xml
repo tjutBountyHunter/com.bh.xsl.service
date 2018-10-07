@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.XslMainPageFindMapper">
+    <select id="selectByuserId" resultType="pojo.XslMainPageMessage" parameterType="java.lang.Integer">
+        SELECT
+	xsl_user.`name`,
+	xsl_user.sex,
+	xsl_hunter.`level` 'hunter_level',
+	xsl_master.`level` 'master_level',
+	xsl_file.url,
+	xsl_user.signature
+FROM
+	xsl_user,
+	xsl_file,
+	xsl_hunter,
+	xsl_master
+WHERE
+  xsl_user.id=#{userId} AND
+xsl_user.id=xsl_hunter.userId
+AND
+xsl_user.id=xsl_master.userId
+AND
+xsl_file.userId=xsl_user.id
+    </select>
+</mapper>
