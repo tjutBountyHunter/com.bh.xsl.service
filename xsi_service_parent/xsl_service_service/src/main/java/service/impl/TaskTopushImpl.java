@@ -55,8 +55,24 @@ public class TaskTopushImpl implements TaskTopush {
      */
     @Override
     public String tagClassied() {
-        List<String> list = xslTaskClassMapper.selectByXslTaskCategory(new XslTaskCategory());
-        return JsonUtils.objectToJson(list);
+        List<String> list = xslTaskClassMapper.selectByXslTagCategory(new XslTag());
+        Random rd = new Random();
+        List<String> list_tag = new ArrayList<>(6);
+        int sum = list.size();
+        int r = 0;
+        int random = rd.nextInt(sum);
+        for (int i = random; i < sum; i++) {
+            if (i == (sum - 1)) {
+                i = 0;
+            }
+            if (r <= 5) {
+                list_tag.add(list.get(i));
+                r++;
+            } else {
+                break;
+            }
+        }
+        return JsonUtils.objectToJson(list_tag);
     }
 
     /**
@@ -166,11 +182,10 @@ public class TaskTopushImpl implements TaskTopush {
      */
     public XslResult changeFormat(List<XslTaskPosh> masterlevelPage, Integer userId, List<String> tag_List) {
         try {
-            Map<String, Object> map = new HashMap<>(2);
-            map.put("userId", userId);
-            map.put("findPage", masterlevelPage);
-            map.put("tag_List", tag_List);
-            return XslResult.ok(map);
+            for (int i = 0; i < masterlevelPage.size(); i++) {
+                masterlevelPage.get(i).setTag_name(tag_List.get(i));
+            }
+            return XslResult.ok(masterlevelPage);
         } catch (Exception e) {
             return XslResult.build(500, "服务器异常");
         }

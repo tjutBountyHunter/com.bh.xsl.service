@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mapper.XslTaskClassMapper">
-    <resultMap id="BaseResultMap" type="pojo.XslTaskCategory">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="parentId" property="parentid" jdbcType="INTEGER"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="taskNum" property="tasknum" jdbcType="INTEGER"/>
-        <result column="okNum" property="oknum" jdbcType="INTEGER"/>
-        <result column="failNum" property="failnum" jdbcType="VARCHAR"/>
-        <result column="createDate" property="createdate" jdbcType="DATE"/>
-    </resultMap>
-    <select id="selectByXslTaskCategory" resultType="String" parameterType="pojo.XslTaskCategory">
+
+    <select id="selectByXslTagCategory" resultType="java.lang.String" parameterType="pojo.XslTag">
          select
            name
         from
-           xsl_task_category
+           xsl_tag
     </select>
     <select id="selectByTaskName" resultType="java.lang.Integer" parameterType="java.lang.String">
         select

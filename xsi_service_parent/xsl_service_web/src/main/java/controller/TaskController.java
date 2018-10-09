@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.*;
 
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -215,7 +216,26 @@ public class TaskController {
         XslResult xslResult = supplementDataService.SupplementTagWrite(json);
         return xslResult;
     }
-//    @RequestMapping("/donetask")
-////    @ResponseBody
-////    public
+
+    /**
+     * 任务大厅
+     *
+     * @param flagid
+     * @param type
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/pageQueryC")
+    @ResponseBody
+    public XslResult findTask(Integer flagid, Integer type, Integer rows) {
+        XslResult xslResult = null;
+        try {
+            xslResult = taskTopush.searchPage(flagid, type, rows);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
+        return xslResult;
+    }
+
 }

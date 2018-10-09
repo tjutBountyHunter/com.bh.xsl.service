@@ -25,12 +25,6 @@ public class UserviceImpl implements UserService {
     @Autowired
     private ImageSave imageSave;
     @Autowired
-    private XslCodeMapper xslCodeMapper;
-    @Autowired
-    private XslTokenMapper xslTokenMapper;
-    @Autowired
-    private XslTokenFindMapper xslTokenFindMapper;
-    @Autowired
     private XslFileMapper xslFileMapper;
     @Autowired
     private XslMajorMessageMapper xslMajorMessageMapper;
@@ -192,11 +186,21 @@ public class UserviceImpl implements UserService {
         XslUserExample.Criteria criteria = example.createCriteria();
         criteria.andPhoneEqualTo(phone);
         List<XslUser> list = xslUserMapper.selectByExample(example);
+
+        XslFileExample xslFileExample = new XslFileExample();
+        XslFileExample.Criteria criteria1 = xslFileExample.createCriteria();
+        int id = list.get(0).getId();
+        System.out.println(id);
+        criteria1.andUseridEqualTo(id);
+        System.out.println("!!!!!!!!!!!!!!");
+        List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
         //没有此用户
         if (list.isEmpty() && list.size() == 0) {
             return XslResult.build(400, "用户名或密码错误");
         }
+        String json = xslFileList.get(0).getUrl();
         XslUser user = list.get(0);
+        user.setUrl(json);
         if (user.getState() == 1 || user.getState() == 0) {
             //校验密码
             if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
@@ -237,9 +241,10 @@ public class UserviceImpl implements UserService {
     @Override
     public XslResult checkData(String content) {
         //用户校检
-        boolean b = content.matches("^[1][3578]\\d{9}");
+        boolean b = content.matches("^[1][35678]\\d{9}");
+        System.out.println(b);
         if (b) {
-            return XslResult.ok();
+            return XslResult.ok(b);
         } else {
             return XslResult.build(400,"手机格式错误");
         }
@@ -268,8 +273,9 @@ public class UserviceImpl implements UserService {
      */
     @Override
     public XslResult sendMessageCode(String phone) {
-        String message;
+        String message = null;
         boolean bool = (boolean) checkData(phone).getData();
+        System.out.println(bool);
         if (bool != true) {
             message = "手机号码填写错误,请检查手机号码格式是否正确";
             return XslResult.build(400, JsonUtils.objectToJson(message));

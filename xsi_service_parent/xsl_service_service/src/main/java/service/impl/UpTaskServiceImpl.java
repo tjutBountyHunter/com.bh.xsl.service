@@ -58,8 +58,8 @@ public class UpTaskServiceImpl implements UpTaskService {
 
     @Override
     public XslResult UpuseTask(String json) {
+        System.out.println(json);
         try {
-            json = new String(json.getBytes("iso-8859-1"), "utf-8");
             XslResult xslResult = null;
             xslResult = supplementDataService.SupplementTaskData(json);
             return xslResult;

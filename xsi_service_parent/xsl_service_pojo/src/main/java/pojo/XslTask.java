@@ -1,5 +1,7 @@
 package pojo;
 
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -98,13 +100,7 @@ public class XslTask {
         this.updatedate = updatedate;
     }
 
-    public Date getDeadline() {
-        return deadline;
-    }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
-    }
 
     public Integer getNumber() {
         return number;
@@ -112,5 +108,13 @@ public class XslTask {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 }

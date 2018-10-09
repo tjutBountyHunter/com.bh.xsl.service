@@ -17,7 +17,7 @@ public class XslMaster {
 
     private Short credit;
 
-    private String desc;
+    private String descr;
 
     private Date lastaccdate;
 
@@ -77,13 +77,6 @@ public class XslMaster {
         this.credit = credit;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
-    }
 
     public Date getLastaccdate() {
         return lastaccdate;
@@ -91,5 +84,13 @@ public class XslMaster {
 
     public void setLastaccdate(Date lastaccdate) {
         this.lastaccdate = lastaccdate;
+    }
+
+    public String getDescr() {
+        return descr;
+    }
+
+    public void setDescr(String descr) {
+        this.descr = descr;
     }
 }

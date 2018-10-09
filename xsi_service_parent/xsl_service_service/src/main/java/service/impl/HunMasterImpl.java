@@ -49,7 +49,7 @@ public class HunMasterImpl implements HunMaster {
         xslMaster.setCredit((short) 100);
         xslMaster.setEmpirical(0);
         xslMaster.setLastaccdate(new Date());
-        xslMaster.setDesc("");
+        xslMaster.setDescr("");
         xslHunterMapper.insert(xslHunter);
         xslMasterMapper.insert(xslMaster);
         XslHunterExample xslHunterExample = new XslHunterExample();

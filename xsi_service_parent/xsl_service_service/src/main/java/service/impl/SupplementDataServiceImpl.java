@@ -36,16 +36,19 @@ public class SupplementDataServiceImpl implements SupplementDataService {
      */
     @Override
     public XslResult SupplementTaskData(String json) {
-        XslDateTask xslDateTask = JsonUtils.jsonToPojo(json, XslDateTask.class);
+        System.out.println(json);
         try {
+            System.out.println(json);
+            XslDateTask xslDateTask = JsonUtils.jsonToPojo(json, XslDateTask.class);
             XslTask xslTask = new XslTask();
+            xslDateTask.setCategoryname("二手交易");
             xslTask.setCid(xslDateTaskMapperr.getCidByName(xslDateTask.getCategoryname()));
-            System.out.println(xslDateTaskMapperr.getCidByName(xslDateTask.getCategoryname()));
             xslTask.setSendid(xslDateTask.getSendId());
             xslTask.setTaskid(UuidTaskId.getUUID());
             xslTask.setDescr(xslDateTask.getDescr());
             xslTask.setMoney(xslDateTask.getMoney());
             xslTask.setState((byte) 0);
+            xslTask.setNumber(0);
             xslTask.setCreatedate(new Date());
             xslTask.setUpdatedate(new Date());
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,7 +56,7 @@ public class SupplementDataServiceImpl implements SupplementDataService {
             xslTask.setDeadline(dateTime);
             searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
             searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
-            xslTaskMapper.insertSelective(xslTask);
+            xslTaskMapper.insert(xslTask);
             XslTaskExample xslTaskExample = new XslTaskExample();
             XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
             criteria.andTaskidEqualTo(xslTask.getTaskid());
@@ -73,7 +76,6 @@ public class SupplementDataServiceImpl implements SupplementDataService {
     @Override
     public XslResult SupplementCategoryData(String json) {
         try {
-            json = new String(json.getBytes("iso-8859-1"), "utf-8");
             XslTaskCategoryExample xslTaskCategoryExample = new XslTaskCategoryExample();
             XslTaskCategoryExample.Criteria criteria = xslTaskCategoryExample.createCriteria();
             criteria.andNameEqualTo(json);
@@ -113,10 +115,10 @@ public class SupplementDataServiceImpl implements SupplementDataService {
                 XslTagExample xslTagExample = new XslTagExample();
                 XslTagExample.Criteria criteria = xslTagExample.createCriteria();
                 String json_taglist = commenderList.get(i);
+                SupplementTagWrite(commenderList.get(i));
                 System.out.println(commenderList.get(i));
                 criteria.andNameEqualTo(commenderList.get(i));
                 List<XslTag> list_Tag = xslTagMapper.selectByExample(xslTagExample);
-                System.out.println(list_Tag.get(0).getName());
                 xslTaskTag.setCreatedate(new Date());
                 xslTaskTag.setTagid(list_Tag.get(0).getId());
                 xslTaskTag.setTaskid(taskId);
@@ -141,7 +143,6 @@ public class SupplementDataServiceImpl implements SupplementDataService {
             XslTag xslTag = new XslTag();
             XslTagExample xslTagExample = new XslTagExample();
             XslTagExample.Criteria criteria = xslTagExample.createCriteria();
-            json = new String(json.getBytes("iso-8859-1"), "utf-8");
             criteria.andNameEqualTo(json);
             List<XslTag> list = xslTagMapper.selectByExample(xslTagExample);
             if (list.size() == 0 & list.isEmpty()) {

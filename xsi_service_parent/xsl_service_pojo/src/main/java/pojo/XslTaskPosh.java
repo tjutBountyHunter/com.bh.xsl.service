@@ -66,16 +66,7 @@ public class XslTaskPosh {
     }
 
     public void setDeadline(String deadline) {
-        deadline = deadline.substring(0, deadline.indexOf("."));
-        DateFormat format4 = new SimpleDateFormat("yyyy-MM-dd kk:mm");
-        System.out.println(deadline);
-        String dead = null;
-        try {
-            dead = format4.format(DateFormat.getDateInstance().parse(deadline));
-            this.deadline = dead;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.deadline = deadline;
     }
 
     public String getTaskId() {
@@ -116,5 +107,13 @@ public class XslTaskPosh {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTag_name() {
+        return tag_name;
+    }
+
+    public void setTag_name(String tag_name) {
+        this.tag_name = tag_name;
     }
 }
