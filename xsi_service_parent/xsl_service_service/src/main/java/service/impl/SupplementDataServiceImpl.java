@@ -1,13 +1,18 @@
 package service.impl;
 
 import mapper.*;
+import org.python.core.Py;
+import org.python.core.PyByteArray;
+import org.python.core.PySystemState;
+import org.python.util.PythonInterpreter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.*;
 
-import javax.xml.bind.util.JAXBSource;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -36,12 +41,12 @@ public class SupplementDataServiceImpl implements SupplementDataService {
      */
     @Override
     public XslResult SupplementTaskData(String json) {
-        System.out.println(json);
+        XslResult xslResult = null;
         try {
             System.out.println(json);
+
             XslDateTask xslDateTask = JsonUtils.jsonToPojo(json, XslDateTask.class);
             XslTask xslTask = new XslTask();
-            xslDateTask.setCategoryname("二手交易");
             xslTask.setCid(xslDateTaskMapperr.getCidByName(xslDateTask.getCategoryname()));
             xslTask.setSendid(xslDateTask.getSendId());
             xslTask.setTaskid(UuidTaskId.getUUID());
@@ -54,15 +59,60 @@ public class SupplementDataServiceImpl implements SupplementDataService {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date dateTime = formatter.parse(xslDateTask.getDeadline());
             xslTask.setDeadline(dateTime);
-            searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
-            searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
-            xslTaskMapper.insert(xslTask);
-            XslTaskExample xslTaskExample = new XslTaskExample();
-            XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
-            criteria.andTaskidEqualTo(xslTask.getTaskid());
-            List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
-            XslResult xslResult = SupplementTaskTagData(json, list.get(0).getId());
-            return xslResult;
+            Map<String, String> map = new HashMap<>(1);
+            map.put("sentence", xslDateTask.getDescr());
+            String wordFind = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
+            XslResultOk xslResultWord = XslResultOk.format(wordFind);
+            List<String> data = (List<String>) xslResultWord.getData();
+            if (data == null || data.size() == 0) {
+                searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
+                searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
+                xslTaskMapper.insert(xslTask);
+                XslTaskExample xslTaskExample = new XslTaskExample();
+                XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
+                criteria.andTaskidEqualTo(xslTask.getTaskid());
+                List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
+                xslResult = SupplementTaskTagData(json, list.get(0).getId());
+                return xslResult;
+            } else {
+                return XslResult.build(400, "有违规词组出现");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
+    }
+
+    public XslResult wordFind(String descr) {
+        try {
+            PythonInterpreter interpreter = new PythonInterpreter();
+            PySystemState sys = Py.getSystemState();
+//            E:\ID-workspeace\xsi_service_parent\xsl_service_common\src\main\
+            sys.path.add("/home/ftp/www/images/jieba-master-1/build/lib");
+            sys.path.add("/home/ftp/www/images/jieba-master-1/build/lib/jieba");
+            FileInputStream filepy = new FileInputStream("/home/ftp/www/images/jieba-master-1/demo/demo2.py");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            interpreter.setOut(baos);
+            String str = descr;
+            str = str.replace("&", "");
+            str = str.replace("*", "");
+            str = str.replace("$", "");
+            str = str.replace("%", "");
+            byte[] bytes = str.getBytes();
+            interpreter.exec("text=" + new PyByteArray(bytes));
+            interpreter.execfile(filepy);
+            ByteArrayInputStream swapStream = new ByteArrayInputStream(baos.toByteArray());
+            BufferedReader in = new BufferedReader(new InputStreamReader(swapStream));
+            String line;
+            List<String> list = new ArrayList<String>(10);
+            while ((line = in.readLine()) != null) {
+                String[] strArray = line.split(" ");
+                list.add(strArray[0]);
+                if (strArray[1].equals("nz")) {
+                    return XslResult.build(400, "有违规词组出现");
+                }
+            }
+            return XslResult.ok();
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
@@ -124,7 +174,7 @@ public class SupplementDataServiceImpl implements SupplementDataService {
                 xslTaskTag.setTaskid(taskId);
                 xslTaskTagMapper.insert(xslTaskTag);
             }
-            return XslResult.ok("发送任务成功");
+            return XslResult.ok(taskId);
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");

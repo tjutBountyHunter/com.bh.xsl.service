@@ -1,6 +1,11 @@
 com\test\IATask.class
 controller\UserController.class
+controller\PaymentController.class
+controller\ViewTaskStateController.class
+controller\MainPage.class
+controller\ShowCategoryController.class
 controller\SearchDubbo.class
 controller\TaskController.class
 controller\HunterController.class
 com\test\ATask.class
+controller\QrcodeController.class

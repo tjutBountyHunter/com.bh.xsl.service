@@ -1,14 +1,18 @@
 package pojo;
 
 public class XslUserRegister {
-    private String phone;
+    private int hunterid;
     private String password;
+    private int id;
+    private int masterid;
+    private String phone;
     private String name;
     private String sex;
-    private String school;
+    private String schoolinfo;
     private String college;
     private String major;
-    private String sno;
+    private String schoolNumber;
+    private String token;
 
     public String getPhone() {
         return phone;
@@ -16,14 +20,6 @@ public class XslUserRegister {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -42,13 +38,6 @@ public class XslUserRegister {
         this.sex = sex;
     }
 
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
-    }
 
     public String getCollege() {
         return college;
@@ -66,11 +55,60 @@ public class XslUserRegister {
         this.major = major;
     }
 
-    public String getSno() {
-        return sno;
+
+    public String getToken() {
+        return token;
     }
 
-    public void setSno(String sno) {
-        this.sno = sno;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getSchoolinfo() {
+        return schoolinfo;
+    }
+
+    public void setSchoolinfo(String schoolinfo) {
+        this.schoolinfo = schoolinfo;
+    }
+
+    public String getSchoolNumber() {
+        return schoolNumber;
+    }
+
+    public void setSchoolNumber(String schoolNumber) {
+        this.schoolNumber = schoolNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getMasterid() {
+        return masterid;
+    }
+
+    public void setMasterid(int masterid) {
+        this.masterid = masterid;
+    }
+
+    public int getHunterid() {
+        return hunterid;
+    }
+
+    public void setHunterid(int hunterid) {
+        this.hunterid = hunterid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

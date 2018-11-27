@@ -263,6 +263,66 @@ public class XslOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andSendidIsNull() {
+            addCriterion("sendId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidIsNotNull() {
+            addCriterion("sendId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidEqualTo(Integer value) {
+            addCriterion("sendId =", value, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidNotEqualTo(Integer value) {
+            addCriterion("sendId <>", value, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidGreaterThan(Integer value) {
+            addCriterion("sendId >", value, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sendId >=", value, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidLessThan(Integer value) {
+            addCriterion("sendId <", value, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidLessThanOrEqualTo(Integer value) {
+            addCriterion("sendId <=", value, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidIn(List<Integer> values) {
+            addCriterion("sendId in", values, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidNotIn(List<Integer> values) {
+            addCriterion("sendId not in", values, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidBetween(Integer value1, Integer value2) {
+            addCriterion("sendId between", value1, value2, "sendid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendidNotBetween(Integer value1, Integer value2) {
+            addCriterion("sendId not between", value1, value2, "sendid");
+            return (Criteria) this;
+        }
+
         public Criteria andTaskidIsNull() {
             addCriterion("taskId is null");
             return (Criteria) this;

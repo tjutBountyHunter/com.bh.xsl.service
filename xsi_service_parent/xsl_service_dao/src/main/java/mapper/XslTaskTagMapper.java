@@ -28,4 +28,8 @@ public interface XslTaskTagMapper {
     int updateByPrimaryKeySelective(XslTaskTag record);
 
     int updateByPrimaryKey(XslTaskTag record);
+
+    List<XslTaskTag> getTagsByTaskId(Integer task_id);
+
+    List<XslTaskTag> getTasksByTag(Integer tag_id);
 }

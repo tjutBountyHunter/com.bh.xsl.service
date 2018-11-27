@@ -1,17 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mapper.XslTagMapper">
     <resultMap id="BaseResultMap" type="pojo.XslTag">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="useNum" jdbcType="SMALLINT" property="usenum"/>
-        <result column="createDate" jdbcType="DATE" property="createdate"/>
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="useNum" property="usenum" jdbcType="SMALLINT"/>
+        <result column="createDate" property="createdate" jdbcType="DATE"/>
+        <result column="state" property="state" jdbcType="BIT"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
                 <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
                         <foreach collection="criteria.criteria" item="criterion">
                             <choose>
                                 <when test="criterion.noValue">
@@ -25,7 +26,7 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
                                              separator=",">
                                         #{listItem}
                                     </foreach>
@@ -41,7 +42,7 @@
         <where>
             <foreach collection="example.oredCriteria" item="criteria" separator="or">
                 <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
                         <foreach collection="criteria.criteria" item="criterion">
                             <choose>
                                 <when test="criterion.noValue">
@@ -55,7 +56,7 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
                                              separator=",">
                                         #{listItem}
                                     </foreach>
@@ -68,9 +69,9 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, name, useNum, createDate
+    id, name, useNum, createDate, state
   </sql>
-    <select id="selectByExample" parameterType="pojo.XslTagExample" resultMap="BaseResultMap">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTagExample">
         select
         <if test="distinct">
             distinct
@@ -84,7 +85,7 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from xsl_tag
@@ -102,9 +103,9 @@
     </delete>
     <insert id="insert" parameterType="pojo.XslTag">
     insert into xsl_tag (id, name, useNum, 
-      createDate)
+      createDate, state)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{usenum,jdbcType=SMALLINT}, 
-      #{createdate,jdbcType=DATE})
+      #{createdate,jdbcType=DATE}, #{state,jdbcType=BIT})
   </insert>
     <insert id="insertSelective" parameterType="pojo.XslTag">
         insert into xsl_tag
@@ -121,6 +122,9 @@
             <if test="createdate != null">
                 createDate,
             </if>
+            <if test="state != null">
+                state,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -134,6 +138,9 @@
             </if>
             <if test="createdate != null">
                 #{createdate,jdbcType=DATE},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=BIT},
             </if>
         </trim>
     </insert>
@@ -158,6 +165,9 @@
             <if test="record.createdate != null">
                 createDate = #{record.createdate,jdbcType=DATE},
             </if>
+            <if test="record.state != null">
+                state = #{record.state,jdbcType=BIT},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -168,7 +178,8 @@
         set id = #{record.id,jdbcType=INTEGER},
         name = #{record.name,jdbcType=VARCHAR},
         useNum = #{record.usenum,jdbcType=SMALLINT},
-        createDate = #{record.createdate,jdbcType=DATE}
+        createDate = #{record.createdate,jdbcType=DATE},
+        state = #{record.state,jdbcType=BIT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -185,6 +196,9 @@
             <if test="createdate != null">
                 createDate = #{createdate,jdbcType=DATE},
             </if>
+            <if test="state != null">
+                state = #{state,jdbcType=BIT},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -192,8 +206,8 @@
     update xsl_tag
     set name = #{name,jdbcType=VARCHAR},
       useNum = #{usenum,jdbcType=SMALLINT},
-      createDate = #{createdate,jdbcType=DATE}
+      createDate = #{createdate,jdbcType=DATE},
+      state = #{state,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 </mapper>

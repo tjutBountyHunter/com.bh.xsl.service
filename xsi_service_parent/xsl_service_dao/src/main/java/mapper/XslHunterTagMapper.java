@@ -28,4 +28,9 @@ public interface XslHunterTagMapper {
     int updateByPrimaryKeySelective(XslHunterTag record);
 
     int updateByPrimaryKey(XslHunterTag record);
+
+    List<XslHunterTag> getHuntersByTag(Integer task_id);
+
+    List<XslHunterTag> getTagsByHunter(Integer hunter_id);
+
 }

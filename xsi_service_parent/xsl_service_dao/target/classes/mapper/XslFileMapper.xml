@@ -5,7 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="userId" property="userid" jdbcType="INTEGER"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
-        <result column="desc" property="desc" jdbcType="VARCHAR"/>
+        <result column="descr" property="descr" jdbcType="VARCHAR"/>
         <result column="createDate" property="createdate" jdbcType="DATE"/>
         <result column="updateDate" property="updatedate" jdbcType="DATE"/>
     </resultMap>
@@ -70,7 +70,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, userId, url, desc, createDate, updateDate
+    id, userId, url, descr, createDate, updateDate
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslFileExample">
         select
@@ -104,10 +104,10 @@
     </delete>
     <insert id="insert" parameterType="pojo.XslFile">
     insert into xsl_file (id, userId, url, 
-      desc, createDate, updateDate
+      descr, createDate, updateDate
       )
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
-      #{desc,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{updatedate,jdbcType=DATE}
+      #{descr,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{updatedate,jdbcType=DATE}
       )
   </insert>
     <insert id="insertSelective" parameterType="pojo.XslFile">
@@ -122,8 +122,8 @@
             <if test="url != null">
                 url,
             </if>
-            <if test="desc != null">
-                desc,
+            <if test="descr != null">
+                descr,
             </if>
             <if test="createdate != null">
                 createDate,
@@ -142,7 +142,7 @@
             <if test="url != null">
                 #{url,jdbcType=VARCHAR},
             </if>
-            <if test="desc != null">
+            <if test="descr != null">
                 #{desc,jdbcType=VARCHAR},
             </if>
             <if test="createdate != null">
@@ -172,7 +172,7 @@
                 url = #{record.url,jdbcType=VARCHAR},
             </if>
             <if test="record.desc != null">
-                desc = #{record.desc,jdbcType=VARCHAR},
+                descr = #{record.descr,jdbcType=VARCHAR},
             </if>
             <if test="record.createdate != null">
                 createDate = #{record.createdate,jdbcType=DATE},
@@ -190,7 +190,7 @@
         set id = #{record.id,jdbcType=INTEGER},
         userId = #{record.userid,jdbcType=INTEGER},
         url = #{record.url,jdbcType=VARCHAR},
-        desc = #{record.desc,jdbcType=VARCHAR},
+        descr = #{record.descr,jdbcType=VARCHAR},
         createDate = #{record.createdate,jdbcType=DATE},
         updateDate = #{record.updatedate,jdbcType=DATE}
         <if test="_parameter != null">
@@ -206,8 +206,8 @@
             <if test="url != null">
                 url = #{url,jdbcType=VARCHAR},
             </if>
-            <if test="desc != null">
-                desc = #{desc,jdbcType=VARCHAR},
+            <if test="descr != null">
+                descr = #{descr,jdbcType=VARCHAR},
             </if>
             <if test="createdate != null">
                 createDate = #{createdate,jdbcType=DATE},
@@ -222,7 +222,7 @@
     update xsl_file
     set userId = #{userid,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      descr = #{descr,jdbcType=VARCHAR},
       createDate = #{createdate,jdbcType=DATE},
       updateDate = #{updatedate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}

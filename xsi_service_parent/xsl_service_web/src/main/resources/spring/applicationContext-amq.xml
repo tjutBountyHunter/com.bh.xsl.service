@@ -47,4 +47,17 @@
     <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
         <constructor-arg value="Authoritytopic"/>
     </bean>
+
+    <!--这个是队列目的地，点对点的 提供订单金额-->
+    <bean id="orderPay" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>orderPay</value>
+        </constructor-arg>
+    </bean>
+    <!--资金流出-->
+    <bean id="orderOut" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>orderOut</value>
+        </constructor-arg>
+    </bean>
 </beans>

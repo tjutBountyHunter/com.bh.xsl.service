@@ -32,5 +32,7 @@ public interface TaskTopush {
      * @return
      * @throws ParseException
      */
-    XslResult searchPage(Integer flagid, Integer type, Integer rows) throws ParseException;
+    XslResult searchPage(Integer flagid, Integer type, int rows) throws ParseException;
+
+//    XslResult sendTask();
 }

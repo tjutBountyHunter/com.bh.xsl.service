@@ -1,6 +1,7 @@
 package pojo;
 
 
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public class SearchResult implements Serializable {
 
     private long recordCount;
     private int totalPages;
-    private List<SearchItem> itemList;
-    private List<SearchHunter> hunterList;
+    private List<ItemTransfer> itemList;
+    private List<HunterTransfer> hunterList;
 
     public long getRecordCount() {
         return recordCount;
@@ -27,19 +28,19 @@ public class SearchResult implements Serializable {
         this.totalPages = totalPages;
     }
 
-    public List<SearchItem> getItemList() {
+    public List<ItemTransfer> getItemList() {
         return itemList;
     }
 
-    public void setItemList(List<SearchItem> itemList) {
+    public void setItemList(List<ItemTransfer> itemList) {
         this.itemList = itemList;
     }
 
-    public List<SearchHunter> getHunterList() {
+    public List<HunterTransfer> getHunterList() {
         return hunterList;
     }
 
-    public void setHunterList(List<SearchHunter> hunterList) {
+    public void setHunterList(List<HunterTransfer> hunterList) {
         this.hunterList = hunterList;
     }
 }

@@ -3,6 +3,7 @@ package service.impl;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import dao.JedisClient;
 import mapper.*;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static service.ImageFile.fileName;
 
 @Service
 public class UserviceImpl implements UserService {
@@ -40,24 +43,59 @@ public class UserviceImpl implements UserService {
     private XslUserUpdateMapper xslUserUpdateMapper;
     @Autowired
     private JedisClient jedisClient;
+
+    org.slf4j.Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
+
     @Value("${REDIS_USER_SESSION_KEY}")
     private String REDIS_USER_SESSION_KEY;
     @Value("${REDIS_USER_SESSION_CODE_KEY}")
     private String REDIS_USER_SESSION_CODE_KEY;
+    @Value("${REDIS_USER_SESSION_PASSWORD}")
+    private String REDIS_USER_SESSION_PASSWORD;
     @Value("${Login_SESSION_EXPIRE}")
     private Integer Login_SESSION_EXPIRE;
     @Value("${Login_SESSION_EXPIRE_CODE}")
     private Integer Login_SESSION_EXPIRE_CODE;
+    @Value("${Login_SESSION_EXPIRE_PASSWORD}")
+    private Integer Login_SESSION_EXPIRE_PASSWORD;
     //注册
     @Override
     public XslResult createUser(String all) {
-        XslUserRegister xslUserRegister = JsonUtils.jsonToPojo(all, XslUserRegister.class);
-        XslResult schoolId = createUserSchool(xslUserRegister);
-        XslResult xslResult = createUseruser(xslUserRegister, (Integer) schoolId.getData());
-        Map<String, Integer> map = hunMaster.insertPeople((Integer) xslResult.getData());
-        map.put("id", (Integer) xslResult.getData());
-        xslUserUpdateMapper.updateXslUser(map);
-        return xslResult;
+
+
+        try {
+
+            all = new String(all.getBytes("iso-8859-1"), "utf-8");
+            XslUserRegister xslUserRegister = JsonUtils.jsonToPojo(all, XslUserRegister.class);
+//            XslUserExample example = new XslUserExample();
+//            XslUserExample.Criteria criteria = example.createCriteria();
+//            criteria.andPhoneEqualTo(xslUserRegister.getPhone());
+//            List<XslUser> list = xslUserMapper.selectByExample(example);
+//            if(list.size()!=0&&!list.equals("")){
+//                return XslResult.build(400,"该手机号已经注册过");
+//            }
+            System.out.println(xslUserRegister.getSex());
+            XslResult schoolId = createUserSchool(xslUserRegister);
+            XslResult xslResult = createUseruser(xslUserRegister, (Integer) schoolId.getData());
+            Map<String, Integer> map = hunMaster.insertPeople((Integer) xslResult.getData());
+            jedisClient.set(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken());
+            //设置session过期时间
+            jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), Login_SESSION_EXPIRE);
+            XslResult xsl = defaultFileImage(xslUserRegister.getPhone());
+            map.put("id", (Integer) xslResult.getData());
+            System.out.println(map.get("id") + " 51651");
+            xslUserUpdateMapper.updateXslUser(map);
+            XslUserExample example1 = new XslUserExample();
+            XslUserExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andPhoneEqualTo(xslUserRegister.getPhone());
+            List<XslUser> list1 = xslUserMapper.selectByExample(example1);
+            XslUser xslUser = list1.get(0);
+            xslUser.setUrl((String) xsl.getData());
+            return XslResult.ok(xslUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
     }
 
     /**
@@ -73,6 +111,31 @@ public class UserviceImpl implements UserService {
         return xslResult;
     }
 
+    public XslResult defaultFileImage(String phone) {
+        XslUserExample xslUserExample = new XslUserExample();
+        XslUserExample.Criteria criteria = xslUserExample.createCriteria();
+        criteria.andPhoneEqualTo(phone);
+        XslFile xslFile = new XslFile();
+        List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
+        if (list.size() == 0 && list.isEmpty()) {
+            return XslResult.build(400, "用户不存在");
+        } else {
+            XslUser xslUser = list.get(0);
+
+            xslFile.setDesc("学生证");
+            xslFile.setUserid(xslUser.getId());
+            xslFile.setUpdatedate(new Date());
+            xslFile.setCreatedate(new Date());
+            xslFile.setUrl(fileName());
+            try {
+                xslFileMapper.insertSelective(xslFile);
+                return XslResult.ok(xslFile.getUrl());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return XslResult.build(500, "服务器异常");
+            }
+        }
+    }
     public XslResult createFileTool(MultipartFile uploadFile, String phone) {
         XslUserExample xslUserExample = new XslUserExample();
         XslUserExample.Criteria criteria = xslUserExample.createCriteria();
@@ -89,7 +152,11 @@ public class UserviceImpl implements UserService {
             xslFile.setCreatedate(new Date());
             Map<String, Object> map = new HashMap<>();
             map = imageSave.uploadPicture(uploadFile);
-            xslFile.setUrl((String) map.get("url"));
+            if ((int) map.get("error") == 1) {
+                return XslResult.build(400, (String) map.get("message"));
+            } else {
+                xslFile.setUrl((String) map.get("url"));
+            }
             try {
                 xslFileMapper.insert(xslFile);
                 return XslResult.ok(xslFile.getUrl());
@@ -112,7 +179,7 @@ public class UserviceImpl implements UserService {
         XslUser xslUser = new XslUser();
         xslUser.setPhone(xslUserRegister.getPhone());
         xslUser.setSchoolinfo(schoolId);
-        xslUser.setPassword(xslUserRegister.getPassword());
+        xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
         xslUser.setName(xslUserRegister.getName());
         xslUser.setSex(xslUserRegister.getSex());
         xslUser.setUpdatedate(new Date());
@@ -142,35 +209,26 @@ public class UserviceImpl implements UserService {
         XslSchoolinfo xslSchoolinfo = new XslSchoolinfo();
         xslSchoolinfo.setDegree((byte) 2);
         xslSchoolinfo.setSchoolhours((byte) 4);
-        xslSchoolinfo.setSno(xslUserRegister.getSno());
-        xslSchoolinfo.setSchool(xslUserRegister.getSchool());
+        xslSchoolinfo.setSno(xslUserRegister.getSchoolNumber());
+        System.out.println(xslUserRegister.getSchoolNumber());
+        xslSchoolinfo.setSchool(xslUserRegister.getSchoolinfo());
+        System.out.println(xslUserRegister.getSchoolinfo());
         xslSchoolinfo.setCollege(xslUserRegister.getCollege());
+        System.out.println(xslUserRegister.getCollege());
         xslSchoolinfo.setMajor(xslUserRegister.getMajor());
         xslSchoolinfo.setStartdate(new Date());
         try {
-            xslSchoollinfoMapper.insert(xslSchoolinfo);
-            return XslResult.ok(xslSchoolinfo.getId());
+            xslSchoollinfoMapper.insertSelective(xslSchoolinfo);
+            XslSchoolinfoExample xslSchoolinfoExample = new XslSchoolinfoExample();
+            XslSchoolinfoExample.Criteria criteria = xslSchoolinfoExample.createCriteria();
+            criteria.andSnoEqualTo(xslUserRegister.getSchoolNumber());
+            List<XslSchoolinfo> list = xslSchoollinfoMapper.selectByExample(xslSchoolinfoExample);
+            return XslResult.ok(list.get(0).getId());
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
         }
     }
-
-    /**
-     * 下一步
-     *
-     * @param json
-     * @param code
-     * @return
-     */
-    @Override
-    public XslResult nextStep(String json, String code) {
-        XslResult xslResult = null;
-        XslnextStep xslnextStep = JsonUtils.jsonToPojo(json, XslnextStep.class);
-        xslResult = checkcode(xslnextStep.getPhone(), code);
-        return xslResult;
-    }
-
     /**
      * 登录
      *
@@ -181,6 +239,7 @@ public class UserviceImpl implements UserService {
     @Override
     public XslResult userLogin(String phone, String password, String token,
                                HttpServletRequest request, HttpServletResponse response) {
+
         System.out.println(phone);
         XslUserExample example = new XslUserExample();
         XslUserExample.Criteria criteria = example.createCriteria();
@@ -192,26 +251,33 @@ public class UserviceImpl implements UserService {
         int id = list.get(0).getId();
         System.out.println(id);
         criteria1.andUseridEqualTo(id);
-        System.out.println("!!!!!!!!!!!!!!");
         List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
         //没有此用户
         if (list.isEmpty() && list.size() == 0) {
             return XslResult.build(400, "用户名或密码错误");
         }
-        String json = xslFileList.get(0).getUrl();
+        String json = null;
+        if (xslFileList.size() == 0 && xslFileList.isEmpty()) {
+            json = "http://47.93.200.190/images/default.png";
+        } else {
+            json = xslFileList.get(0).getUrl();
+        }
         XslUser user = list.get(0);
         user.setUrl(json);
         if (user.getState() == 1 || user.getState() == 0) {
             //校验密码
             if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
                 System.out.println(DigestUtils.md5DigestAsHex(password.getBytes()));
+                logger.info("login password is {}", !DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword()));
                 return XslResult.build(400, "用户名或密码错误");
             }
             jedisClient.set(REDIS_USER_SESSION_KEY + ":" +user.getPhone(),token);
             //设置session过期时间
             jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), Login_SESSION_EXPIRE);
+            logger.info("login return message is {}", JsonUtils.objectToJson(user));
             return XslResult.ok(JsonUtils.objectToJson(user));
         } else {
+            logger.info("login check status is {}", user.getState());
             return XslResult.build(400, "审核未通过");
         }
 
@@ -274,9 +340,8 @@ public class UserviceImpl implements UserService {
     @Override
     public XslResult sendMessageCode(String phone) {
         String message = null;
-        boolean bool = (boolean) checkData(phone).getData();
-        System.out.println(bool);
-        if (bool != true) {
+        int bool = checkData(phone).getStatus();
+        if (bool != 200) {
             message = "手机号码填写错误,请检查手机号码格式是否正确";
             return XslResult.build(400, JsonUtils.objectToJson(message));
         } else {
@@ -292,21 +357,31 @@ public class UserviceImpl implements UserService {
     }
 
     /**
-     * 短信验证码验证
+     * 下一步
      *
      * @param phone
      * @return
      */
     @Override
-    public XslResult checkcode(String phone, String code) {
+    public XslResult checkcode(String phone, String code, String password) {
+        System.out.println(code);
+        jedisClient.set(REDIS_USER_SESSION_PASSWORD + ":" + phone, password);
+        jedisClient.expire(REDIS_USER_SESSION_PASSWORD + ":" + phone, Login_SESSION_EXPIRE_PASSWORD);
         String num = null;
         num = jedisClient.get(REDIS_USER_SESSION_CODE_KEY + ":" + phone);
+        System.out.println(num);
         String message = null;
-        if (!code.equals(num)) {
-            message = "验证码错误";
-            return XslResult.build(400, message);
+        if (num == null) {
+            return XslResult.build(400, "您的验证码失效");
         } else {
-            return XslResult.ok(phone);
+            System.out.println(!code.equals(num));
+            if (!code.equals(num)) {
+                message = "验证码错误";
+                System.out.println(message);
+                return XslResult.build(400, message);
+            } else {
+                return XslResult.ok("验证成功");
+            }
         }
     }
 
@@ -351,8 +426,7 @@ public class UserviceImpl implements UserService {
     @Override
     public XslResult collegMessage(String school) {
         try {
-            String schoolJson = new String(school.getBytes("iso-8859-1"), "utf-8");
-            int schoolid = xslSchoolMessageMapper.selectBySchoolName(schoolJson);
+            int schoolid = xslSchoolMessageMapper.selectBySchoolName(school);
             List<String> list = xslCollegeMessageMapper.selectBySchoolId(schoolid);
             Map<String, Object> map = new HashMap<>();
             map.put("collegeMessage", JsonUtils.objectToJson(list));
@@ -373,9 +447,8 @@ public class UserviceImpl implements UserService {
     @Override
     public XslResult majorMessage(String college,Integer schoolId) {
         try {
-            String collegeJson = new String(college.getBytes("iso-8859-1"), "utf-8");
             Map<String, Object> map = new HashMap<>();
-            map.put("collegeName", collegeJson);
+            map.put("collegeName", college);
             map.put("schoolId", schoolId);
             System.out.println(map.get("collegeName"));
             int collegeid = xslCollegeMessageMapper.selectBycollegeName(map);

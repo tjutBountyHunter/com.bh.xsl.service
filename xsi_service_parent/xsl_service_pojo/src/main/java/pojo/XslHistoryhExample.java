@@ -322,7 +322,7 @@ public class XslHistoryhExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaskidEqualTo(Integer value) {
+        public Criteria andTaskidEqualTo(String value) {
             addCriterion("taskId =", value, "taskid");
             return (Criteria) this;
         }

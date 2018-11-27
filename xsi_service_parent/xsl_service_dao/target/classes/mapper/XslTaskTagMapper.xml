@@ -195,5 +195,21 @@
       createDate = #{createdate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <select id="getTagsByTaskId" resultType="pojo.XslTaskTag">
+        select
+          tagId
+        from
+          xsl_task_tag
+        where
+          taskId=#{task_id}
+    </select>
+    <select id="getTasksByTag" resultType="pojo.XslTaskTag">
+        select
+          taskId
+        from
+          xsl_task_tag
+        where
+          tagId=#{tag_id}
+    </select>
 
 </mapper>

@@ -62,6 +62,7 @@
             and xsl_hunter.id>0 ORDER BY xsl_hunter.id desc limit 0,3
         </where>
     </select>
+
     <select id="selectByHot" resultType="pojo.XslHotHisory">
       SELECT
 	      xsl_user. NAME,

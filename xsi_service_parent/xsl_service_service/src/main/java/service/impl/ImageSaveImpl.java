@@ -35,6 +35,12 @@ public class ImageSaveImpl implements ImageSave {
     public Map uploadPicture(MultipartFile uploadFile) {
         Map resultMap = new HashMap<>();
         try {
+            byte[] bs = uploadFile.getBytes();
+            if (bs.equals("")) {
+                resultMap.put("error", 1);
+                resultMap.put("message", "文件上传为空");
+                return resultMap;
+            }
             // 生成一个新的文件名
             // 取原始文件名
             String oldName = uploadFile.getOriginalFilename();

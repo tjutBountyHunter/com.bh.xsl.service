@@ -3,8 +3,8 @@ package service.impl;
 import com.xsl.search.export.SearchService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
-import pojo.SearchHunter;
-import pojo.SearchItem;
+import pojo.HunterTransfer;
+import pojo.ItemTransfer;
 import pojo.SearchResult;
 import service.*;
 
@@ -46,7 +46,7 @@ public class SerchDubboImpl implements SerchDubbo {
             keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
             SearchService searchService = xslDubboTools();
             SearchResult searchResult = searchService.search_item(keyword, page, rows, sort_type);
-            List<SearchItem> list = searchResult.getItemList();
+            List<ItemTransfer> list = searchResult.getItemList();
             if (list.size() == 0 && list.isEmpty()) {
                 return XslResult.ok("没有此任务类型");
             } else {
@@ -73,7 +73,7 @@ public class SerchDubboImpl implements SerchDubbo {
             keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
             SearchService searchService = xslDubboTools();
             SearchResult searchResult = searchService.search_hunter(keyword, page, rows, sort_type);
-            List<SearchHunter> list = searchResult.getHunterList();
+            List<HunterTransfer> list = searchResult.getHunterList();
             if (list.size() == 0 && list.isEmpty()) {
                 return XslResult.ok("没有达到您要求的猎人");
             } else {

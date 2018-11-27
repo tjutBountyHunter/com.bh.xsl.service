@@ -8,6 +8,8 @@ public class XslOrder {
 
     private String orderid;
 
+    private Integer sendid;
+
     private Integer taskid;
 
     private Integer receiveid;
@@ -34,6 +36,14 @@ public class XslOrder {
 
     public void setOrderid(String orderid) {
         this.orderid = orderid == null ? null : orderid.trim();
+    }
+
+    public Integer getSendid() {
+        return sendid;
+    }
+
+    public void setSendid(Integer sendid) {
+        this.sendid = sendid;
     }
 
     public Integer getTaskid() {

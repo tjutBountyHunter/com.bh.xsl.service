@@ -80,7 +80,7 @@
             distinct
         </if>
         <include refid="Base_Column_List"/>
-        from xsl_schoolinfo
+        from xsl_schoolInfo
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
@@ -105,15 +105,15 @@
         </if>
     </delete>
     <insert id="insert" parameterType="pojo.XslSchoolinfo">
-    insert into xsl_schoolinfo (id, sno, major, 
+    insert into xsl_schoolinfo (sno, major,
       college, school, startDate, 
       degree, schoolHours)
-    values (#{id,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
+    values ( #{sno,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR},
       #{college,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{startdate,jdbcType=VARCHAR}, 
       #{degree,jdbcType=TINYINT}, #{schoolhours,jdbcType=TINYINT})
   </insert>
     <insert id="insertSelective" parameterType="pojo.XslSchoolinfo">
-        insert into xsl_schoolinfo
+        insert into xsl_schoolInfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,

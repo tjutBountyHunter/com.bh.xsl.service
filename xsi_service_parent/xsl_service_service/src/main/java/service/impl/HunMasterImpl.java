@@ -40,7 +40,7 @@ public class HunMasterImpl implements HunMaster {
         xslHunter.setTaskfailnum(0);
         xslHunter.setEmpirical(0);
         xslHunter.setCredit((short) 100);
-        xslHunter.setLastaccdate(new Date());
+        xslHunter.setLastTime(new Date());
         xslHunter.setDescr("");
         xslMaster.setLevel((short) 1);
         xslMaster.setUserid(userId);
@@ -50,8 +50,8 @@ public class HunMasterImpl implements HunMaster {
         xslMaster.setEmpirical(0);
         xslMaster.setLastaccdate(new Date());
         xslMaster.setDescr("");
-        xslHunterMapper.insert(xslHunter);
-        xslMasterMapper.insert(xslMaster);
+        xslHunterMapper.insertSelective(xslHunter);
+        xslMasterMapper.insertSelective(xslMaster);
         XslHunterExample xslHunterExample = new XslHunterExample();
         XslHunterExample.Criteria criteria = xslHunterExample.createCriteria();
         criteria.andUseridEqualTo(userId);

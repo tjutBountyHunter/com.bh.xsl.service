@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="com.xsl.AppTest" time="0.005" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="com.xsl.AppTest" time="1.008" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2018.1.4"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="E:\电脑安装软件1\idea\IntelliJ IDEA 2018.1.4\jre64\bin"/>
     <property name="java.vm.version" value="25.152-b39"/>
     <property name="java.vm.vendor" value="JetBrains s.r.o"/>
-    <property name="maven.multiModuleProjectDirectory" value="E:\ID-workspeace\xsi_service_parent\xsl_service_service"/>
+    <property name="maven.multiModuleProjectDirectory" value="E:\ID-workspeace\xsi_service_parent"/>
     <property name="java.vendor.url" value="https://www.jetbrains.com/"/>
     <property name="path.separator" value=";"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -17,7 +17,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="E:\ID-workspeace\xsi_service_parent\xsl_service_service"/>
+    <property name="user.dir" value="E:\ID-workspeace\xsi_service_parent"/>
     <property name="java.runtime.version" value="1.8.0_152-release-1136-b39"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="E:\电脑安装软件1\idea\IntelliJ IDEA 2018.1.4\jre64\lib\endorsed"/>
@@ -30,7 +30,7 @@
     <property name="os.name" value="Windows 10"/>
     <property name="classworlds.conf" value="E:\Maven\apache-maven-3.3.9\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="GBK"/>
-    <property name="java.library.path" value="E:\电脑安装软件1\idea\IntelliJ IDEA 2018.1.4\jre64\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;E:\Java jdk\bin;E:\Java jdk\jre\bin;E:\Tomact_Install\apache-tomcat-8.0.52\lib;E:\Tomact_Install\apache-tomcat-8.0.52\bin;C:\WINDOWS\System32\OpenSSH\;C:\Users\ASUS\AppData\Local\Programs\Python\Python37;E:\Git_Install\Git\cmd;C:\Users\ASUS\AppData\Local\Microsoft\WindowsApps;C:\Users\ASUS\AppData\Local\atom\bin;."/>
+    <property name="java.library.path" value="E:\电脑安装软件1\idea\IntelliJ IDEA 2018.1.4\jre64\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;E:\Java jdk\bin;E:\Java jdk\jre\bin;E:\Tomact_Install\apache-tomcat-8.0.52\lib;E:\Tomact_Install\apache-tomcat-8.0.52\bin;C:\WINDOWS\System32\OpenSSH\;C:\Users\ASUS\AppData\Local\Programs\Python\Python37;E:\Git_Install\Git\cmd;E:\apache-maven-3.5.4\bin;E:\Apanpanda;E:\Apanpanda\Library\mingw-w64\bin;E:\Apanpanda\Library\usr\bin;E:\Apanpanda\Library\bin;E:\Apanpanda\Scripts;C:\Users\ASUS\AppData\Local\Microsoft\WindowsApps;C:\Users\ASUS\AppData\Local\atom\bin;E:\网络攻防\Nmap;E:\;SCode\Microsoft VS Code\bin;E:\DockerTools\Docker Toolbox;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -62,5 +62,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.xsl.AppTest" name="shouldAnswerWithTrue" time="0.005"/>
+  <testcase classname="com.xsl.AppTest" name="shouldAnswerWithTrue" time="1.008"/>
 </testsuite>

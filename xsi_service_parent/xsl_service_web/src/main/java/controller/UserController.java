@@ -41,20 +41,11 @@ public class UserController {
     }
 
     /**
-     * 下一步
-     *
-     * @param json
-     * @param code
+     * 图片
+     * @param uploadFile
+     * @param phone
      * @return
      */
-    @RequestMapping(value = "/neststep", method = RequestMethod.POST)
-    @ResponseBody
-    public XslResult neststep(@ProbeParam("json") String json, @ProbeParam("code") String code) {
-        XslResult xslResult = null;
-        xslResult = userService.nextStep(json, code);
-        return xslResult;
-    }
-
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     @ResponseBody
     public XslResult fileUp(@ProbeParam("uploadFile") MultipartFile uploadFile, @ProbeParam("phone") String phone) {
@@ -91,15 +82,15 @@ public class UserController {
     /**
      * 专业类别
      *
-     * @param majorName
+     * @param collegeName
      * @return
      */
     @RequestMapping("/majorClasses")
     @ResponseBody
-    public XslResult majorMessage(@ProbeParam("majorName") String majorName, @ProbeParam("schoolId") Integer schoolId) {
+    public XslResult majorMessage(@ProbeParam("collegeName") String collegeName, @ProbeParam("schoolId") Integer schoolId) {
         XslResult xslResult = null;
         try {
-            xslResult = userService.majorMessage(majorName, schoolId);
+            xslResult = userService.majorMessage(collegeName, schoolId);
             return xslResult;
         } catch (Exception e) {
             return XslResult.build(500, "服务器异常");
@@ -177,16 +168,17 @@ public class UserController {
     }
 
     /**
-     * 核对短信验证码
+     * 下一步
      *
      * @param phone
      * @param code
      * @return
      */
-    @RequestMapping(value = "/checkmessage", method = RequestMethod.GET)
+    @RequestMapping(value = "/checkmessage", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult checkMessage(@RequestParam("phone") String phone, @RequestParam("code") String code) {
-        XslResult xslResult = userService.checkcode(phone, code);
+    public XslResult checkMessage(@RequestParam("phone") String phone, @RequestParam("code") String code, @RequestParam("password") String password) {
+        System.out.println(phone);
+        XslResult xslResult = userService.checkcode(phone, code, password);
         return xslResult;
     }
 }

@@ -31,14 +31,6 @@ public interface UserService {
     XslResult createFile(MultipartFile uploadFile, String phone);
 
     /**
-     * 账号密码，验证码
-     *
-     * @param json
-     * @return
-     */
-    XslResult nextStep(String json, String code);
-
-    /**
      * 登录
      *
      * @param username
@@ -80,11 +72,11 @@ public interface UserService {
      */
     XslResult sendMessageCode(String phone);
     /**
-     * 短信验证码验证
+     * 下一步
      * @param phone
      * @return
      */
-    XslResult checkcode(String phone, String code);
+    XslResult checkcode(String phone, String code, String password);
 
     /**
      * 用户数据库表

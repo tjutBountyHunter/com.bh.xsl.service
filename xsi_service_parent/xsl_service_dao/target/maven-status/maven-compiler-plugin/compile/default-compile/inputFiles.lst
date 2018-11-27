@@ -1,3 +1,4 @@
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHuntershowMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslCollecthMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslUserMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslCodeMapper.java
@@ -20,9 +21,12 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslColl
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterShopMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterLevelRuleMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslSchoolMapper.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\IbmCommercialMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslCollegeMessageMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslDoneTaskMasterMapper.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\IbmUserMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTokenMapper.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslMainPageFindMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskUpdate.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskTagMapper.java
@@ -34,8 +38,10 @@ E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslColl
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslMasterLevelRuleMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslWaitHunterTaskMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskshowMapper.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\ViewTaskStateMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslTaskNumber.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslWaitTaskMapper.java
+E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslFileUrlMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslOrderMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslHunterLevelMapper.java
 E:\ID-workspeace\xsi_service_parent\xsl_service_dao\src\main\java\mapper\XslSchoolMessageMapper.java

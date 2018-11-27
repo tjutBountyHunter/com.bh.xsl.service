@@ -43,4 +43,8 @@ public class IdUtil {
         //return Long.parseLong(q);
         return 0;
     }
+
+    public static void main(String[] args) {
+        System.out.println(getId());
+    }
 }

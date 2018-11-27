@@ -3,10 +3,7 @@ package controller;
 import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import service.*;
 
 import java.text.ParseException;
@@ -30,7 +27,8 @@ public class TaskController {
     private UpTaskService upTaskService;
     @Autowired
     private SupplementDataService supplementDataService;
-
+    @Autowired
+    private TaskStatefind taskStatefind;
     /**
      * 任务分类
      *
@@ -48,6 +46,37 @@ public class TaskController {
         }
     }
 
+    /**
+     * 查看已发任务
+     *
+     * @param usrId
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/allaread")
+    @ResponseBody
+    public XslResult taskAllaread(Integer usrId, Integer page, Integer rows) {
+        XslResult xslResult = null;
+        xslResult = taskStatefind.sendTask(usrId, page, rows);
+        return xslResult;
+    }
+
+    /**
+     * 已接任务
+     *
+     * @param usrId
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/accectAll")
+    @ResponseBody
+    public XslResult taskaccectAll(Integer usrId, Integer page, Integer rows) {
+        XslResult xslResult = null;
+        xslResult = taskStatefind.accectTask(usrId, page, rows);
+        return xslResult;
+    }
     /**
      * 标签分类
      *
@@ -71,7 +100,7 @@ public class TaskController {
      */
     @RequestMapping("/push")
     @ResponseBody
-    public XslResult accertdata(@ProbeParam("userId") String json) {
+    public XslResult accertdata(@ProbeParam("json") String json) {
         try {
             XslResult xslResult = supplementDataService.SupplementTaskData(json);
             return xslResult;
@@ -197,7 +226,7 @@ public class TaskController {
      * @param json
      * @return
      */
-    @RequestMapping("/sendtask")
+    @RequestMapping(value = "/sendtask", method = RequestMethod.POST)
     @ResponseBody
     public XslResult sendTask(String json) {
         XslResult xslResult = upTaskService.UpuseTask(json);
@@ -227,7 +256,7 @@ public class TaskController {
      */
     @RequestMapping("/pageQueryC")
     @ResponseBody
-    public XslResult findTask(Integer flagid, Integer type, Integer rows) {
+    public XslResult findTask(Integer flagid, Integer type, int rows) {
         XslResult xslResult = null;
         try {
             xslResult = taskTopush.searchPage(flagid, type, rows);
@@ -235,6 +264,20 @@ public class TaskController {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
         }
+        return xslResult;
+    }
+
+    /**
+     * 猎人推优
+     *
+     * @param task_id
+     * @return
+     */
+    @RequestMapping("/hunterChange")
+    @ResponseBody
+    public XslResult hunterChange(int task_id) {
+        XslResult xslResult = null;
+        xslResult = upTaskService.hunterDire(task_id);
         return xslResult;
     }
 

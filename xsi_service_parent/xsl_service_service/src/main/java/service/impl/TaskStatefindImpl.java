@@ -3,15 +3,13 @@ package service.impl;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pojo.XslHistoryhExample;
-import pojo.XslWaitTask;
-import pojo.Xsltaskmainpage;
+import pojo.*;
 import service.JsonUtils;
 import service.TaskStatefind;
 import service.XslResult;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.jar.JarEntry;
 
 @Service
@@ -24,7 +22,12 @@ public class TaskStatefindImpl implements TaskStatefind {
     private XslDoneTaskMapper xslDoneTaskMapper;
     @Autowired
     private XslDoneTaskMasterMapper xslDoneTaskMasterMapper;
-
+    @Autowired
+    private XslHistoryhMapper xslHistoryhMapper;
+    @Autowired
+    private XslUserMapper xslUserMapper;
+    @Autowired
+    private XslFileMapper xslFileMapper;
     /**
      * 发送任务
      *
@@ -36,16 +39,41 @@ public class TaskStatefindImpl implements TaskStatefind {
     @Override
     public XslResult sendTask(Integer usrId, Integer page, Integer rows) {
         try {
+            XslAccectHunter xslAccectHunter = new XslAccectHunter();
             List<Xsltaskmainpage> list = xslWaitTaskMapper.selectBysendId(usrId);
             if (list.size() == 0 && list.isEmpty()) {
                 return XslResult.ok("您还没有发送任务");
             } else {
-                List<Xsltaskmainpage> list_size = new ArrayList<>();
-                for (int i = (page - 1) * rows; i < page * rows; i++) {
-                    if (list.get(i) == null) {
-                        break;
+                List<Map> list_size = new ArrayList<>();
+                int n = page * rows;
+                for (int i = page * rows - rows; i < n; i++) {
+                    if (list.size() < n) {
+                        n = list.size();
                     }
-                    list_size.add(list.get(i));
+                    if (list.get(i).getState() != 0) {
+                        XslHistoryhExample xslHistoryhExample = new XslHistoryhExample();
+                        XslHistoryhExample.Criteria criteria = xslHistoryhExample.createCriteria();
+                        criteria.andTaskidEqualTo(list.get(i).getTaskId());
+                        List<XslHistoryh> list1 = xslHistoryhMapper.selectByExample(xslHistoryhExample);
+                        XslUserExample example1 = new XslUserExample();
+                        XslUserExample.Criteria criteria1 = example1.createCriteria();
+                        criteria1.andIdEqualTo(list1.get(0).getHunterid());
+                        List<XslUser> list2 = xslUserMapper.selectByExample(example1);
+                        XslUser xslUser = list2.get(0);
+                        XslFileExample xslFileExample = new XslFileExample();
+                        XslFileExample.Criteria criteria2 = xslFileExample.createCriteria();
+                        criteria2.andUseridEqualTo(xslUser.getId());
+                        List<XslFile> list3 = xslFileMapper.selectByExample(xslFileExample);
+                        xslAccectHunter.setName(xslUser.getName());
+                        xslAccectHunter.setUrl(list3.get(0).getUrl());
+                        String s = String.valueOf(list1.get(0).getCreatedate());
+                        System.out.println(s);
+                        xslAccectHunter.setAccectDate(list1.get(0).getCreatedate());
+                    }
+                    Map<String, Object> map = new HashMap<String, Object>(2);
+                    map.put("Master", list.get(i));
+                    map.put("Hunter", xslAccectHunter);
+                    list_size.add(map);
                 }
                 return XslResult.ok(list_size);
             }
@@ -71,10 +99,10 @@ public class TaskStatefindImpl implements TaskStatefind {
                 return XslResult.ok("您还没有接收任务");
             } else {
                 List<Xsltaskmainpage> list_size = new ArrayList<>(1);
-                for (int i = (page - 1) * rows; i < page * rows; i++) {
-                    if (i >= list.size()) {
-                        System.out.println("!!!!!");
-                        break;
+                int n = page * rows;
+                for (int i = page * rows - rows; i < n; i++) {
+                    if (list.size() < n) {
+                        n = list.size();
                     }
                     list_size.add(list.get(i));
                 }

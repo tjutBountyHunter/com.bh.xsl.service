@@ -1,14 +1,16 @@
 package service.impl;
 
+import mapper.XslHunterMapper;
+import mapper.XslHunterShopMapper;
 import mapper.XslHuntershowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pojo.XslHunterExample;
 import pojo.XslOneHunter;
-import service.TaskTopush;
-import service.UpTaskService;
-import service.SupplementDataService;
-import service.XslResult;
+import service.*;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +22,12 @@ public class UpTaskServiceImpl implements UpTaskService {
     private SupplementDataService supplementDataService;
     @Autowired
     private TaskTopush taskTopush;
-
+    @Autowired
+    private HunterRecommend hunterRecommend;
     @Autowired
     private XslHuntershowMapper xslHuntershowMapper;
-
+    @Autowired
+    private XslHunterShopMapper xslHunterShopMapper;
     /**
      * 分页展示分类猎人
      *
@@ -56,10 +60,34 @@ public class UpTaskServiceImpl implements UpTaskService {
         }
     }
 
+    /**
+     * 猎人推优
+     *
+     * @param task_id
+     * @return
+     */
+    @Override
+    public XslResult hunterDire(int task_id) {
+        try {
+            int[] hunterid = hunterRecommend.recommend(task_id);
+            List<XslOneHunter> list = new ArrayList<>();
+            for (int i = 0; i < hunterid.length; i++) {
+                XslOneHunter xslOneHunter = new XslOneHunter();
+                Integer hunterId = hunterid[i];
+                xslOneHunter = xslHunterShopMapper.selectByhunterId(hunterId);
+                list.add(xslOneHunter);
+            }
+            return XslResult.ok(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return XslResult.build(500, "服务器异常");
+        }
+    }
+
     @Override
     public XslResult UpuseTask(String json) {
-        System.out.println(json);
         try {
+            System.out.println(json);
             XslResult xslResult = null;
             xslResult = supplementDataService.SupplementTaskData(json);
             return xslResult;
@@ -68,5 +96,4 @@ public class UpTaskServiceImpl implements UpTaskService {
             return XslResult.build(500, "服务器异常");
         }
     }
-
 }

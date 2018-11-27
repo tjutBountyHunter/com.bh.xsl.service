@@ -10,7 +10,7 @@
         <result column="taskFailNum" property="taskfailnum" jdbcType="INTEGER"/>
         <result column="credit" property="credit" jdbcType="SMALLINT"/>
         <result column="descr" property="descr" jdbcType="VARCHAR"/>
-        <result column="lastAccDate" property="lastaccdate" jdbcType="DATE"/>
+        <result column="lastTime" property="lastTime" jdbcType="DATE"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -73,7 +73,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, userId, level, empirical, taskAccNum, taskFailNum, credit, descr, lastAccDate
+    id, userId, level, empirical, taskAccNum, taskFailNum, credit, descr, lastTime
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslHunterExample">
         select
@@ -108,11 +108,11 @@
     <insert id="insert" parameterType="pojo.XslHunter">
     insert into xsl_hunter (id, userId, level,
       empirical, taskAccNum, taskFailNum,
-      credit, descr, lastAccDate
+      credit, descr, lastTime
       )
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{level,jdbcType=SMALLINT},
       #{empirical,jdbcType=INTEGER}, #{taskaccnum,jdbcType=INTEGER}, #{taskfailnum,jdbcType=INTEGER},
-      #{credit,jdbcType=SMALLINT}, #{descr,jdbcType=VARCHAR}, #{lastaccdate,jdbcType=DATE}
+      #{credit,jdbcType=SMALLINT}, #{descr,jdbcType=VARCHAR}, #{lastTime,jdbcType=DATE}
       )
   </insert>
     <insert id="insertSelective" parameterType="pojo.XslHunter">
@@ -142,8 +142,8 @@
             <if test="descr != null">
                 descr,
             </if>
-            <if test="lastaccdate != null">
-                lastAccDate,
+            <if test="lastTime != null">
+                lastTime,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -171,8 +171,8 @@
             <if test="descr != null">
                 #{descr,jdbcType=VARCHAR},
             </if>
-            <if test="lastaccdate != null">
-                #{lastaccdate,jdbcType=DATE},
+            <if test="lastTime != null">
+                #{lastTime,jdbcType=DATE},
             </if>
         </trim>
     </insert>
@@ -210,7 +210,7 @@
                 descr = #{record.descr,jdbcType=VARCHAR},
             </if>
             <if test="record.lastaccdate != null">
-                lastAccDate = #{record.lastaccdate,jdbcType=DATE},
+                lastTime = #{record.lastTime,jdbcType=DATE},
             </if>
         </set>
         <if test="_parameter != null">
@@ -227,7 +227,7 @@
         taskFailNum = #{record.taskfailnum,jdbcType=INTEGER},
         credit = #{record.credit,jdbcType=SMALLINT},
         descr = #{record.descr,jdbcType=VARCHAR},
-        lastAccDate = #{record.lastaccdate,jdbcType=DATE}
+        lastTime = #{record.lastTime,jdbcType=DATE}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -257,7 +257,7 @@
                 descr = #{descr,jdbcType=VARCHAR},
             </if>
             <if test="lastaccdate != null">
-                lastAccDate = #{lastaccdate,jdbcType=DATE},
+                lastTime = #{lastTime,jdbcType=DATE},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -271,7 +271,7 @@
       taskFailNum = #{taskfailnum,jdbcType=INTEGER},
       credit = #{credit,jdbcType=SMALLINT},
       descr = #{descr,jdbcType=VARCHAR},
-      lastAccDate = #{lastaccdate,jdbcType=DATE}
+      lastTime = #{lastTime,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

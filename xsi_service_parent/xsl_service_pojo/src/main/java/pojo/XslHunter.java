@@ -19,7 +19,7 @@ public class XslHunter {
 
     private String descr;
 
-    private Date lastaccdate;
+    private Date lastTime;
 
     public Integer getId() {
         return id;
@@ -85,11 +85,11 @@ public class XslHunter {
         this.descr = descr == null ? null : descr.trim();
     }
 
-    public Date getLastaccdate() {
-        return lastaccdate;
+    public Date getLastTime() {
+        return lastTime;
     }
 
-    public void setLastaccdate(Date lastaccdate) {
-        this.lastaccdate = lastaccdate;
+    public void setLastTime(Date lastTime) {
+        this.lastTime = lastTime;
     }
 }

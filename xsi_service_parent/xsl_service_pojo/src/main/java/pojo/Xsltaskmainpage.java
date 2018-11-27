@@ -3,30 +3,14 @@ package pojo;
 import java.math.BigDecimal;
 
 public class Xsltaskmainpage {
-    private String user_name;
-    private Integer id;
+    private String name;
+    private String taskId;
     private String deadline;
     private String descr;
     private String cate_name;
     private String url;
     private BigDecimal money;
     private Byte state;
-
-    public String getUser_name() {
-        return user_name;
-    }
-
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getDeadline() {
         return deadline;
@@ -42,14 +26,6 @@ public class Xsltaskmainpage {
 
     public void setDescr(String descr) {
         this.descr = descr;
-    }
-
-    public String getCate_name() {
-        return cate_name;
-    }
-
-    public void setCate_name(String cate_name) {
-        this.cate_name = cate_name;
     }
 
     public String getUrl() {
@@ -74,5 +50,21 @@ public class Xsltaskmainpage {
 
     public void setState(Byte state) {
         this.state = state;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

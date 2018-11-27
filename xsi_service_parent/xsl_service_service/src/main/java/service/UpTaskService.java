@@ -16,4 +16,12 @@ public interface UpTaskService {
      */
     XslResult UpCategoryHunter(String tagName, Integer type, Integer rows);
 
+    /**
+     * 猎人推优
+     *
+     * @param task_id
+     * @return
+     */
+    XslResult hunterDire(int task_id);
+
 }

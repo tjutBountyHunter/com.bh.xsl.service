@@ -28,8 +28,8 @@
     <select id="selectBysendId" parameterType="java.lang.Integer" resultType="pojo.Xsltaskmainpage">
         SELECT
 	     xsl_user. NAME,
-         xsl_task.id,
- xsl_task.deadline,
+         xsl_task.taskId,
+          xsl_task.deadline,
  xsl_task.descr,
  xsl_task.money,
  xsl_task.state,
@@ -52,7 +52,7 @@ xsl_task_category.id=xsl_task.cid
     <select id="selectByaccectId" parameterType="java.lang.Integer" resultType="pojo.Xsltaskmainpage">
      SELECT
 	xsl_user. NAME,
- xsl_task.id,
+ xsl_task.taskId,
  xsl_task.deadline,
  xsl_task.descr,
  xsl_task.money,
@@ -68,8 +68,7 @@ xsl_task_category,
 xsl_file
 WHERE
 xsl_hunter.userId=#{userId}
-AND
-xsl_hunter.id=xsl_historyh.hunterId
+AND xsl_hunter.userId=xsl_historyh.hunterId
 AND
 xsl_user.id=xsl_task.sendId
 AND

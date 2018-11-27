@@ -101,8 +101,9 @@ public class TaskTopushImpl implements TaskTopush {
      * @return
      */
     @Override
-    public XslResult searchPage(Integer flagid, Integer type, Integer rows) throws ParseException {
+    public XslResult searchPage(Integer flagid, Integer type, int rows) throws ParseException {
         try {
+            System.out.println(rows);
             Map<String, Object> map = new HashMap<>(2);
             map.put("flagid", flagid);
             map.put("rows", rows);
@@ -139,6 +140,7 @@ public class TaskTopushImpl implements TaskTopush {
             String data_string = masterlevelList.get(i).getCreatedate();
             List<String> tagList = xslTaskTagShopMapper.selectById(masterlevelList.get(i).getTaskId());
             String json = JsonUtils.objectToJson(tagList);
+            System.out.println(json);
             tag_list.add(json);
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -184,6 +186,7 @@ public class TaskTopushImpl implements TaskTopush {
         try {
             for (int i = 0; i < masterlevelPage.size(); i++) {
                 masterlevelPage.get(i).setTag_name(tag_List.get(i));
+                System.out.println(masterlevelPage.get(i).getDescr());
             }
             return XslResult.ok(masterlevelPage);
         } catch (Exception e) {

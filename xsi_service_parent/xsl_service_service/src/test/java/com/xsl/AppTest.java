@@ -1,7 +1,13 @@
 package com.xsl;
 
+import static com.icbc.api.IcbcConstants.PASSWORD;
+import static contentApi.appid_key.APIGW_PUBLIC_KEY;
+import static contentApi.appid_key.APP_ID;
 import static org.junit.Assert.assertTrue;
 
+import com.icbc.api.DefaultIcbcClient;
+import com.icbc.api.request.B2cOrderRejectQueryRequestV1;
+import com.icbc.api.response.B2cOrderRejectQueryResponseV1;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Test;
@@ -9,13 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pojo.XslDatetime;
 import pojo.XslTask;
 import pojo.XslTaskExample;
+import service.HttpClientUtil;
 import service.JsonUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.HashSet;
+import java.util.*;
 
 import org.junit.Test;
 //import org.slf4j.Logger;
@@ -28,6 +33,8 @@ import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
+import service.XslResult;
+import service.XslResultOk;
 
 
 /**
@@ -39,6 +46,11 @@ public class AppTest {
      */
     @Test
     public void shouldAnswerWithTrue() {
+        Map<String, String> map = new HashMap<>(1);
+        map.put("sentence", "代考车队");
+        String wordFind = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
+        XslResultOk xslResultWord = XslResultOk.format(wordFind);
+        System.out.print(xslResultWord);
         assertTrue(true);
     }
 //    private static final Logger LOGGER = LoggerFactory.getLogger(AppTest.class);
@@ -73,13 +85,12 @@ public static void main(String[] args) throws Exception {
     FTPClient ftpClient = new FTPClient();
     ftpClient.connect("47.93.200.190");
     ftpClient.login("myftpuse", "myftpuse");
-    FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\ASUS\\Desktop\\test.png"));
-    ftpClient.changeWorkingDirectory("/home/ftp/images");
+    FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\ASUS\\Desktop\\loli.png"));
+    ftpClient.changeWorkingDirectory("/home/ftp/www/images");
     ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-    ftpClient.storeFile("test1.png", inputStream);
+    ftpClient.storeFile("test4.png", inputStream);
     inputStream.close();
 
     ftpClient.logout();
 }
-
 }
