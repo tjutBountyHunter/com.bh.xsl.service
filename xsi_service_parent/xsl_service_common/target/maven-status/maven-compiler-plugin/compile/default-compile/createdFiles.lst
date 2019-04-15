@@ -1,6 +1,5 @@
 service\Message.class
 service\ImageFile.class
-contentApi\createImage.class
 contentApi\timeDay.class
 service\JsonUtils.class
 service\IbmResult.class
@@ -20,11 +19,9 @@ service\XslResultOk.class
 service\UuidTaskId.class
 contentApi\timeDate.class
 service\Md5Utils.class
-contentApi\appid_key.class
 contentApi\inetAddressIp.class
 service\Token.class
 service\RandomWriter.class
 service\TimeDemo$1.class
 service\FtpUtil.class
-contentApi\TwoDimensionCodeImage.class
 service\PageDataResult.class

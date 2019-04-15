@@ -2,6 +2,7 @@ pojo\XslMasterTag.class
 pojo\XslScoreExample$GeneratedCriteria.class
 pojo\XslHunterExample$Criteria.class
 pojo\XslMasterExample$GeneratedCriteria.class
+pojo\CartItem.class
 pojo\XslHunterLevelExample.class
 pojo\XslCollecthExample$Criteria.class
 pojo\XslHunterLevelRuleExample.class
@@ -65,6 +66,7 @@ pojo\XslMasterTagExample$GeneratedCriteria.class
 pojo\XslOrder.class
 pojo\XslTaskExample$Criteria.class
 pojo\XslCollegeExample.class
+pojo\ItemInfo.class
 classify\SchoolClassify.class
 pojo\XslDatetimeExample$GeneratedCriteria.class
 pojo\IbmCommercialExample$GeneratedCriteria.class
@@ -130,6 +132,7 @@ pojo\XslScore.class
 pojo\XslTokenExample$Criterion.class
 pojo\XslUserExample$Criteria.class
 pojo\XslCodeExample$Criteria.class
+pojo\Item.class
 pojo\XslCollecthExample.class
 pojo\XslcollectTask.class
 pojo\XslUserExample$Criterion.class

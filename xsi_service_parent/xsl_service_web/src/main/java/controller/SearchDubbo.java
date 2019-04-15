@@ -1,6 +1,7 @@
 package controller;
 
-import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +26,14 @@ public class SearchDubbo {
      */
     @RequestMapping("/searchitem")
     @ResponseBody
-    public XslResult searchDubbo_item(@ProbeParam("keyword") String keyword, @ProbeParam("page") int page, @ProbeParam("rows") int rows, @ProbeParam("sort_type") int sort_type) {
+    public XslResult searchDubbo_item(@Param("keyword") String keyword, @Param("page") int page, @Param("rows") int rows, @Param("sort_type") int sort_type) {
         XslResult xslResult = serchDubbo.searchDubbo_item(keyword, page, rows, sort_type);
         return xslResult;
     }
 
     @RequestMapping("/searchhunter")
     @ResponseBody
-    public XslResult searchDubbo_hunter(@ProbeParam("keyword") String keyword, @ProbeParam("page") int page, @ProbeParam("rows") int rows, @ProbeParam("sort_type") int sort_type) {
+    public XslResult searchDubbo_hunter(@Param("keyword") String keyword, @Param("page") int page, @Param("rows") int rows, @Param("sort_type") int sort_type) {
         XslResult xslResult = serchDubbo.searchDubbo_hunter(keyword, page, rows, sort_type);
         return xslResult;
     }

@@ -1,4 +1,3 @@
-service\impl\createQrcodeImpl.class
 service\impl\TaskStatefindImpl.class
 service\impl\HunterShopImpl.class
 service\impl\CollectImpl.class
@@ -17,14 +16,12 @@ service\PaymentService.class
 service\searchTaskMQ.class
 service\UpTaskService.class
 service\TaskAccept.class
-service\impl\OrederPayImpl.class
 service\impl\SerchDubboImpl.class
 service\OrederPay.class
 service\TaskStatefind.class
 service\impl\UserviceImpl.class
 dao\JedisClient.class
 service\impl\MainPageMessageImpl.class
-service\impl\PaymentServiceImpl.class
 service\ImageSave.class
 service\createQrcode.class
 service\MainPageMessage.class

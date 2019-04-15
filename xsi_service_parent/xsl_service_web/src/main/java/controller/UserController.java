@@ -1,7 +1,7 @@
 package controller;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class UserController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult register(@ProbeParam("all") String all) {
+    public XslResult register(@Param("all") String all) {
         XslResult xslResult = null;
         xslResult = userService.createUser(all);
         return xslResult;
@@ -48,7 +48,7 @@ public class UserController {
      */
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult fileUp(@ProbeParam("uploadFile") MultipartFile uploadFile, @ProbeParam("phone") String phone) {
+    public XslResult fileUp(@Param("uploadFile") MultipartFile uploadFile, @Param("phone") String phone) {
         XslResult xslResult = null;
         xslResult = userService.createFile(uploadFile, phone);
         return xslResult;
@@ -73,7 +73,7 @@ public class UserController {
      */
     @RequestMapping("/collegeClasses")
     @ResponseBody
-    public XslResult collegeMessage(@ProbeParam("schoolName") String schoolName) {
+    public XslResult collegeMessage(@Param("schoolName") String schoolName) {
         XslResult xslResult = null;
         xslResult = userService.collegMessage(schoolName);
         return xslResult;
@@ -87,7 +87,7 @@ public class UserController {
      */
     @RequestMapping("/majorClasses")
     @ResponseBody
-    public XslResult majorMessage(@ProbeParam("collegeName") String collegeName, @ProbeParam("schoolId") Integer schoolId) {
+    public XslResult majorMessage(@Param("collegeName") String collegeName, @Param("schoolId") Integer schoolId) {
         XslResult xslResult = null;
         try {
             xslResult = userService.majorMessage(collegeName, schoolId);
@@ -124,7 +124,7 @@ public class UserController {
      */
     @RequestMapping(value = "/token", method = RequestMethod.GET)
     @ResponseBody
-    public Object getUserByToken(@ProbeParam("token") String token, @ProbeParam("phone") String phone) {
+    public Object getUserByToken(@Param("token") String token, @Param("phone") String phone) {
         XslResult result = null;
         try {
             result = userService.getUserByToken(token,phone);

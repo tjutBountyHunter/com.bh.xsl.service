@@ -1,6 +1,6 @@
 package controller;
 
-import com.sun.org.glassfish.external.probe.provider.annotations.ProbeParam;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -100,7 +100,7 @@ public class TaskController {
      */
     @RequestMapping("/push")
     @ResponseBody
-    public XslResult accertdata(@ProbeParam("json") String json) {
+    public XslResult accertdata(@Param("json") String json) {
         try {
             XslResult xslResult = supplementDataService.SupplementTaskData(json);
             return xslResult;
@@ -118,7 +118,7 @@ public class TaskController {
      */
     @RequestMapping(value = "/accept", method = RequestMethod.GET)
     @ResponseBody
-    public XslResult acceptTask(@RequestParam("hunterId") int hunterId, @ProbeParam("taskId") String taskId) {
+    public XslResult acceptTask(@RequestParam("hunterId") int hunterId, @Param("taskId") String taskId) {
         XslResult xslResult = null;
         try {
             xslResult = taskAccept.acceptTask(hunterId, taskId);
@@ -137,7 +137,7 @@ public class TaskController {
      */
     @RequestMapping(value = "/decidedaccept", method = RequestMethod.GET)
     @ResponseBody
-    public XslResult decidedTask(@RequestParam("hunterId") int hunterId, @ProbeParam("taskId") String taskId) {
+    public XslResult decidedTask(@RequestParam("hunterId") int hunterId, @Param("taskId") String taskId) {
         XslResult xslResult = null;
         try {
             xslResult = taskAccept.decidedTask(hunterId, taskId);

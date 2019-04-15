@@ -12,13 +12,13 @@
     <artifactId>xsl_service_common</artifactId>
 
     <name>xsl_service_common</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <!--&lt;!&ndash; FIXME change it to the project's website &ndash;&gt;-->
+    <!--<url>http://www.example.com</url>-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -117,50 +117,50 @@
             <version>3.7.1</version>
         </dependency>
         <!--二维码生成组件-->
-        <dependency>
-            <groupId>or.core.qr</groupId>
-            <artifactId>qrcode</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>icbc.api.sdk.cop</groupId>
-            <artifactId>sdkcop</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>icbc.api.sdk.cop.io</groupId>
-            <artifactId>sdkcopio</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>icbc.api.sdk.cop.sources</groupId>
-            <artifactId>sdkcopsources</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>icbc.api.sdk.jar</groupId>
-            <artifactId>sdkcopjar</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>icbc.ca</groupId>
-            <artifactId>cajar</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javaicbc.sdk</groupId>
-            <artifactId>javaicbc</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javase.sdk</groupId>
-            <artifactId>javase</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>Zxing.code</groupId>
-            <artifactId>ZXing</artifactId>
-            <version>3.3.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>or.core.qr</groupId>-->
+            <!--<artifactId>qrcode</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>icbc.api.sdk.cop</groupId>-->
+            <!--<artifactId>sdkcop</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>icbc.api.sdk.cop.io</groupId>-->
+            <!--<artifactId>sdkcopio</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>icbc.api.sdk.cop.sources</groupId>-->
+            <!--<artifactId>sdkcopsources</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>icbc.api.sdk.jar</groupId>-->
+            <!--<artifactId>sdkcopjar</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>icbc.ca</groupId>-->
+            <!--<artifactId>cajar</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>javaicbc.sdk</groupId>-->
+            <!--<artifactId>javaicbc</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>javase.sdk</groupId>-->
+            <!--<artifactId>javase</artifactId>-->
+            <!--<version>3.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>Zxing.code</groupId>-->
+            <!--<artifactId>ZXing</artifactId>-->
+            <!--<version>3.3.1</version>-->
+        <!--</dependency>-->
     </dependencies>
 </project>
