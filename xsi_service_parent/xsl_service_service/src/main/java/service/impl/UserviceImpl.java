@@ -3,6 +3,7 @@ package service.impl;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import dao.JedisClient;
 import mapper.*;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,8 +45,6 @@ public class UserviceImpl implements UserService {
     @Autowired
     private JedisClient jedisClient;
 
-    org.slf4j.Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
-
     @Value("${REDIS_USER_SESSION_KEY}")
     private String REDIS_USER_SESSION_KEY;
     @Value("${REDIS_USER_SESSION_CODE_KEY}")
@@ -58,11 +57,12 @@ public class UserviceImpl implements UserService {
     private Integer Login_SESSION_EXPIRE_CODE;
     @Value("${Login_SESSION_EXPIRE_PASSWORD}")
     private Integer Login_SESSION_EXPIRE_PASSWORD;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
+
     //注册
     @Override
     public XslResult createUser(String all) {
-
-
         try {
 
             all = new String(all.getBytes("iso-8859-1"), "utf-8");
@@ -74,6 +74,8 @@ public class UserviceImpl implements UserService {
 //            if(list.size()!=0&&!list.equals("")){
 //                return XslResult.build(400,"该手机号已经注册过");
 //            }
+
+
             System.out.println(xslUserRegister.getSex());
             XslResult schoolId = createUserSchool(xslUserRegister);
             XslResult xslResult = createUseruser(xslUserRegister, (Integer) schoolId.getData());
