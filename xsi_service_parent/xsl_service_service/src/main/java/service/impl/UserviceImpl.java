@@ -12,15 +12,13 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.*;
 import service.*;
+import util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static service.ImageFile.fileName;
+import static util.ImageFile.fileName;
 
 @Service
 public class UserviceImpl implements UserService {
@@ -241,47 +239,58 @@ public class UserviceImpl implements UserService {
     @Override
     public XslResult userLogin(String phone, String password, String token,
                                HttpServletRequest request, HttpServletResponse response) {
-
-        System.out.println(phone);
+        //1.查询
         XslUserExample example = new XslUserExample();
         XslUserExample.Criteria criteria = example.createCriteria();
         criteria.andPhoneEqualTo(phone);
         List<XslUser> list = xslUserMapper.selectByExample(example);
 
-        XslFileExample xslFileExample = new XslFileExample();
-        XslFileExample.Criteria criteria1 = xslFileExample.createCriteria();
-        int id = list.get(0).getId();
-        System.out.println(id);
-        criteria1.andUseridEqualTo(id);
-        List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
-        //没有此用户
-        if (list.isEmpty() && list.size() == 0) {
-            return XslResult.build(400, "用户名或密码错误");
-        }
-        String json = null;
-        if (xslFileList.size() == 0 && xslFileList.isEmpty()) {
-            json = "http://47.93.200.190/images/default.png";
-        } else {
-            json = xslFileList.get(0).getUrl();
+        //2.判断用户是否存在
+        if(list == null || list.size() < 1){
+            return XslResult.build(403, "用户名或密码错误");
         }
         XslUser user = list.get(0);
-        user.setUrl(json);
-        if (user.getState() == 1 || user.getState() == 0) {
-            //校验密码
-            if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
-                System.out.println(DigestUtils.md5DigestAsHex(password.getBytes()));
-                logger.info("login password is {}", !DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword()));
-                return XslResult.build(400, "用户名或密码错误");
-            }
-            jedisClient.set(REDIS_USER_SESSION_KEY + ":" +user.getPhone(),token);
-            //设置session过期时间
-            jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), Login_SESSION_EXPIRE);
-            logger.info("login return message is {}", JsonUtils.objectToJson(user));
-            return XslResult.ok(JsonUtils.objectToJson(user));
-        } else {
-            logger.info("login check status is {}", user.getState());
-            return XslResult.build(400, "审核未通过");
+
+        //3.校验密码
+        if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
+            System.out.println(DigestUtils.md5DigestAsHex(password.getBytes()));
+            logger.info("password error");
+            return XslResult.build(400, "用户名或密码错误");
         }
+
+        //4.查询图片信息
+        int id = user.getId();
+        XslFileExample xslFileExample = new XslFileExample();
+        XslFileExample.Criteria criteria1 = xslFileExample.createCriteria();
+        criteria1.andUseridEqualTo(id);
+        List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
+        String imgUrl = "http://47.93.200.190/images/default.png";;
+        if (xslFileList != null && xslFileList.size() > 0) {
+            imgUrl = xslFileList.get(0).getUrl();
+        }
+        user.setUrl(imgUrl);
+
+        //5.判断用户异常状态
+        Byte state = user.getState();
+        if(state == -2){
+            logger.info("login check status is {}", user.getState());
+            return XslResult.build(403, "审核未通过");
+        }
+
+        if(state == -1){
+            logger.info("login check status is {}", user.getState());
+            return XslResult.build(403, "账户被冻结");
+        }
+
+        if(state == -3){
+            logger.info("login check status is {}", user.getState());
+            return XslResult.build(403, "账户已被删除");
+        }
+
+        jedisClient.set(REDIS_USER_SESSION_KEY + ":" +user.getPhone(), token);
+        jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), Login_SESSION_EXPIRE);
+        logger.info("login return message is {}", JsonUtils.objectToJson(user));
+        return XslResult.ok(JsonUtils.objectToJson(user));
 
     }
 
