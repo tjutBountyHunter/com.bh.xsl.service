@@ -128,6 +128,9 @@
             <if test="id != null">
                 id,
             </if>
+            <if test="userId != null">
+                userId,
+            </if>
             <if test="hunterid != null">
                 hunterId,
             </if>
@@ -169,14 +172,17 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
             <if test="hunterid != null">
-                #{hunterid,jdbcType=INTEGER},
+                #{hunterid,jdbcType=VARCHAR},
             </if>
             <if test="masterid != null">
-                #{masterid,jdbcType=INTEGER},
+                #{masterid,jdbcType=VARCHAR},
             </if>
             <if test="schoolinfo != null">
-                #{schoolinfo,jdbcType=INTEGER},
+                #{schoolinfo,jdbcType=VARCHAR},
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},

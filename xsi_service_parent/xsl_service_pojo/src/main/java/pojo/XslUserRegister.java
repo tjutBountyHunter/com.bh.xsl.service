@@ -14,6 +14,7 @@ public class XslUserRegister {
     private String major;
     private String schoolNumber;
     private String token;
+    private String code;
 
 	public Integer getHunterid() {
 		return hunterid;
@@ -117,5 +118,13 @@ public class XslUserRegister {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

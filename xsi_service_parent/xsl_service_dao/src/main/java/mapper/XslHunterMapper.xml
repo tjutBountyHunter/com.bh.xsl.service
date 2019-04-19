@@ -121,6 +121,9 @@
             <if test="id != null">
                 id,
             </if>
+            <if test="hunterId != null">
+                hunterId,
+            </if>
             <if test="userid != null">
                 userId,
             </if>
@@ -150,8 +153,11 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="hunterId != null">
+                #{hunterId,jdbcType=VARCHAR},
+            </if>
             <if test="userid != null">
-                #{userid,jdbcType=INTEGER},
+                #{userid,jdbcType=VARCHAR},
             </if>
             <if test="level != null">
                 #{level,jdbcType=SMALLINT},

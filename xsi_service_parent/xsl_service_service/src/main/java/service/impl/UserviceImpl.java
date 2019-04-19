@@ -134,8 +134,10 @@ public class UserviceImpl implements UserService {
 		xslUser.setPhone(xslUserRegister.getPhone());
 		xslUser.setState(UserStateEnum.NA.getCode());
 		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
+		xslUser.setCreatedate(new Date());
+		xslUser.setUpdatedate(new Date());
 		try {
-			int result = xslMasterMapper.insertSelective(xslMaster);
+			int result = xslUserMapper.insertSelective(xslUser);
 
 			if (result < 1){
 				throw new RuntimeException("用户信息插入失败");
@@ -484,7 +486,6 @@ public class UserviceImpl implements UserService {
             System.out.println(!code.equals(num));
             if (!code.equals(num)) {
                 message = "验证码错误";
-                System.out.println(message);
                 return XslResult.build(400, message);
             } else {
                 return XslResult.ok("验证成功");

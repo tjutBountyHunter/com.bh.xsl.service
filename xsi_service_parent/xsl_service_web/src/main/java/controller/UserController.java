@@ -17,7 +17,6 @@ import util.XslResult;
  * @after 何林鸿
  */
 @Controller
-
 @RequestMapping("/xsl/xsluser")
 public class UserController {
     @Autowired
@@ -45,7 +44,7 @@ public class UserController {
     @RequestMapping(value = "/quickRegister", method = RequestMethod.POST)
     @ResponseBody
     public XslResult quickRegister(XslUserRegister xslUserRegister) {
-        XslResult xslResult = userService.createUser(xslUserRegister);
+        XslResult xslResult = userService.quickCreateUser(xslUserRegister);
         return xslResult;
     }
 
@@ -62,48 +61,8 @@ public class UserController {
         XslResult xslResult = null;
         xslResult = userService.createFile(uploadFile, phone);
         return xslResult;
-    }
-    /**
-     * 学校类别
-     *
-     * @return
-     */
-    @RequestMapping("/schoolClasses")
-    @ResponseBody
-    public XslResult schoolMessage() {
-        String s = userService.schoolMessage();
-        return XslResult.ok(s);
-    }
 
-    /**
-     * 学院类别
-     *
-     * @param schoolName
-     * @return
-     */
-    @RequestMapping("/collegeClasses")
-    @ResponseBody
-    public XslResult collegeMessage(@Param("schoolName") String schoolName) {
-        XslResult xslResult = userService.collegMessage(schoolName);
-        return xslResult;
-    }
 
-    /**
-     * 专业类别
-     *
-     * @param collegeName
-     * @return
-     */
-    @RequestMapping("/majorClasses")
-    @ResponseBody
-    public XslResult majorMessage(@Param("collegeName") String collegeName, @Param("schoolId") Integer schoolId) {
-        XslResult xslResult = null;
-        try {
-            xslResult = userService.majorMessage(collegeName, schoolId);
-            return xslResult;
-        } catch (Exception e) {
-            return XslResult.build(500, "服务器异常");
-        }
     }
 
     /**
@@ -163,31 +122,4 @@ public class UserController {
         }
     }
 
-    /**
-     * 发送短信验证码
-     *
-     * @param phone
-     * @return
-     */
-    @RequestMapping(value = "/message", method = RequestMethod.GET)
-    @ResponseBody
-    public XslResult sendMessage(@RequestParam("phone") String phone) {
-        XslResult xslResult = userService.sendMessageCode(phone);
-        return xslResult;
-    }
-
-    /**
-     * 下一步
-     *
-     * @param phone
-     * @param code
-     * @return
-     */
-    @RequestMapping(value = "/checkmessage", method = RequestMethod.POST)
-    @ResponseBody
-    public XslResult checkMessage(@RequestParam("phone") String phone, @RequestParam("code") String code, @RequestParam("password") String password) {
-        System.out.println(phone);
-        XslResult xslResult = userService.checkcode(phone, code, password);
-        return xslResult;
-    }
 }
