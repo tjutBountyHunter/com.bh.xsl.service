@@ -4,10 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.UpTaskService;
-import service.XslResult;
+import util.XslResult;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * 展示分类猎人

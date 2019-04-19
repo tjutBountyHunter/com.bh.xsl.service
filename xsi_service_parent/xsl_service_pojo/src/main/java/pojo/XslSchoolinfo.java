@@ -5,6 +5,10 @@ import java.util.Date;
 public class XslSchoolinfo {
     private Integer id;
 
+    private String schoolId;
+
+    private String userId;
+
     private String sno;
 
     private String major;
@@ -25,6 +29,22 @@ public class XslSchoolinfo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 
     public String getSno() {

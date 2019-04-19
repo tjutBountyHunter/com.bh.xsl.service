@@ -5,11 +5,13 @@ import java.util.Date;
 public class XslUser {
     private Integer id;
 
-    private Integer hunterid;
+    private String userId;
 
-    private Integer masterid;
+    private String hunterid;
 
-    private Integer schoolinfo;
+    private String masterid;
+
+    private String schoolinfo;
 
     private String name;
 
@@ -39,27 +41,35 @@ public class XslUser {
         this.id = id;
     }
 
-    public Integer getHunterid() {
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getHunterid() {
         return hunterid;
     }
 
-    public void setHunterid(Integer hunterid) {
+    public void setHunterid(String hunterid) {
         this.hunterid = hunterid;
     }
 
-    public Integer getMasterid() {
+    public String getMasterid() {
         return masterid;
     }
 
-    public void setMasterid(Integer masterid) {
+    public void setMasterid(String masterid) {
         this.masterid = masterid;
     }
 
-    public Integer getSchoolinfo() {
+    public String getSchoolinfo() {
         return schoolinfo;
     }
 
-    public void setSchoolinfo(Integer schoolinfo) {
+    public void setSchoolinfo(String schoolinfo) {
         this.schoolinfo = schoolinfo;
     }
 

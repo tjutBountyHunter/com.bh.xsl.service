@@ -5,9 +5,8 @@ import mapper.XslTaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.XslTask;
-import pojo.XslTaskExample;
 import service.ViewTaskStateService;
-import service.XslResult;
+import util.XslResult;
 
 import java.util.List;
 

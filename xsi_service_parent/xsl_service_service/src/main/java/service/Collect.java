@@ -1,9 +1,6 @@
 package service;
 
-import mapper.XslHistoryHunterMap;
-import pojo.XslHistoryHunter;
-
-import java.util.List;
+import util.XslResult;
 
 public interface Collect {
     /**

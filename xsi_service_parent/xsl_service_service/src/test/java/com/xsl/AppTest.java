@@ -15,8 +15,8 @@ package com.xsl;
 //import pojo.XslDatetime;
 //import pojo.XslTask;
 //import pojo.XslTaskExample;
-//import service.HttpClientUtil;
-//import service.JsonUtils;
+//import HttpClientUtil;
+//import JsonUtils;
 //
 //import java.io.File;
 //import java.io.FileInputStream;
@@ -27,15 +27,6 @@ package com.xsl;
 //import org.slf4j.LoggerFactory;
 //import org.springframework.context.ApplicationContext;
 //import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisCluster;
-import redis.clients.jedis.JedisPool;
-import service.XslResult;
-import service.XslResultOk;
-
 
 /**
  * Unit test for simple App.

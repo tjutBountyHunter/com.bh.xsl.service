@@ -116,6 +116,11 @@
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>3.7.1</version>
         </dependency>
+        <!--redis-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
         <!--二维码生成组件-->
         <!--<dependency>-->
             <!--<groupId>or.core.qr</groupId>-->

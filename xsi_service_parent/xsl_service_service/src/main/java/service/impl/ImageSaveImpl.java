@@ -4,8 +4,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import service.FtpUtil;
-import service.IdUtil;
+import util.FtpUtil;
+import util.IdUtil;
 import service.ImageSave;
 
 import java.io.IOException;

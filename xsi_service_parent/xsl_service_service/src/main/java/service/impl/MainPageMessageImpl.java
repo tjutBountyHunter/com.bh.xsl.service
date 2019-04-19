@@ -4,7 +4,7 @@ import mapper.XslMainPageFindMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.XslMainPageMessage;
-import service.XslResult;
+import util.XslResult;
 import service.MainPageMessage;
 
 import java.util.List;

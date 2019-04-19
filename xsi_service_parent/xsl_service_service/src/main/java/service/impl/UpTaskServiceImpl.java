@@ -1,15 +1,13 @@
 package service.impl;
 
-import mapper.XslHunterMapper;
 import mapper.XslHunterShopMapper;
 import mapper.XslHuntershowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pojo.XslHunterExample;
 import pojo.XslOneHunter;
 import service.*;
+import util.XslResult;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

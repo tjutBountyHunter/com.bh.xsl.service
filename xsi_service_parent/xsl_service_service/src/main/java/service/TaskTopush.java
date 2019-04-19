@@ -1,5 +1,7 @@
 package service;
 
+import util.XslResult;
+
 import java.text.ParseException;
 
 public interface TaskTopush {

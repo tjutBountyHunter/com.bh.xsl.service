@@ -3,19 +3,17 @@ package service.impl;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import dao.JedisClient;
 import mapper.*;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.*;
+import util.Message;
+import util.XslResult;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static service.JiGuangPushUtil.pushNotice;
-
 
 /**
  * 消息接收

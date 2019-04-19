@@ -1,23 +1,20 @@
 package controller;
 
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import service.JsonUtils;
+import pojo.XslUserRegister;
 import service.UserService;
-import service.XslResult;
+import util.XslResult;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
 
 /**
  * 登录注册
  *
  * @author 高山潍
+ * @after 何林鸿
  */
 @Controller
 
@@ -29,19 +26,32 @@ public class UserController {
     /**
      * 注册
      *
-     * @param all
+     * @param xslUserRegister
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult register(@Param("all") String all) {
-        XslResult xslResult = null;
-        xslResult = userService.createUser(all);
+    public XslResult register(XslUserRegister xslUserRegister) {
+        XslResult xslResult = userService.createUser(xslUserRegister);
+        return xslResult;
+    }
+
+    /**
+     * 快速注册
+     *
+     * @param xslUserRegister
+     * @return
+     */
+    @RequestMapping(value = "/quickRegister", method = RequestMethod.POST)
+    @ResponseBody
+    public XslResult quickRegister(XslUserRegister xslUserRegister) {
+        XslResult xslResult = userService.createUser(xslUserRegister);
         return xslResult;
     }
 
     /**
      * 图片
+     *
      * @param uploadFile
      * @param phone
      * @return
@@ -74,8 +84,7 @@ public class UserController {
     @RequestMapping("/collegeClasses")
     @ResponseBody
     public XslResult collegeMessage(@Param("schoolName") String schoolName) {
-        XslResult xslResult = null;
-        xslResult = userService.collegMessage(schoolName);
+        XslResult xslResult = userService.collegMessage(schoolName);
         return xslResult;
     }
 
@@ -106,9 +115,9 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult userLogin(String username, String password, String token, HttpServletRequest request, HttpServletResponse response) {
+    public XslResult userLogin(String username, String password, String token) {
         try {
-            XslResult result = userService.userLogin(username, password, token, request, response);
+            XslResult result = userService.userLogin(username, password, token);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

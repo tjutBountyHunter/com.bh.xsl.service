@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.*;
+import util.JsonUtils;
+import util.XslResult;
 //import service.searchTaskMQ;
 
 import java.io.UnsupportedEncodingException;

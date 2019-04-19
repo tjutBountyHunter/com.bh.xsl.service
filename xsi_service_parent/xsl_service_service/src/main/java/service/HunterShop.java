@@ -1,5 +1,7 @@
 package service;
 
+import util.XslResult;
+
 public interface HunterShop {
     XslResult hunterShop(Integer rows, Integer userId, Integer hunterId);
 

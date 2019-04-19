@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pojo.XslMainPageMessage;
 import service.MainPageMessage;
 import service.TaskStatefind;
-import service.XslResult;
+import util.XslResult;
 
 @Controller
 @RequestMapping("/xsl/mainpage")

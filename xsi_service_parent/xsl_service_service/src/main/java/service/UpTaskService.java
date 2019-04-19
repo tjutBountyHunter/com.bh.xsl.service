@@ -1,6 +1,6 @@
 package service;
 
-import pojo.XslDateTask;
+import util.XslResult;
 
 public interface UpTaskService {
 

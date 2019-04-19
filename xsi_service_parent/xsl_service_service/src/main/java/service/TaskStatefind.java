@@ -1,6 +1,7 @@
 package service;
 
 import pojo.XslWaitTask;
+import util.XslResult;
 
 import java.util.List;
 

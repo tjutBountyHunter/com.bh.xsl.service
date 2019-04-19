@@ -1,8 +1,6 @@
 package service;
 
-import pojo.XslTask;
-
-import java.util.List;
+import util.XslResult;
 
 public interface ViewTaskStateService {
 

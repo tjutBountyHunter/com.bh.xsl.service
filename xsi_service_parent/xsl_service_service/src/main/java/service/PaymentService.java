@@ -1,5 +1,6 @@
 package service;
 
+import util.IbmResult;
 
 public interface PaymentService {
 

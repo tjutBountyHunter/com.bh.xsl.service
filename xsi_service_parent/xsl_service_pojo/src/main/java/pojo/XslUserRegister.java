@@ -1,10 +1,11 @@
 package pojo;
 
 public class XslUserRegister {
-    private int hunterid;
+    private Integer hunterid;
+    private String userId;
     private String password;
-    private int id;
-    private int masterid;
+    private Integer id;
+    private Integer masterid;
     private String phone;
     private String name;
     private String sex;
@@ -14,101 +15,107 @@ public class XslUserRegister {
     private String schoolNumber;
     private String token;
 
-    public String getPhone() {
-        return phone;
-    }
+	public Integer getHunterid() {
+		return hunterid;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public void setHunterid(Integer hunterid) {
+		this.hunterid = hunterid;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public String getSex() {
-        return sex;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
+	public Integer getId() {
+		return id;
+	}
 
-    public String getCollege() {
-        return college;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setCollege(String college) {
-        this.college = college;
-    }
+	public Integer getMasterid() {
+		return masterid;
+	}
 
-    public String getMajor() {
-        return major;
-    }
+	public void setMasterid(Integer masterid) {
+		this.masterid = masterid;
+	}
 
-    public void setMajor(String major) {
-        this.major = major;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    public String getToken() {
-        return token;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getSchoolinfo() {
-        return schoolinfo;
-    }
+	public String getSex() {
+		return sex;
+	}
 
-    public void setSchoolinfo(String schoolinfo) {
-        this.schoolinfo = schoolinfo;
-    }
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 
-    public String getSchoolNumber() {
-        return schoolNumber;
-    }
+	public String getSchoolinfo() {
+		return schoolinfo;
+	}
 
-    public void setSchoolNumber(String schoolNumber) {
-        this.schoolNumber = schoolNumber;
-    }
+	public void setSchoolinfo(String schoolinfo) {
+		this.schoolinfo = schoolinfo;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public String getCollege() {
+		return college;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setCollege(String college) {
+		this.college = college;
+	}
 
-    public int getMasterid() {
-        return masterid;
-    }
+	public String getMajor() {
+		return major;
+	}
 
-    public void setMasterid(int masterid) {
-        this.masterid = masterid;
-    }
+	public void setMajor(String major) {
+		this.major = major;
+	}
 
-    public int getHunterid() {
-        return hunterid;
-    }
+	public String getSchoolNumber() {
+		return schoolNumber;
+	}
 
-    public void setHunterid(int hunterid) {
-        this.hunterid = hunterid;
-    }
+	public void setSchoolNumber(String schoolNumber) {
+		this.schoolNumber = schoolNumber;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setToken(String token) {
+		this.token = token;
+	}
 }

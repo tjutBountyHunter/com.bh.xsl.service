@@ -1,14 +1,12 @@
 package service.impl;
 
-import com.sun.javafx.collections.MappingChange;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.Collect;
-import service.JsonUtils;
-import service.PageDataResult;
-import service.XslResult;
+import util.JsonUtils;
+import util.XslResult;
 
 import java.util.*;
 

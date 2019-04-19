@@ -5,7 +5,9 @@ import java.util.Date;
 public class XslHunter {
     private Integer id;
 
-    private Integer userid;
+    private String hunterId;
+
+    private String userid;
 
     private Short level;
 
@@ -29,11 +31,19 @@ public class XslHunter {
         this.id = id;
     }
 
-    public Integer getUserid() {
+    public String getHunterId() {
+        return hunterId;
+    }
+
+    public void setHunterId(String hunterId) {
+        this.hunterId = hunterId;
+    }
+
+    public String getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
+    public void setUserid(String userid) {
         this.userid = userid;
     }
 

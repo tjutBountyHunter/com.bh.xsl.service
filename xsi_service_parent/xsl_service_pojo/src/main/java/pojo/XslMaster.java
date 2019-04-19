@@ -5,7 +5,9 @@ import java.util.Date;
 public class XslMaster {
     private Integer id;
 
-    private Integer userid;
+    private String masterId;
+
+    private String userid;
 
     private Short level;
 
@@ -29,11 +31,19 @@ public class XslMaster {
         this.id = id;
     }
 
-    public Integer getUserid() {
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
+    public void setUserid(String userid) {
         this.userid = userid;
     }
 
