@@ -17,18 +17,10 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	@Autowired
 	private JedisClient jedisClient;
 
-	@Value("${REDIS_USER_SESSION_KEY}")
-	private String REDIS_USER_SESSION_KEY;
 	@Value("${REDIS_USER_SESSION_CODE_KEY}")
 	private String REDIS_USER_SESSION_CODE_KEY;
-	@Value("${REDIS_USER_SESSION_PASSWORD}")
-	private String REDIS_USER_SESSION_PASSWORD;
-	@Value("${Login_SESSION_EXPIRE}")
-	private Integer Login_SESSION_EXPIRE;
 	@Value("${Login_SESSION_EXPIRE_CODE}")
 	private Integer Login_SESSION_EXPIRE_CODE;
-	@Value("${Login_SESSION_EXPIRE_PASSWORD}")
-	private Integer Login_SESSION_EXPIRE_PASSWORD;
 
 	private static final Logger logger = LoggerFactory.getLogger(VerifyCodeServiceImpl.class);
 
@@ -85,27 +77,11 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	}
 
 	/**
-	 * 账号密码核对
-	 *
-	 * @param content
-	 * @return
-	 */
-	private XslResult checkData(String content) {
-		//用户校检
-		boolean b = content.matches("^[1][35678]\\d{9}");
-		if (b) {
-			return XslResult.ok();
-		} else {
-			return XslResult.build(400,"手机格式错误");
-		}
-	}
-
-	/**
 	 * 发送短信验证码
 	 * @param phone
 	 * @return
 	 */
-	public SendSmsResponse sendVerifyCode(String phone) {
+	private SendSmsResponse sendVerifyCode(String phone) {
 		//1.获取一个四位数的验证码
 		String code = new RandomNum().getRandom();
 		//2.发送验证码
@@ -118,5 +94,21 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 		}
 
 		return response;
+	}
+
+	/**
+	 * 手机格式校验
+	 *
+	 * @param content
+	 * @return
+	 */
+	private XslResult checkData(String content) {
+		//用户校检
+		boolean b = content.matches("^[1][35678]\\d{9}");
+		if (b) {
+			return XslResult.ok();
+		} else {
+			return XslResult.build(400,"手机格式错误");
+		}
 	}
 }
