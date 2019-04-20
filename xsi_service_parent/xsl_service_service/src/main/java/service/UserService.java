@@ -1,7 +1,5 @@
 package service;
 
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.XslUserRegister;
 import util.XslResult;
@@ -52,28 +50,6 @@ public interface UserService {
      * @return
      */
     XslResult getUserByToken(String token, String phone);
-
-    /**
-     * 发送短信验证码
-     *
-     * @param phone
-     * @return
-     */
-    SendSmsResponse verifyCode(@Param("phone") String phone);
-
-    /**
-     * 传递验证码
-     *
-     * @param phone
-     * @return
-     */
-    XslResult sendMessageCode(String phone);
-    /**
-     * 检验手机验证码
-     * @param phone
-     * @return
-     */
-    XslResult checkcode(String phone, String code, String password);
 
     /**
      * 忘记密码

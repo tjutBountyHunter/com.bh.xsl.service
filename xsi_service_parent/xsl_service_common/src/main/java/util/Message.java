@@ -68,8 +68,8 @@ public class Message {
             return sendSms(mobile, "{\"code\":\"" + code + "\"}", identifyingTempleteCode);
         } catch (ClientException e) {
             e.printStackTrace();
-            return null;
         }
+        return new SendSmsResponse();
     }
 
     public static SendSmsResponse sendIdentifyingTempleteMHunter(String mobile) {

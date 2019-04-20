@@ -17,7 +17,7 @@ import util.XslResult;
  * @after 何林鸿
  */
 @Controller
-@RequestMapping("/xsl/xsluser")
+@RequestMapping("/xsl/user")
 public class UserController {
     @Autowired
     private UserService userService;

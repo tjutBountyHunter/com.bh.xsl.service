@@ -15,8 +15,6 @@ import pojo.*;
 import service.*;
 import util.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 import static util.ImageFile.fileName;
@@ -405,91 +403,6 @@ public class UserviceImpl implements UserService {
             return XslResult.build(400, "登陆时间已经过期。请重新登录");
         } else {
             return XslResult.ok(jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone));
-        }
-    }
-
-    /**
-     * 账号密码核对
-     *
-     * @param content
-     * @return
-     */
-    private XslResult checkData(String content) {
-        //用户校检
-        boolean b = content.matches("^[1][35678]\\d{9}");
-        System.out.println(b);
-        if (b) {
-            return XslResult.ok(b);
-        } else {
-            return XslResult.build(400,"手机格式错误");
-        }
-    }
-
-    /**
-     * 短信验证码存入缓存
-     * @param phone
-     * @return
-     */
-    @Override
-    public SendSmsResponse verifyCode(String phone) {
-        String num = new RandomNum().getRandom();
-        jedisClient.set(REDIS_USER_SESSION_CODE_KEY+ ":" +phone,num);
-        SendSmsResponse response = Message.sendIdentifyingCode(phone, num);
-        //设置session过期时间
-        jedisClient.expire(REDIS_USER_SESSION_CODE_KEY + ":" + phone, Login_SESSION_EXPIRE_CODE);
-        return response;
-    }
-
-    /**
-     * 短信验证码
-     *
-     * @param phone
-     * @return
-     */
-    @Override
-    public XslResult sendMessageCode(String phone) {
-        String message = null;
-        int bool = checkData(phone).getStatus();
-        if (bool != 200) {
-            message = "手机号码填写错误,请检查手机号码格式是否正确";
-            return XslResult.build(400, JsonUtils.objectToJson(message));
-        } else {
-            SendSmsResponse q = verifyCode(phone);
-            if (q.getCode().equals("OK")) {
-                message = "短信验证请求成功";
-                return XslResult.ok(JsonUtils.objectToJson(message));
-            } else {
-                message = "短信验证未请求成功,请联系工作人员";
-                return XslResult.build(500,JsonUtils.objectToJson(message));
-            }
-        }
-    }
-
-    /**
-     * 检验手机验证码
-     *
-     * @param phone
-     * @return
-     */
-    @Override
-    public XslResult checkcode(String phone, String code, String password) {
-        System.out.println(code);
-        jedisClient.set(REDIS_USER_SESSION_PASSWORD + ":" + phone, password);
-        jedisClient.expire(REDIS_USER_SESSION_PASSWORD + ":" + phone, Login_SESSION_EXPIRE_PASSWORD);
-        String num = null;
-        num = jedisClient.get(REDIS_USER_SESSION_CODE_KEY + ":" + phone);
-        System.out.println(num);
-        String message = null;
-        if (num == null) {
-            return XslResult.build(400, "您的验证码失效");
-        } else {
-            System.out.println(!code.equals(num));
-            if (!code.equals(num)) {
-                message = "验证码错误";
-                return XslResult.build(400, message);
-            } else {
-                return XslResult.ok("验证成功");
-            }
         }
     }
 
