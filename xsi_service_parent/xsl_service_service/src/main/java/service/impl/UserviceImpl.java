@@ -1,6 +1,5 @@
 package service.impl;
 
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import dao.JedisClient;
 import enums.UserStateEnum;
 import mapper.*;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.multipart.MultipartFile;
 import pojo.*;
 import service.*;
 import util.*;
@@ -24,15 +22,7 @@ public class UserviceImpl implements UserService {
     @Autowired
     private HunMaster hunMaster;
     @Autowired
-    private ImageSave imageSave;
-    @Autowired
     private XslFileMapper xslFileMapper;
-    @Autowired
-    private XslMajorMessageMapper xslMajorMessageMapper;
-    @Autowired
-    private XslCollegeMessageMapper xslCollegeMessageMapper;
-    @Autowired
-    private XslSchoolMessageMapper xslSchoolMessageMapper;
 	@Autowired
 	private XslHunterMapper xslHunterMapper;
 	@Autowired
@@ -48,10 +38,6 @@ public class UserviceImpl implements UserService {
 
     @Value("${REDIS_USER_SESSION_KEY}")
     private String REDIS_USER_SESSION_KEY;
-    @Value("${REDIS_USER_SESSION_CODE_KEY}")
-    private String REDIS_USER_SESSION_CODE_KEY;
-    @Value("${REDIS_USER_SESSION_PASSWORD}")
-    private String REDIS_USER_SESSION_PASSWORD;
     @Value("${Login_SESSION_EXPIRE}")
     private Integer Login_SESSION_EXPIRE;
     @Value("${Login_SESSION_EXPIRE_CODE}")
@@ -105,6 +91,33 @@ public class UserviceImpl implements UserService {
         }
     }
 
+	private XslResult defaultFileImage(String phone) {
+		XslUserExample xslUserExample = new XslUserExample();
+		XslUserExample.Criteria criteria = xslUserExample.createCriteria();
+		criteria.andPhoneEqualTo(phone);
+		XslFile xslFile = new XslFile();
+		List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
+		if (list == null || list.size() < 1) {
+			return XslResult.build(400, "用户不存在");
+		}
+
+		XslUser xslUser = list.get(0);
+
+		xslFile.setDesc("学生证");
+		xslFile.setUserid(xslUser.getId());
+		xslFile.setUpdatedate(new Date());
+		xslFile.setCreatedate(new Date());
+		xslFile.setUrl(fileName());
+		try {
+			xslFileMapper.insertSelective(xslFile);
+			return XslResult.ok(xslFile.getUrl());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器异常");
+		}
+
+	}
+
 	/**
 	 * 快速注册
 	 *
@@ -125,106 +138,6 @@ public class UserviceImpl implements UserService {
 		return XslResult.ok();
 
 	}
-
-	/**
-     * 上传图片
-     *
-     * @param uploadFile
-     * @param phone
-     * @return
-     */
-    @Override
-    public XslResult createFile(MultipartFile uploadFile, String phone) {
-        XslResult xslResult = createFileTool(uploadFile, phone);
-        return xslResult;
-    }
-
-    public XslResult defaultFileImage(String phone) {
-        XslUserExample xslUserExample = new XslUserExample();
-        XslUserExample.Criteria criteria = xslUserExample.createCriteria();
-        criteria.andPhoneEqualTo(phone);
-        XslFile xslFile = new XslFile();
-        List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
-        if (list.size() == 0 && list.isEmpty()) {
-            return XslResult.build(400, "用户不存在");
-        } else {
-            XslUser xslUser = list.get(0);
-
-            xslFile.setDesc("学生证");
-            xslFile.setUserid(xslUser.getId());
-            xslFile.setUpdatedate(new Date());
-            xslFile.setCreatedate(new Date());
-            xslFile.setUrl(fileName());
-            try {
-                xslFileMapper.insertSelective(xslFile);
-                return XslResult.ok(xslFile.getUrl());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return XslResult.build(500, "服务器异常");
-            }
-        }
-    }
-
-    public XslResult createFileTool(MultipartFile uploadFile, String phone) {
-        XslUserExample xslUserExample = new XslUserExample();
-        XslUserExample.Criteria criteria = xslUserExample.createCriteria();
-        criteria.andPhoneEqualTo(phone);
-        List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
-        if (list.size() == 0 && list.isEmpty()) {
-            return XslResult.build(400, "用户不存在");
-        } else {
-            XslUser xslUser = list.get(0);
-            XslFile xslFile = new XslFile();
-            xslFile.setDesc("学生证");
-            xslFile.setUserid(xslUser.getId());
-            xslFile.setUpdatedate(new Date());
-            xslFile.setCreatedate(new Date());
-            Map<String, Object> map = new HashMap<>();
-            map = imageSave.uploadPicture(uploadFile);
-            if ((int) map.get("error") == 1) {
-                return XslResult.build(400, (String) map.get("message"));
-            } else {
-                xslFile.setUrl((String) map.get("url"));
-            }
-            try {
-                xslFileMapper.insert(xslFile);
-                return XslResult.ok(xslFile.getUrl());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return XslResult.build(500, "服务器异常");
-            }
-        }
-    }
-
-    /**
-     * 用户表
-     *
-     * @param xslUserRegister
-     * @param schoolId
-     * @return
-     */
-    private XslResult createUseruser(XslUserRegister xslUserRegister, String schoolId) {
-        XslUser xslUser = new XslUser();
-        xslUser.setPhone(xslUserRegister.getPhone());
-        xslUser.setSchoolinfo(schoolId);
-        xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
-        xslUser.setName(xslUserRegister.getName());
-        xslUser.setSex(xslUserRegister.getSex());
-        xslUser.setUpdatedate(new Date());
-        xslUser.setCreatedate(new Date());
-        try {
-            xslUserMapper.insertSelective(xslUser);
-            XslUserExample xslUserExample = new XslUserExample();
-            XslUserExample.Criteria criteria = xslUserExample.createCriteria();
-            criteria.andPhoneEqualTo(xslUserRegister.getPhone());
-            List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
-            return XslResult.ok(list.get(0).getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-
-    }
 
     /**
      * 用户学校信息
@@ -426,5 +339,35 @@ public class UserviceImpl implements UserService {
 		}
 
 		return xslHunter;
+	}
+
+	/**
+	 * 用户表
+	 *
+	 * @param xslUserRegister
+	 * @param schoolId
+	 * @return
+	 */
+	private XslResult createUseruser(XslUserRegister xslUserRegister, String schoolId) {
+		XslUser xslUser = new XslUser();
+		xslUser.setPhone(xslUserRegister.getPhone());
+		xslUser.setSchoolinfo(schoolId);
+		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
+		xslUser.setName(xslUserRegister.getName());
+		xslUser.setSex(xslUserRegister.getSex());
+		xslUser.setUpdatedate(new Date());
+		xslUser.setCreatedate(new Date());
+		try {
+			xslUserMapper.insertSelective(xslUser);
+			XslUserExample xslUserExample = new XslUserExample();
+			XslUserExample.Criteria criteria = xslUserExample.createCriteria();
+			criteria.andPhoneEqualTo(xslUserRegister.getPhone());
+			List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
+			return XslResult.ok(list.get(0).getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器异常");
+		}
+
 	}
 }

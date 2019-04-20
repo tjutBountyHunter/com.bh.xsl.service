@@ -3,6 +3,7 @@ package service.impl;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import util.FtpUtil;
 import util.IdUtil;
@@ -33,11 +34,12 @@ public class ImageSaveImpl implements ImageSave {
 
     @Override
     public Map uploadPicture(MultipartFile uploadFile) {
-        Map resultMap = new HashMap<>();
+        Map<String, String> resultMap = new HashMap<>();
+
         try {
             byte[] bs = uploadFile.getBytes();
-            if (bs.equals("")) {
-                resultMap.put("error", 1);
+            if (StringUtils.isEmpty(bs)) {
+                resultMap.put("error", "1");
                 resultMap.put("message", "文件上传为空");
                 return resultMap;
             }
@@ -54,15 +56,17 @@ public class ImageSaveImpl implements ImageSave {
                     FTP_BASE_PATH, imagePath, newName, uploadFile.getInputStream());
             // 返回结果
             if (!result) {
-                resultMap.put("error", 1);
+                resultMap.put("error", "1");
                 resultMap.put("message", "文件上传失败");
                 return resultMap;
             }
-            resultMap.put("error", 0);
+
+            resultMap.put("error", "0");
             resultMap.put("url", IMAGE_BASE_URL + imagePath + "/" + newName);
             return resultMap;
+
         } catch (IOException e) {
-            resultMap.put("error", 1);
+            resultMap.put("error", "1");
             resultMap.put("message", "文件上传失败");
             return resultMap;
         }

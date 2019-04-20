@@ -26,15 +26,6 @@ public interface UserService {
     XslResult quickCreateUser(XslUserRegister xslUserRegister);
 
     /**
-     * 上传图片
-     *
-     * @param uploadFile
-     * @param phone
-     * @return
-     */
-    XslResult createFile(MultipartFile uploadFile, String phone);
-
-    /**
      * 登录
      *
      * @param username
