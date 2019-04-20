@@ -56,16 +56,4 @@ public interface UserService {
      * @return
      */
     XslResult Password(String phone, String password);
-
-
-    /**
-     * 学校，大学，专业种类
-     *
-     * @return
-     */
-    String schoolMessage();
-
-    XslResult collegMessage(String school);
-
-    XslResult majorMessage(String college,Integer schoolId);
 }

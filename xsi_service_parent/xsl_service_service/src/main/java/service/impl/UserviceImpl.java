@@ -164,6 +164,7 @@ public class UserviceImpl implements UserService {
             }
         }
     }
+
     public XslResult createFileTool(MultipartFile uploadFile, String phone) {
         XslUserExample xslUserExample = new XslUserExample();
         XslUserExample.Criteria criteria = xslUserExample.createCriteria();
@@ -360,59 +361,6 @@ public class UserviceImpl implements UserService {
         xslUser.setPassword(password);
         xslUserMapper.updateByExample(xslUser, example);
         return XslResult.build(200, "修改成功！");
-    }
-    /**
-     * 学校种类
-     *
-     * @return
-     */
-    @Override
-    public String schoolMessage() {
-        List<String> list = xslSchoolMessageMapper.selectByXslSchool();
-        String json = JsonUtils.objectToJson(list);
-        return json;
-    }
-    /**
-     * 学院种类
-     *
-     * @param school
-     * @return
-     */
-    @Override
-    public XslResult collegMessage(String school) {
-        try {
-            int schoolid = xslSchoolMessageMapper.selectBySchoolName(school);
-            List<String> list = xslCollegeMessageMapper.selectBySchoolId(schoolid);
-            Map<String, Object> map = new HashMap<>();
-            map.put("collegeMessage", JsonUtils.objectToJson(list));
-            map.put("shoolId", schoolid);
-            return XslResult.ok(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500,"服务异常");
-        }
-    }
-
-    /**
-     * 专业种类
-     *
-     * @param college
-     * @return
-     */
-    @Override
-    public XslResult majorMessage(String college,Integer schoolId) {
-        try {
-            Map<String, Object> map = new HashMap<>();
-            map.put("collegeName", college);
-            map.put("schoolId", schoolId);
-            System.out.println(map.get("collegeName"));
-            int collegeid = xslCollegeMessageMapper.selectBycollegeName(map);
-            List<String> list = xslMajorMessageMapper.selectByCollegeId(collegeid);
-            return XslResult.ok(JsonUtils.objectToJson(list));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500,"服务异常");
-        }
     }
 
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {

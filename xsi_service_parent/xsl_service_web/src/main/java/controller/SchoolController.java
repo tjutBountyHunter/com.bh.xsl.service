@@ -5,14 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import service.UserService;
+import service.SchoolService;
+
+
+
+
 import util.XslResult;
 
 @Controller
 @RequestMapping("/xsl/school")
 public class SchoolController {
 	@Autowired
-	private UserService userService;
+	private SchoolService schoolService;
 
 	/**
 	 * 学校类别
@@ -22,7 +26,7 @@ public class SchoolController {
 	@RequestMapping("/schoolClasses")
 	@ResponseBody
 	public XslResult schoolMessage() {
-		String s = userService.schoolMessage();
+		String s = schoolService.schoolMessage();
 		return XslResult.ok(s);
 	}
 
@@ -35,7 +39,7 @@ public class SchoolController {
 	@RequestMapping("/collegeClasses")
 	@ResponseBody
 	public XslResult collegeMessage(@Param("schoolName") String schoolName) {
-		XslResult xslResult = userService.collegMessage(schoolName);
+		XslResult xslResult = schoolService.collegMessage(schoolName);
 		return xslResult;
 	}
 
@@ -50,7 +54,7 @@ public class SchoolController {
 	public XslResult majorMessage(@Param("collegeName") String collegeName, @Param("schoolId") Integer schoolId) {
 		XslResult xslResult = null;
 		try {
-			xslResult = userService.majorMessage(collegeName, schoolId);
+			xslResult = schoolService.majorMessage(collegeName, schoolId);
 			return xslResult;
 		} catch (Exception e) {
 			return XslResult.build(500, "服务器异常");
