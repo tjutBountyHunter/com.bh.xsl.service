@@ -126,72 +126,6 @@ public class UserviceImpl implements UserService {
 
 	}
 
-	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {
-		xslUser.setHunterid(xslHunter.getHunterId());
-		xslUser.setMasterid(xslMaster.getMasterId());
-		xslUser.setPhone(xslUserRegister.getPhone());
-		xslUser.setState(UserStateEnum.NA.getCode());
-		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
-		xslUser.setCreatedate(new Date());
-		xslUser.setUpdatedate(new Date());
-		try {
-			int result = xslUserMapper.insertSelective(xslUser);
-
-			if (result < 1){
-				throw new RuntimeException("用户信息插入失败");
-			}
-
-		}catch (Exception e){
-			e.printStackTrace();
-			throw new RuntimeException("服务器异常");
-		}
-	}
-
-	private XslMaster initXslMaster(XslUser xslUser) {
-		//初始化雇主信息
-		XslMaster xslMaster = new XslMaster();
-		xslMaster.setUserid(xslUser.getUserId());
-		xslMaster.setMasterId(UUID.randomUUID().toString());
-		xslMaster.setLevel((short) 1);
-		xslMaster.setDescr("新人雇主");
-		try {
-			int result = xslMasterMapper.insertSelective(xslMaster);
-
-			if (result < 1){
-				throw new RuntimeException("雇主信息插入失败");
-			}
-
-		}catch (Exception e){
-			e.printStackTrace();
-			throw new RuntimeException("服务器异常");
-		}
-
-		return xslMaster;
-	}
-
-	private XslHunter initXslHunter(XslUser xslUser) {
-		//初始化猎人信息
-		XslHunter xslHunter = new XslHunter();
-		xslHunter.setUserid(xslUser.getUserId());
-		xslHunter.setHunterId(UUID.randomUUID().toString());
-		xslHunter.setLevel((short) 1);
-		xslHunter.setDescr("新手猎人");
-		try {
-			int result = xslHunterMapper.insertSelective(xslHunter);
-
-			if (result < 1){
-				throw new RuntimeException("猎人信息插入失败");
-			}
-
-		}catch (Exception e){
-			e.printStackTrace();
-			throw new RuntimeException("服务器异常");
-		}
-
-		return xslHunter;
-	}
-
-
 	/**
      * 上传图片
      *
@@ -360,7 +294,7 @@ public class UserviceImpl implements UserService {
         XslFileExample.Criteria criteria1 = xslFileExample.createCriteria();
         criteria1.andUseridEqualTo(id);
         List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
-        String imgUrl = "http://47.93.200.190/images/default.png";;
+        String imgUrl = "http://47.93.200.190/images/default.png";
         if (xslFileList != null && xslFileList.size() > 0) {
             imgUrl = xslFileList.get(0).getUrl();
         }
@@ -480,4 +414,69 @@ public class UserviceImpl implements UserService {
             return XslResult.build(500,"服务异常");
         }
     }
+
+	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {
+		xslUser.setHunterid(xslHunter.getHunterId());
+		xslUser.setMasterid(xslMaster.getMasterId());
+		xslUser.setPhone(xslUserRegister.getPhone());
+		xslUser.setState(UserStateEnum.NA.getCode());
+		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
+		xslUser.setCreatedate(new Date());
+		xslUser.setUpdatedate(new Date());
+		try {
+			int result = xslUserMapper.insertSelective(xslUser);
+
+			if (result < 1){
+				throw new RuntimeException("用户信息插入失败");
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("服务器异常");
+		}
+	}
+
+	private XslMaster initXslMaster(XslUser xslUser) {
+		//初始化雇主信息
+		XslMaster xslMaster = new XslMaster();
+		xslMaster.setUserid(xslUser.getUserId());
+		xslMaster.setMasterId(UUID.randomUUID().toString());
+		xslMaster.setLevel((short) 1);
+		xslMaster.setDescr("新人雇主");
+		try {
+			int result = xslMasterMapper.insertSelective(xslMaster);
+
+			if (result < 1){
+				throw new RuntimeException("雇主信息插入失败");
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("服务器异常");
+		}
+
+		return xslMaster;
+	}
+
+	private XslHunter initXslHunter(XslUser xslUser) {
+		//初始化猎人信息
+		XslHunter xslHunter = new XslHunter();
+		xslHunter.setUserid(xslUser.getUserId());
+		xslHunter.setHunterId(UUID.randomUUID().toString());
+		xslHunter.setLevel((short) 1);
+		xslHunter.setDescr("新手猎人");
+		try {
+			int result = xslHunterMapper.insertSelective(xslHunter);
+
+			if (result < 1){
+				throw new RuntimeException("猎人信息插入失败");
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("服务器异常");
+		}
+
+		return xslHunter;
+	}
 }

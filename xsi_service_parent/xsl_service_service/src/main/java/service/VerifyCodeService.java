@@ -17,5 +17,5 @@ public interface VerifyCodeService {
 	 * @param phone
 	 * @return
 	 */
-	XslResult checkCode(String phone, String code, String password);
+	XslResult checkCode(String phone, String code);
 }

@@ -37,9 +37,9 @@ public class VerifyCodeController {
 	 */
 	@RequestMapping(value = "/checkmessage", method = RequestMethod.POST)
 	@ResponseBody
-	public XslResult checkMessage(@RequestParam("phone") String phone, @RequestParam("code") String code, @RequestParam("password") String password) {
+	public XslResult checkMessage(@RequestParam("phone") String phone, @RequestParam("code") String code) {
 		System.out.println(phone);
-		XslResult xslResult = verifyCodeService.checkCode(phone, code, password);
+		XslResult xslResult = verifyCodeService.checkCode(phone, code);
 		return xslResult;
 	}
 

@@ -67,10 +67,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	 * @return
 	 */
 	@Override
-	public XslResult checkCode(String phone, String code, String password) {
-		jedisClient.set(REDIS_USER_SESSION_PASSWORD + ":" + phone, password);
-		jedisClient.expire(REDIS_USER_SESSION_PASSWORD + ":" + phone, Login_SESSION_EXPIRE_PASSWORD);
-
+	public XslResult checkCode(String phone, String code) {
 		String num = jedisClient.get(REDIS_USER_SESSION_CODE_KEY + ":" + phone);
 
 		String message = null;
