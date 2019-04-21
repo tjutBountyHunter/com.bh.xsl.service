@@ -2,7 +2,7 @@ package mapper;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.IbmCommercial;
-import pojo.IbmCommercialExample;
+import example.IbmCommercialExample;
 
 import java.util.List;
 

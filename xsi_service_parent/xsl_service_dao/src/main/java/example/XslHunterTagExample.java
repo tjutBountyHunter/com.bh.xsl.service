@@ -1,23 +1,18 @@
-package pojo;
+package example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * 手机验证码Example
- *
- * @author 高山潍
- */
-public class XslCodeExample {
+public class XslHunterTagExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public XslCodeExample() {
+    public XslHunterTagExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -197,143 +192,123 @@ public class XslCodeExample {
             return (Criteria) this;
         }
 
-        public Criteria andPhoneIsNull() {
-            addCriterion("phone is null");
+        public Criteria andHunteridIsNull() {
+            addCriterion("hunterId is null");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneIsNotNull() {
-            addCriterion("phone is not null");
+        public Criteria andHunteridIsNotNull() {
+            addCriterion("hunterId is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneEqualTo(String value) {
-            addCriterion("phone =", value, "phone");
+        public Criteria andHunteridEqualTo(Integer value) {
+            addCriterion("hunterId =", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNotEqualTo(String value) {
-            addCriterion("phone <>", value, "phone");
+        public Criteria andHunteridNotEqualTo(Integer value) {
+            addCriterion("hunterId <>", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneGreaterThan(String value) {
-            addCriterion("phone >", value, "phone");
+        public Criteria andHunteridGreaterThan(Integer value) {
+            addCriterion("hunterId >", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneGreaterThanOrEqualTo(String value) {
-            addCriterion("phone >=", value, "phone");
+        public Criteria andHunteridGreaterThanOrEqualTo(Integer value) {
+            addCriterion("hunterId >=", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneLessThan(String value) {
-            addCriterion("phone <", value, "phone");
+        public Criteria andHunteridLessThan(Integer value) {
+            addCriterion("hunterId <", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneLessThanOrEqualTo(String value) {
-            addCriterion("phone <=", value, "phone");
+        public Criteria andHunteridLessThanOrEqualTo(Integer value) {
+            addCriterion("hunterId <=", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneLike(String value) {
-            addCriterion("phone like", value, "phone");
+        public Criteria andHunteridIn(List<Integer> values) {
+            addCriterion("hunterId in", values, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNotLike(String value) {
-            addCriterion("phone not like", value, "phone");
+        public Criteria andHunteridNotIn(List<Integer> values) {
+            addCriterion("hunterId not in", values, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneIn(List<String> values) {
-            addCriterion("phone in", values, "phone");
+        public Criteria andHunteridBetween(Integer value1, Integer value2) {
+            addCriterion("hunterId between", value1, value2, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNotIn(List<String> values) {
-            addCriterion("phone not in", values, "phone");
+        public Criteria andHunteridNotBetween(Integer value1, Integer value2) {
+            addCriterion("hunterId not between", value1, value2, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneBetween(String value1, String value2) {
-            addCriterion("phone between", value1, value2, "phone");
+        public Criteria andTagidIsNull() {
+            addCriterion("tagId is null");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNotBetween(String value1, String value2) {
-            addCriterion("phone not between", value1, value2, "phone");
+        public Criteria andTagidIsNotNull() {
+            addCriterion("tagId is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCodeIsNull() {
-            addCriterion("code is null");
+        public Criteria andTagidEqualTo(Integer value) {
+            addCriterion("tagId =", value, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeIsNotNull() {
-            addCriterion("code is not null");
+        public Criteria andTagidNotEqualTo(Integer value) {
+            addCriterion("tagId <>", value, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeEqualTo(String value) {
-            addCriterion("code =", value, "code");
+        public Criteria andTagidGreaterThan(Integer value) {
+            addCriterion("tagId >", value, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeNotEqualTo(String value) {
-            addCriterion("code <>", value, "code");
+        public Criteria andTagidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("tagId >=", value, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeGreaterThan(String value) {
-            addCriterion("code >", value, "code");
+        public Criteria andTagidLessThan(Integer value) {
+            addCriterion("tagId <", value, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("code >=", value, "code");
+        public Criteria andTagidLessThanOrEqualTo(Integer value) {
+            addCriterion("tagId <=", value, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeLessThan(String value) {
-            addCriterion("code <", value, "code");
+        public Criteria andTagidIn(List<Integer> values) {
+            addCriterion("tagId in", values, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeLessThanOrEqualTo(String value) {
-            addCriterion("code <=", value, "code");
+        public Criteria andTagidNotIn(List<Integer> values) {
+            addCriterion("tagId not in", values, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeLike(String value) {
-            addCriterion("code like", value, "code");
+        public Criteria andTagidBetween(Integer value1, Integer value2) {
+            addCriterion("tagId between", value1, value2, "tagid");
             return (Criteria) this;
         }
 
-        public Criteria andCodeNotLike(String value) {
-            addCriterion("code not like", value, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeIn(List<String> values) {
-            addCriterion("code in", values, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeNotIn(List<String> values) {
-            addCriterion("code not in", values, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeBetween(String value1, String value2) {
-            addCriterion("code between", value1, value2, "code");
-            return (Criteria) this;
-        }
-
-        public Criteria andCodeNotBetween(String value1, String value2) {
-            addCriterion("code not between", value1, value2, "code");
+        public Criteria andTagidNotBetween(Integer value1, Integer value2) {
+            addCriterion("tagId not between", value1, value2, "tagid");
             return (Criteria) this;
         }
 
@@ -394,66 +369,6 @@ public class XslCodeExample {
 
         public Criteria andCreatedateNotBetween(Date value1, Date value2) {
             addCriterionForJDBCDate("createDate not between", value1, value2, "createdate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateIsNull() {
-            addCriterion("updateDate is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateIsNotNull() {
-            addCriterion("updateDate is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateEqualTo(Date value) {
-            addCriterionForJDBCDate("updateDate =", value, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("updateDate <>", value, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateGreaterThan(Date value) {
-            addCriterionForJDBCDate("updateDate >", value, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("updateDate >=", value, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateLessThan(Date value) {
-            addCriterionForJDBCDate("updateDate <", value, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("updateDate <=", value, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateIn(List<Date> values) {
-            addCriterionForJDBCDate("updateDate in", values, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("updateDate not in", values, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("updateDate between", value1, value2, "updatedate");
-            return (Criteria) this;
-        }
-
-        public Criteria andUpdatedateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("updateDate not between", value1, value2, "updatedate");
             return (Criteria) this;
         }
     }

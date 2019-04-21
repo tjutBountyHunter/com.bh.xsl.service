@@ -70,7 +70,7 @@
     <sql id="Base_Column_List">
     id, masterLevelId, ruleId, createDate
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslMasterLevelRuleExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslMasterLevelRuleExample">
         select
         <if test="distinct">
             distinct
@@ -94,7 +94,7 @@
     delete from xsl_master_level_rule
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslMasterLevelRuleExample">
+    <delete id="deleteByExample" parameterType="example.XslMasterLevelRuleExample">
         delete from xsl_master_level_rule
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -137,7 +137,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslMasterLevelRuleExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslMasterLevelRuleExample" resultType="java.lang.Integer">
         select count(*) from xsl_master_level_rule
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

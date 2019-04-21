@@ -3,7 +3,7 @@ package service;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.XslUserRegister;
 import util.XslResult;
-
+import vo.UserReqVo;
 
 /**
  * 用户注册
@@ -28,11 +28,10 @@ public interface UserService {
     /**
      * 登录
      *
-     * @param username
-     * @param password
+     * @param userReqVo
      * @return
      */
-    XslResult userLogin(String username,  String password,  String token);
+    XslResult userLogin(UserReqVo userReqVo);
 
     /**
      * 检查Token被更换

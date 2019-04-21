@@ -71,7 +71,7 @@
     <sql id="Base_Column_List">
     id, userId, hunterId, taskId, createDate
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslHistoryhExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslHistoryhExample">
         select
         <if test="distinct">
             distinct
@@ -95,7 +95,7 @@
     delete from xsl_historyh
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslHistoryhExample">
+    <delete id="deleteByExample" parameterType="example.XslHistoryhExample">
         delete from xsl_historyh
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -144,7 +144,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslHistoryhExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslHistoryhExample" resultType="java.lang.Integer">
         select count(*) from xsl_historyh
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

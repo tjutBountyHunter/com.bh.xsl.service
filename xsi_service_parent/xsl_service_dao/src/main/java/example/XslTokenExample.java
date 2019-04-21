@@ -1,18 +1,18 @@
-package pojo;
+package example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class XslMasterLevelRuleExample {
+public class XslTokenExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public XslMasterLevelRuleExample() {
+    public XslTokenExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -192,123 +192,203 @@ public class XslMasterLevelRuleExample {
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidIsNull() {
-            addCriterion("masterLevelId is null");
+        public Criteria andPhoneIsNull() {
+            addCriterion("phone is null");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidIsNotNull() {
-            addCriterion("masterLevelId is not null");
+        public Criteria andPhoneIsNotNull() {
+            addCriterion("phone is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidEqualTo(Integer value) {
-            addCriterion("masterLevelId =", value, "masterlevelid");
+        public Criteria andPhoneEqualTo(String value) {
+            addCriterion("phone =", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidNotEqualTo(Integer value) {
-            addCriterion("masterLevelId <>", value, "masterlevelid");
+        public Criteria andPhoneNotEqualTo(String value) {
+            addCriterion("phone <>", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidGreaterThan(Integer value) {
-            addCriterion("masterLevelId >", value, "masterlevelid");
+        public Criteria andPhoneGreaterThan(String value) {
+            addCriterion("phone >", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("masterLevelId >=", value, "masterlevelid");
+        public Criteria andPhoneGreaterThanOrEqualTo(String value) {
+            addCriterion("phone >=", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidLessThan(Integer value) {
-            addCriterion("masterLevelId <", value, "masterlevelid");
+        public Criteria andPhoneLessThan(String value) {
+            addCriterion("phone <", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidLessThanOrEqualTo(Integer value) {
-            addCriterion("masterLevelId <=", value, "masterlevelid");
+        public Criteria andPhoneLessThanOrEqualTo(String value) {
+            addCriterion("phone <=", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidIn(List<Integer> values) {
-            addCriterion("masterLevelId in", values, "masterlevelid");
+        public Criteria andPhoneLike(String value) {
+            addCriterion("phone like", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidNotIn(List<Integer> values) {
-            addCriterion("masterLevelId not in", values, "masterlevelid");
+        public Criteria andPhoneNotLike(String value) {
+            addCriterion("phone not like", value, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidBetween(Integer value1, Integer value2) {
-            addCriterion("masterLevelId between", value1, value2, "masterlevelid");
+        public Criteria andPhoneIn(List<String> values) {
+            addCriterion("phone in", values, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andMasterlevelidNotBetween(Integer value1, Integer value2) {
-            addCriterion("masterLevelId not between", value1, value2, "masterlevelid");
+        public Criteria andPhoneNotIn(List<String> values) {
+            addCriterion("phone not in", values, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidIsNull() {
-            addCriterion("ruleId is null");
+        public Criteria andPhoneBetween(String value1, String value2) {
+            addCriterion("phone between", value1, value2, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidIsNotNull() {
-            addCriterion("ruleId is not null");
+        public Criteria andPhoneNotBetween(String value1, String value2) {
+            addCriterion("phone not between", value1, value2, "phone");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidEqualTo(Integer value) {
-            addCriterion("ruleId =", value, "ruleid");
+        public Criteria andTokenIsNull() {
+            addCriterion("token is null");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidNotEqualTo(Integer value) {
-            addCriterion("ruleId <>", value, "ruleid");
+        public Criteria andTokenIsNotNull() {
+            addCriterion("token is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidGreaterThan(Integer value) {
-            addCriterion("ruleId >", value, "ruleid");
+        public Criteria andTokenEqualTo(String value) {
+            addCriterion("token =", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ruleId >=", value, "ruleid");
+        public Criteria andTokenNotEqualTo(String value) {
+            addCriterion("token <>", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidLessThan(Integer value) {
-            addCriterion("ruleId <", value, "ruleid");
+        public Criteria andTokenGreaterThan(String value) {
+            addCriterion("token >", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidLessThanOrEqualTo(Integer value) {
-            addCriterion("ruleId <=", value, "ruleid");
+        public Criteria andTokenGreaterThanOrEqualTo(String value) {
+            addCriterion("token >=", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidIn(List<Integer> values) {
-            addCriterion("ruleId in", values, "ruleid");
+        public Criteria andTokenLessThan(String value) {
+            addCriterion("token <", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidNotIn(List<Integer> values) {
-            addCriterion("ruleId not in", values, "ruleid");
+        public Criteria andTokenLessThanOrEqualTo(String value) {
+            addCriterion("token <=", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidBetween(Integer value1, Integer value2) {
-            addCriterion("ruleId between", value1, value2, "ruleid");
+        public Criteria andTokenLike(String value) {
+            addCriterion("token like", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andRuleidNotBetween(Integer value1, Integer value2) {
-            addCriterion("ruleId not between", value1, value2, "ruleid");
+        public Criteria andTokenNotLike(String value) {
+            addCriterion("token not like", value, "token");
+            return (Criteria) this;
+        }
+
+        public Criteria andTokenIn(List<String> values) {
+            addCriterion("token in", values, "token");
+            return (Criteria) this;
+        }
+
+        public Criteria andTokenNotIn(List<String> values) {
+            addCriterion("token not in", values, "token");
+            return (Criteria) this;
+        }
+
+        public Criteria andTokenBetween(String value1, String value2) {
+            addCriterion("token between", value1, value2, "token");
+            return (Criteria) this;
+        }
+
+        public Criteria andTokenNotBetween(String value1, String value2) {
+            addCriterion("token not between", value1, value2, "token");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNull() {
+            addCriterion("state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNotNull() {
+            addCriterion("state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateEqualTo(Byte value) {
+            addCriterion("state =", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotEqualTo(Byte value) {
+            addCriterion("state <>", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThan(Byte value) {
+            addCriterion("state >", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThanOrEqualTo(Byte value) {
+            addCriterion("state >=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThan(Byte value) {
+            addCriterion("state <", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThanOrEqualTo(Byte value) {
+            addCriterion("state <=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIn(List<Byte> values) {
+            addCriterion("state in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotIn(List<Byte> values) {
+            addCriterion("state not in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateBetween(Byte value1, Byte value2) {
+            addCriterion("state between", value1, value2, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotBetween(Byte value1, Byte value2) {
+            addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
 

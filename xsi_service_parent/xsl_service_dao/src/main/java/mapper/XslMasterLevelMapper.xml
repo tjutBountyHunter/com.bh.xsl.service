@@ -71,7 +71,7 @@
     <sql id="Base_Column_List">
     id, name, descr, createDate, updateDate
   </sql>
-    <select id="selectByExample" parameterType="pojo.XslMasterLevelExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="example.XslMasterLevelExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -95,7 +95,7 @@
     delete from xsl_master_level
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslMasterLevelExample">
+    <delete id="deleteByExample" parameterType="example.XslMasterLevelExample">
         delete from xsl_master_level
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -144,7 +144,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslMasterLevelExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslMasterLevelExample" resultType="java.lang.Integer">
         select count(*) from xsl_master_level
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

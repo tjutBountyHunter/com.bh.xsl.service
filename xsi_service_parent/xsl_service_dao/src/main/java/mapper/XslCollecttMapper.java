@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslCollectt;
-import pojo.XslCollecttExample;
+import example.XslCollecttExample;
 
 public interface XslCollecttMapper {
     int countByExample(XslCollecttExample example);

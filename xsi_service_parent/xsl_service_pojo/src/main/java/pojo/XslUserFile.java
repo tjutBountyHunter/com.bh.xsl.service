@@ -2,14 +2,14 @@ package pojo;
 
 import java.util.Date;
 
-public class XslFile {
+public class XslUserFile {
     private Integer id;
+
+    private String userid;
 
     private String fileid;
 
-    private String url;
-
-    private String descr;
+    private String type;
 
     private Date createdate;
 
@@ -23,6 +23,14 @@ public class XslFile {
         this.id = id;
     }
 
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid == null ? null : userid.trim();
+    }
+
     public String getFileid() {
         return fileid;
     }
@@ -31,20 +39,12 @@ public class XslFile {
         this.fileid = fileid == null ? null : fileid.trim();
     }
 
-    public String getUrl() {
-        return url;
+    public String getType() {
+        return type;
     }
 
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
-    public String getDescr() {
-        return descr;
-    }
-
-    public void setDescr(String descr) {
-        this.descr = descr == null ? null : descr.trim();
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Date getCreatedate() {

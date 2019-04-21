@@ -77,7 +77,7 @@
     id, userId, commercialCode, efileCode, orderCode, money, robotIp, informant, createDate, 
     updateDate
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.IbmCommercialExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.IbmCommercialExample">
         select
         <if test="distinct">
             distinct
@@ -101,7 +101,7 @@
     delete from ibm_commercial
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.IbmCommercialExample">
+    <delete id="deleteByExample" parameterType="example.IbmCommercialExample">
         delete from ibm_commercial
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -184,7 +184,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.IbmCommercialExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.IbmCommercialExample" resultType="java.lang.Integer">
         select count(*) from ibm_commercial
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

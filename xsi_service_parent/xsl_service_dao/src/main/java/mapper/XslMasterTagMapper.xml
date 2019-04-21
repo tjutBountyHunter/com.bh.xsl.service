@@ -70,7 +70,7 @@
     <sql id="Base_Column_List">
     id, masterId, tagId, createDate
   </sql>
-    <select id="selectByExample" parameterType="pojo.XslMasterTagExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="example.XslMasterTagExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -94,7 +94,7 @@
     delete from xsl_master_tag
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslMasterTagExample">
+    <delete id="deleteByExample" parameterType="example.XslMasterTagExample">
         delete from xsl_master_tag
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -137,7 +137,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslMasterTagExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslMasterTagExample" resultType="java.lang.Integer">
         select count(*) from xsl_master_tag
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

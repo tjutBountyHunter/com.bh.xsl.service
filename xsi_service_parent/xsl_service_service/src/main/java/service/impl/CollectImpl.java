@@ -1,5 +1,7 @@
 package service.impl;
 
+import example.XslCollecthExample;
+import example.XslCollecttExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

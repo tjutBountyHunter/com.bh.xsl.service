@@ -1,5 +1,7 @@
 package service.impl;
 
+import example.XslHunterExample;
+import example.XslMasterExample;
 import mapper.XslHunterLevelMapper;
 import mapper.XslHunterMapper;
 import mapper.XslMasterLevelMapper;
@@ -35,7 +37,6 @@ public class HunMasterImpl implements HunMaster {
         XslHunter xslHunter = new XslHunter();
         XslMaster xslMaster = new XslMaster();
         xslHunter.setLevel((short) 1);
-        xslHunter.setUserid(userId);
         xslHunter.setTaskaccnum(0);
         xslHunter.setTaskfailnum(0);
         xslHunter.setEmpirical(0);
@@ -43,7 +44,6 @@ public class HunMasterImpl implements HunMaster {
         xslHunter.setLastTime(new Date());
         xslHunter.setDescr("");
         xslMaster.setLevel((short) 1);
-        xslMaster.setUserid(userId);
         xslMaster.setTaskaccnum(0);
         xslMaster.setTaskrevokenum(0);
         xslMaster.setCredit((short) 100);
@@ -54,11 +54,9 @@ public class HunMasterImpl implements HunMaster {
         xslMasterMapper.insertSelective(xslMaster);
         XslHunterExample xslHunterExample = new XslHunterExample();
         XslHunterExample.Criteria criteria = xslHunterExample.createCriteria();
-        criteria.andUseridEqualTo(userId);
         List<XslHunter> list = xslHunterMapper.selectByExample(xslHunterExample);
         XslMasterExample xslMasterExample = new XslMasterExample();
         XslMasterExample.Criteria criteria1 = xslMasterExample.createCriteria();
-        criteria1.andUseridEqualTo(userId);
         List<XslHunter> list1 = xslHunterMapper.selectByExample(xslHunterExample);
         Map<String, Integer> map = new HashMap<>();
         map.put("masterId", list1.get(0).getId());

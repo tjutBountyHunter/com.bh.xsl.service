@@ -74,7 +74,7 @@
     <sql id="Base_Column_List">
     id, sno, major, college, school, startDate, degree, schoolHours
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslSchoolinfoExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslSchoolinfoExample">
         select
         <if test="distinct">
             distinct
@@ -98,7 +98,7 @@
     delete from xsl_schoolinfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslSchoolinfoExample">
+    <delete id="deleteByExample" parameterType="example.XslSchoolinfoExample">
         delete from xsl_schoolinfo
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -167,7 +167,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslSchoolinfoExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslSchoolinfoExample" resultType="java.lang.Integer">
         select count(*) from xsl_schoolinfo
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.XslFileMapper" >
-  <resultMap id="BaseResultMap" type="pojo.XslFile" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+<mapper namespace="mapper.XslUserFileMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslUserFile" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
     <result column="fileId" property="fileid" jdbcType="VARCHAR" />
-    <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="descr" property="descr" jdbcType="VARCHAR" />
-    <result column="createDate" property="createdate" jdbcType="DATE" />
-    <result column="updateDate" property="updatedate" jdbcType="DATE" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, fileId, url, descr, createDate, updateDate
+    Id, userId, fileId, type, createDate, updateDate
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslFileExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslUserFileExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from xsl_file
+    from xsl_user_file
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,41 +87,41 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from xsl_file
-    where id = #{id,jdbcType=INTEGER}
+    from xsl_user_file
+    where Id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from xsl_file
-    where id = #{id,jdbcType=INTEGER}
+    delete from xsl_user_file
+    where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="example.XslFileExample" >
-    delete from xsl_file
+  <delete id="deleteByExample" parameterType="example.XslUserFileExample" >
+    delete from xsl_user_file
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="pojo.XslFile" >
-    insert into xsl_file (id, fileId, url, 
-      descr, createDate, updateDate
+  <insert id="insert" parameterType="pojo.XslUserFile" >
+    insert into xsl_user_file (Id, userId, fileId, 
+      type, createDate, updateDate
       )
-    values (#{id,jdbcType=INTEGER}, #{fileid,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{descr,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{updatedate,jdbcType=DATE}
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{fileid,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="example.XslFileExample" >
-    insert into xsl_file
+  <insert id="insertSelective" parameterType="pojo.XslUserFile" >
+    insert into xsl_user_file
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        id,
+        Id,
+      </if>
+      <if test="userid != null" >
+        userId,
       </if>
       <if test="fileid != null" >
         fileId,
       </if>
-      <if test="url != null" >
-        url,
-      </if>
-      <if test="descr != null" >
-        descr,
+      <if test="type != null" >
+        type,
       </if>
       <if test="createdate != null" >
         createDate,
@@ -134,49 +134,49 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
       <if test="fileid != null" >
         #{fileid,jdbcType=VARCHAR},
       </if>
-      <if test="url != null" >
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="descr != null" >
-        #{descr,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        #{createdate,jdbcType=DATE},
+        #{createdate,jdbcType=TIMESTAMP},
       </if>
       <if test="updatedate != null" >
-        #{updatedate,jdbcType=DATE},
+        #{updatedate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="example.XslFileExample" resultType="java.lang.Integer" >
-    select count(*) from xsl_file
+  <select id="countByExample" parameterType="example.XslUserFileExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_user_file
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update xsl_file
+    update xsl_user_file
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=VARCHAR},
       </if>
       <if test="record.fileid != null" >
         fileId = #{record.fileid,jdbcType=VARCHAR},
       </if>
-      <if test="record.url != null" >
-        url = #{record.url,jdbcType=VARCHAR},
-      </if>
-      <if test="record.descr != null" >
-        descr = #{record.descr,jdbcType=VARCHAR},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.createdate != null" >
-        createDate = #{record.createdate,jdbcType=DATE},
+        createDate = #{record.createdate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updatedate != null" >
-        updateDate = #{record.updatedate,jdbcType=DATE},
+        updateDate = #{record.updatedate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -184,45 +184,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update xsl_file
-    set id = #{record.id,jdbcType=INTEGER},
+    update xsl_user_file
+    set Id = #{record.id,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=VARCHAR},
       fileId = #{record.fileid,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR},
-      descr = #{record.descr,jdbcType=VARCHAR},
-      createDate = #{record.createdate,jdbcType=DATE},
-      updateDate = #{record.updatedate,jdbcType=DATE}
+      type = #{record.type,jdbcType=VARCHAR},
+      createDate = #{record.createdate,jdbcType=TIMESTAMP},
+      updateDate = #{record.updatedate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslFile" >
-    update xsl_file
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslUserFile" >
+    update xsl_user_file
     <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
       <if test="fileid != null" >
         fileId = #{fileid,jdbcType=VARCHAR},
       </if>
-      <if test="url != null" >
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="descr != null" >
-        descr = #{descr,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        createDate = #{createdate,jdbcType=DATE},
+        createDate = #{createdate,jdbcType=TIMESTAMP},
       </if>
       <if test="updatedate != null" >
-        updateDate = #{updatedate,jdbcType=DATE},
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pojo.XslFile" >
-    update xsl_file
-    set fileId = #{fileid,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      descr = #{descr,jdbcType=VARCHAR},
-      createDate = #{createdate,jdbcType=DATE},
-      updateDate = #{updatedate,jdbcType=DATE}
-    where id = #{id,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="pojo.XslUserFile" >
+    update xsl_user_file
+    set userId = #{userid,jdbcType=VARCHAR},
+      fileId = #{fileid,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

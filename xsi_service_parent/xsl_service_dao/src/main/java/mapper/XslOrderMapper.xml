@@ -75,7 +75,7 @@
     <sql id="Base_Column_List">
     id, orderId, sendId, taskId, receiveId, money, state, startDate, endDate
   </sql>
-    <select id="selectByExample" parameterType="pojo.XslOrderExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="example.XslOrderExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -99,7 +99,7 @@
     delete from xsl_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslOrderExample">
+    <delete id="deleteByExample" parameterType="example.XslOrderExample">
         delete from xsl_order
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -176,7 +176,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslOrderExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslOrderExample" resultType="java.lang.Integer">
         select count(*) from xsl_order
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

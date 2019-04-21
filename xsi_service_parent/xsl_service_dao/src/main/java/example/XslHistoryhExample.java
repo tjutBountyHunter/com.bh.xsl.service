@@ -1,18 +1,18 @@
-package pojo;
+package example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class XslCollecthExample {
+public class XslHistoryhExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public XslCollecthExample() {
+    public XslHistoryhExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -312,63 +312,123 @@ public class XslCollecthExample {
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateIsNull() {
-            addCriterion("collectDate is null");
+        public Criteria andTaskidIsNull() {
+            addCriterion("taskId is null");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateIsNotNull() {
-            addCriterion("collectDate is not null");
+        public Criteria andTaskidIsNotNull() {
+            addCriterion("taskId is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateEqualTo(Date value) {
-            addCriterionForJDBCDate("collectDate =", value, "collectdate");
+        public Criteria andTaskidEqualTo(String value) {
+            addCriterion("taskId =", value, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("collectDate <>", value, "collectdate");
+        public Criteria andTaskidNotEqualTo(Integer value) {
+            addCriterion("taskId <>", value, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateGreaterThan(Date value) {
-            addCriterionForJDBCDate("collectDate >", value, "collectdate");
+        public Criteria andTaskidGreaterThan(Integer value) {
+            addCriterion("taskId >", value, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("collectDate >=", value, "collectdate");
+        public Criteria andTaskidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("taskId >=", value, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateLessThan(Date value) {
-            addCriterionForJDBCDate("collectDate <", value, "collectdate");
+        public Criteria andTaskidLessThan(Integer value) {
+            addCriterion("taskId <", value, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("collectDate <=", value, "collectdate");
+        public Criteria andTaskidLessThanOrEqualTo(Integer value) {
+            addCriterion("taskId <=", value, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateIn(List<Date> values) {
-            addCriterionForJDBCDate("collectDate in", values, "collectdate");
+        public Criteria andTaskidIn(List<Integer> values) {
+            addCriterion("taskId in", values, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("collectDate not in", values, "collectdate");
+        public Criteria andTaskidNotIn(List<Integer> values) {
+            addCriterion("taskId not in", values, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("collectDate between", value1, value2, "collectdate");
+        public Criteria andTaskidBetween(Integer value1, Integer value2) {
+            addCriterion("taskId between", value1, value2, "taskid");
             return (Criteria) this;
         }
 
-        public Criteria andCollectdateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("collectDate not between", value1, value2, "collectdate");
+        public Criteria andTaskidNotBetween(Integer value1, Integer value2) {
+            addCriterion("taskId not between", value1, value2, "taskid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateIsNull() {
+            addCriterion("createDate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateIsNotNull() {
+            addCriterion("createDate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate =", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate <>", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateGreaterThan(Date value) {
+            addCriterionForJDBCDate("createDate >", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate >=", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateLessThan(Date value) {
+            addCriterionForJDBCDate("createDate <", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate <=", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateIn(List<Date> values) {
+            addCriterionForJDBCDate("createDate in", values, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("createDate not in", values, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("createDate between", value1, value2, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("createDate not between", value1, value2, "createdate");
             return (Criteria) this;
         }
     }

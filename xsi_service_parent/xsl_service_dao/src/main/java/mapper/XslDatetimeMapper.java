@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslDatetime;
-import pojo.XslDatetimeExample;
+import example.XslDatetimeExample;
 
 public interface XslDatetimeMapper {
     int countByExample(XslDatetimeExample example);

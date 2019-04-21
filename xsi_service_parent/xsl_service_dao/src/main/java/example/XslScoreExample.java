@@ -1,18 +1,18 @@
-package pojo;
+package example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class XslTaskTagExample {
+public class XslScoreExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public XslTaskTagExample() {
+    public XslScoreExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -192,123 +192,123 @@ public class XslTaskTagExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaskidIsNull() {
-            addCriterion("taskId is null");
+        public Criteria andHunteridIsNull() {
+            addCriterion("hunterId is null");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidIsNotNull() {
-            addCriterion("taskId is not null");
+        public Criteria andHunteridIsNotNull() {
+            addCriterion("hunterId is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidEqualTo(Integer value) {
-            addCriterion("taskId =", value, "taskid");
+        public Criteria andHunteridEqualTo(Integer value) {
+            addCriterion("hunterId =", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidNotEqualTo(Integer value) {
-            addCriterion("taskId <>", value, "taskid");
+        public Criteria andHunteridNotEqualTo(Integer value) {
+            addCriterion("hunterId <>", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidGreaterThan(Integer value) {
-            addCriterion("taskId >", value, "taskid");
+        public Criteria andHunteridGreaterThan(Integer value) {
+            addCriterion("hunterId >", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("taskId >=", value, "taskid");
+        public Criteria andHunteridGreaterThanOrEqualTo(Integer value) {
+            addCriterion("hunterId >=", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidLessThan(Integer value) {
-            addCriterion("taskId <", value, "taskid");
+        public Criteria andHunteridLessThan(Integer value) {
+            addCriterion("hunterId <", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidLessThanOrEqualTo(Integer value) {
-            addCriterion("taskId <=", value, "taskid");
+        public Criteria andHunteridLessThanOrEqualTo(Integer value) {
+            addCriterion("hunterId <=", value, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidIn(List<Integer> values) {
-            addCriterion("taskId in", values, "taskid");
+        public Criteria andHunteridIn(List<Integer> values) {
+            addCriterion("hunterId in", values, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidNotIn(List<Integer> values) {
-            addCriterion("taskId not in", values, "taskid");
+        public Criteria andHunteridNotIn(List<Integer> values) {
+            addCriterion("hunterId not in", values, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidBetween(Integer value1, Integer value2) {
-            addCriterion("taskId between", value1, value2, "taskid");
+        public Criteria andHunteridBetween(Integer value1, Integer value2) {
+            addCriterion("hunterId between", value1, value2, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTaskidNotBetween(Integer value1, Integer value2) {
-            addCriterion("taskId not between", value1, value2, "taskid");
+        public Criteria andHunteridNotBetween(Integer value1, Integer value2) {
+            addCriterion("hunterId not between", value1, value2, "hunterid");
             return (Criteria) this;
         }
 
-        public Criteria andTagidIsNull() {
-            addCriterion("tagId is null");
+        public Criteria andScoreIsNull() {
+            addCriterion("score is null");
             return (Criteria) this;
         }
 
-        public Criteria andTagidIsNotNull() {
-            addCriterion("tagId is not null");
+        public Criteria andScoreIsNotNull() {
+            addCriterion("score is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTagidEqualTo(Integer value) {
-            addCriterion("tagId =", value, "tagid");
+        public Criteria andScoreEqualTo(Short value) {
+            addCriterion("score =", value, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidNotEqualTo(Integer value) {
-            addCriterion("tagId <>", value, "tagid");
+        public Criteria andScoreNotEqualTo(Short value) {
+            addCriterion("score <>", value, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidGreaterThan(Integer value) {
-            addCriterion("tagId >", value, "tagid");
+        public Criteria andScoreGreaterThan(Short value) {
+            addCriterion("score >", value, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("tagId >=", value, "tagid");
+        public Criteria andScoreGreaterThanOrEqualTo(Short value) {
+            addCriterion("score >=", value, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidLessThan(Integer value) {
-            addCriterion("tagId <", value, "tagid");
+        public Criteria andScoreLessThan(Short value) {
+            addCriterion("score <", value, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidLessThanOrEqualTo(Integer value) {
-            addCriterion("tagId <=", value, "tagid");
+        public Criteria andScoreLessThanOrEqualTo(Short value) {
+            addCriterion("score <=", value, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidIn(List<Integer> values) {
-            addCriterion("tagId in", values, "tagid");
+        public Criteria andScoreIn(List<Short> values) {
+            addCriterion("score in", values, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidNotIn(List<Integer> values) {
-            addCriterion("tagId not in", values, "tagid");
+        public Criteria andScoreNotIn(List<Short> values) {
+            addCriterion("score not in", values, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidBetween(Integer value1, Integer value2) {
-            addCriterion("tagId between", value1, value2, "tagid");
+        public Criteria andScoreBetween(Short value1, Short value2) {
+            addCriterion("score between", value1, value2, "score");
             return (Criteria) this;
         }
 
-        public Criteria andTagidNotBetween(Integer value1, Integer value2) {
-            addCriterion("tagId not between", value1, value2, "tagid");
+        public Criteria andScoreNotBetween(Short value1, Short value2) {
+            addCriterion("score not between", value1, value2, "score");
             return (Criteria) this;
         }
 

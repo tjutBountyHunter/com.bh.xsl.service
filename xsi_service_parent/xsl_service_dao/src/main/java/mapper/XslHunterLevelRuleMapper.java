@@ -2,7 +2,7 @@ package mapper;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHunterLevelRule;
-import pojo.XslHunterLevelRuleExample;
+import example.XslHunterLevelRuleExample;
 
 import java.util.List;
 

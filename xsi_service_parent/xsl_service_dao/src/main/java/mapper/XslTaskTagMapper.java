@@ -2,7 +2,7 @@ package mapper;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslTaskTag;
-import pojo.XslTaskTagExample;
+import example.XslTaskTagExample;
 
 import java.util.List;
 

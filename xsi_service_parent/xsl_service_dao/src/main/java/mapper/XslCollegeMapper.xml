@@ -69,7 +69,7 @@
     <sql id="Base_Column_List">
     id, collegeName, schoolId
   </sql>
-    <select id="selectByExample" parameterType="pojo.XslCollegeExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="example.XslCollegeExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -93,7 +93,7 @@
     delete from xsl_college
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslCollegeExample">
+    <delete id="deleteByExample" parameterType="example.XslCollegeExample">
         delete from xsl_college
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -130,7 +130,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslCollegeExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslCollegeExample" resultType="java.lang.Integer">
         select count(*) from xsl_college
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

@@ -1,4 +1,4 @@
-package pojo;
+package example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -202,7 +202,7 @@ public class XslHunterExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseridEqualTo(Integer value) {
+        public Criteria andUseridEqualTo(String value) {
             addCriterion("userId =", value, "userid");
             return (Criteria) this;
         }

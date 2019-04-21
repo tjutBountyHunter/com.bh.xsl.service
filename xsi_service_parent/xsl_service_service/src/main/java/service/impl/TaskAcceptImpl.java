@@ -2,6 +2,8 @@ package service.impl;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import dao.JedisClient;
+import example.XslTaskExample;
+import example.XslUserExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

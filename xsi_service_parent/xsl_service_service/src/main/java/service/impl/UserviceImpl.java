@@ -2,16 +2,21 @@ package service.impl;
 
 import dao.JedisClient;
 import enums.UserStateEnum;
+import example.*;
 import mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import pojo.*;
 import service.*;
 import util.*;
+import vo.UserReqVo;
+import vo.UserResVo;
 
 import java.util.*;
 
@@ -33,6 +38,8 @@ public class UserviceImpl implements UserService {
     private XslSchoolinfoMapper xslSchoollinfoMapper;
     @Autowired
     private XslUserUpdateMapper xslUserUpdateMapper;
+	@Autowired
+	private XslUserFileMapper xslUserFileMapper;
     @Autowired
     private JedisClient jedisClient;
 
@@ -73,8 +80,6 @@ public class UserviceImpl implements UserService {
             Map<String, Integer> map = hunMaster.insertPeople((Integer) xslResult.getData());
             JedisClientUtil.set(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken(), Login_SESSION_EXPIRE);
 
-            XslResult xsl = defaultFileImage(xslUserRegister.getPhone());
-
             map.put("id", (Integer) xslResult.getData());
             System.out.println(map.get("id") + " 51651");
             xslUserUpdateMapper.updateXslUser(map);
@@ -83,40 +88,12 @@ public class UserviceImpl implements UserService {
             criteria1.andPhoneEqualTo(xslUserRegister.getPhone());
             List<XslUser> list1 = xslUserMapper.selectByExample(example1);
             XslUser xslUser = list1.get(0);
-            xslUser.setUrl((String) xsl.getData());
             return XslResult.ok(xslUser);
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
         }
     }
-
-	private XslResult defaultFileImage(String phone) {
-		XslUserExample xslUserExample = new XslUserExample();
-		XslUserExample.Criteria criteria = xslUserExample.createCriteria();
-		criteria.andPhoneEqualTo(phone);
-		XslFile xslFile = new XslFile();
-		List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
-		if (list == null || list.size() < 1) {
-			return XslResult.build(400, "用户不存在");
-		}
-
-		XslUser xslUser = list.get(0);
-
-		xslFile.setDesc("学生证");
-		xslFile.setUserid(xslUser.getId());
-		xslFile.setUpdatedate(new Date());
-		xslFile.setCreatedate(new Date());
-		xslFile.setUrl(fileName());
-		try {
-			xslFileMapper.insertSelective(xslFile);
-			return XslResult.ok(xslFile.getUrl());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return XslResult.build(500, "服务器异常");
-		}
-
-	}
 
 	/**
 	 * 快速注册
@@ -178,12 +155,27 @@ public class UserviceImpl implements UserService {
     /**
      * 登录
      *
-     * @param phone
-     * @param password
+     * @param userReqVo
      * @return
      */
     @Override
-    public XslResult  userLogin(String phone, String password, String token) {
+    public XslResult userLogin(UserReqVo userReqVo) {
+    	String phone = userReqVo.getPhone();
+    	String password = userReqVo.getPassword();
+    	String token = userReqVo.getToken();
+
+    	if(StringUtils.isEmpty(phone)){
+			return XslResult.build(403, "手机号码为空");
+		}
+
+		if(StringUtils.isEmpty(password)){
+			return XslResult.build(403, "密码为空");
+		}
+
+		if(StringUtils.isEmpty(token)){
+			return XslResult.build(403, "权限不足");
+		}
+
         //1.查询
         XslUserExample example = new XslUserExample();
         XslUserExample.Criteria criteria = example.createCriteria();
@@ -196,25 +188,63 @@ public class UserviceImpl implements UserService {
         }
         XslUser user = list.get(0);
 
+		UserResVo resVo = new UserResVo();
+		BeanUtils.copyProperties(user, resVo);
+
         //3.校验密码
         if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
             logger.info("password error");
             return XslResult.build(400, "用户名或密码错误");
         }
 
-        //4.查询图片信息
-        int id = user.getId();
-        XslFileExample xslFileExample = new XslFileExample();
-        XslFileExample.Criteria criteria1 = xslFileExample.createCriteria();
-        criteria1.andUseridEqualTo(id);
-        List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
-        String imgUrl = "http://47.93.200.190/images/default.png";
-        if (xslFileList != null && xslFileList.size() > 0) {
-            imgUrl = xslFileList.get(0).getUrl();
-        }
-        user.setUrl(imgUrl);
+		String userId = user.getUserId();
 
-        //5.判断用户异常状态
+        //4.查询图片信息
+		String imgUrl = "http://47.93.200.190/images/default.png";
+		XslUserFileExample xslUserFileExample = new XslUserFileExample();
+		XslUserFileExample.Criteria criteria2 = xslUserFileExample.createCriteria();
+		criteria2.andUseridEqualTo(userId);
+		criteria2.andTypeEqualTo("TX");
+		List<XslUserFile> xslUserFiles = xslUserFileMapper.selectByExample(xslUserFileExample);
+		if(xslUserFiles != null && xslUserFiles.size() > 0){
+			XslFileExample xslFileExample = new XslFileExample();
+			XslFileExample.Criteria criteria1 = xslFileExample.createCriteria();
+			criteria1.andFileidEqualTo(xslUserFiles.get(0).getFileid());
+			List<XslFile> xslFileList = xslFileMapper.selectByExample(xslFileExample);
+			if (xslFileList != null && xslFileList.size() > 0) {
+				imgUrl = xslFileList.get(0).getUrl();
+			}
+		}
+
+		resVo.setTxUrl(imgUrl);
+
+		//5.查询雇主信息和猎人信息
+		XslHunterExample xslHunterExample = new XslHunterExample();
+		XslMasterExample xslMasterExample = new XslMasterExample();
+		XslHunterExample.Criteria criteria1 = xslHunterExample.createCriteria();
+		criteria1.andUseridEqualTo(userId);
+		XslMasterExample.Criteria criteria3 = xslMasterExample.createCriteria();
+		criteria3.andUseridEqualTo(userId);
+
+		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
+		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
+
+		resVo.setHunterId(xslHunters.get(0).getHunterId());
+		resVo.setHunterLevel(xslHunters.get(0).getLevel());
+		resVo.setMasterId(xslMasters.get(0).getMasterId());
+		resVo.setMasterLevel(xslMasters.get(0).getLevel());
+
+		//6.获取学校信息
+		if(!StringUtils.isEmpty(user.getSchoolinfo())){
+			XslSchoolinfoExample xslSchoolinfoExample = new XslSchoolinfoExample();
+			XslSchoolinfoExample.Criteria criteria4 = xslSchoolinfoExample.createCriteria();
+			criteria4.andSchoolIdEqualTo(user.getSchoolinfo());
+			List<XslSchoolinfo> xslSchoolinfos = xslSchoollinfoMapper.selectByExample(xslSchoolinfoExample);
+			BeanUtils.copyProperties(xslSchoolinfos.get(0), user);
+		}
+
+
+        //7.判断用户异常状态
         Byte state = user.getState();
         if(state == -2){
             logger.info("login check status is {}", user.getState());

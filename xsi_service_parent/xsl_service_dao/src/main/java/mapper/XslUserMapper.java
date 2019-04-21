@@ -1,7 +1,7 @@
 package mapper;
 
 import pojo.XslUser;
-import pojo.XslUserExample;
+import example.XslUserExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

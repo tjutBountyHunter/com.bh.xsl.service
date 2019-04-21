@@ -1,5 +1,8 @@
 package service.impl;
 
+import example.XslFileExample;
+import example.XslHistoryhExample;
+import example.XslUserExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +62,7 @@ public class TaskStatefindImpl implements TaskStatefind {
                         XslUser xslUser = list2.get(0);
                         XslFileExample xslFileExample = new XslFileExample();
                         XslFileExample.Criteria criteria2 = xslFileExample.createCriteria();
-                        criteria2.andUseridEqualTo(xslUser.getId());
+//                        criteria2.andUseridEqualTo(xslUser.getId());
                         List<XslFile> list3 = xslFileMapper.selectByExample(xslFileExample);
                         xslAccectHunter.setName(xslUser.getName());
                         xslAccectHunter.setUrl(list3.get(0).getUrl());

@@ -31,8 +31,6 @@ public class XslUser {
 
     private Date updatedate;
 
-    private String url;
-
     public Integer getId() {
         return id;
     }
@@ -145,11 +143,4 @@ public class XslUser {
         this.updatedate = updatedate;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

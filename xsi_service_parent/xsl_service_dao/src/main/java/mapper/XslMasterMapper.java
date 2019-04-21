@@ -2,7 +2,7 @@ package mapper;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslMaster;
-import pojo.XslMasterExample;
+import example.XslMasterExample;
 
 import java.util.List;
 

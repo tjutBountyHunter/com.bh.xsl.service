@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslScore;
-import pojo.XslScoreExample;
+import example.XslScoreExample;
 
 public interface XslScoreMapper {
     int countByExample(XslScoreExample example);

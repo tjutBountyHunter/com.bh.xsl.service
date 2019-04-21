@@ -75,7 +75,7 @@
     <sql id="Base_Column_List">
     id, userId, level, empirical, taskAccNum, taskFailNum, credit, descr, lastTime
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslHunterExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslHunterExample">
         select
         <if test="distinct">
             distinct
@@ -99,7 +99,7 @@
     delete from xsl_hunter
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslHunterExample">
+    <delete id="deleteByExample" parameterType="example.XslHunterExample">
         delete from xsl_hunter
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -182,7 +182,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslHunterExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslHunterExample" resultType="java.lang.Integer">
         select count(*) from xsl_hunter
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

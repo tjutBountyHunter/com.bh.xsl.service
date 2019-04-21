@@ -6,9 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.XslUserRegister;
+import service.FileOperateService;
 import service.UserService;
 import util.XslResult;
-
+import vo.UserReqVo;
 
 /**
  * 登录注册
@@ -21,6 +22,8 @@ import util.XslResult;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private FileOperateService fileOperateService;
 
     /**
      * 注册
@@ -57,9 +60,8 @@ public class UserController {
      */
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult fileUp(@Param("uploadFile") MultipartFile uploadFile, @Param("phone") String phone) {
-        XslResult xslResult = null;
-        xslResult = userService.createFile(uploadFile, phone);
+    public XslResult fileUp(@Param("uploadFile") MultipartFile uploadFile, @Param("phone") String phone, @Param("type") String type) {
+        XslResult xslResult = fileOperateService.fileUpload(uploadFile, phone, type);
         return xslResult;
 
 
@@ -68,15 +70,13 @@ public class UserController {
     /**
      * 用户登录
      *
-     * @param username
-     * @param password
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult userLogin(String username, String password, String token) {
+    public XslResult userLogin(UserReqVo userReqVo) {
         try {
-            XslResult result = userService.userLogin(username, password, token);
+            XslResult result = userService.userLogin(userReqVo);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

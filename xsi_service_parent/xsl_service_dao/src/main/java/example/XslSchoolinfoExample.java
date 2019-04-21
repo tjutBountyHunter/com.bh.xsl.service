@@ -1,4 +1,4 @@
-package pojo;
+package example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,6 +246,11 @@ public class XslSchoolinfoExample {
 
         public Criteria andMajorEqualTo(String value) {
             addCriterion("major =", value, "major");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolIdEqualTo(String value) {
+            addCriterion("schoolId =", value, "major");
             return (Criteria) this;
         }
 

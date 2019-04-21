@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHistoryh;
-import pojo.XslHistoryhExample;
+import example.XslHistoryhExample;
 
 public interface XslHistoryhMapper {
     int countByExample(XslHistoryhExample example);

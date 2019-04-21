@@ -12,5 +12,5 @@ public interface FileOperateService {
 	 * @param phone
 	 * @return
 	 */
-	XslResult fileUpload(MultipartFile uploadFile, String phone);
+	XslResult fileUpload(MultipartFile uploadFile, String phone, String type);
 }

@@ -77,7 +77,7 @@
     <sql id="Base_Column_List">
     id, taskId, cid, descr, sendId, money, state, createDate, updateDate, deadline, number
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslTaskExample">
         select
         <if test="distinct">
             distinct
@@ -101,7 +101,7 @@
     delete from xsl_task
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslTaskExample">
+    <delete id="deleteByExample" parameterType="example.XslTaskExample">
         delete from xsl_task
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -190,7 +190,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="pojo.XslTaskExample" resultType="java.lang.Integer">
+    <select id="countByExample" parameterType="example.XslTaskExample" resultType="java.lang.Integer">
         select count(*) from xsl_task
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
