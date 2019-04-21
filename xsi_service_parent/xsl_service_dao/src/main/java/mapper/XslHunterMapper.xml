@@ -73,7 +73,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, userId, level, empirical, taskAccNum, taskFailNum, credit, descr, lastTime
+    id, hunterId, userId, level, empirical, taskAccNum, taskFailNum, credit, descr, lastTime
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslHunterExample">
         select

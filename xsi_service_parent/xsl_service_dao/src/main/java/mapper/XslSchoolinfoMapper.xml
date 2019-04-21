@@ -72,7 +72,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, sno, major, college, school, startDate, degree, schoolHours
+    id, schoolId, sno, major, college, school, startDate, degree, schoolHours
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslSchoolinfoExample">
         select

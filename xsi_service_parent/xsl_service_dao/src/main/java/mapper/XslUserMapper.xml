@@ -3,8 +3,9 @@
 <mapper namespace="mapper.XslUserMapper">
     <resultMap id="BaseResultMap" type="pojo.XslUser">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="hunterId" property="hunterid" jdbcType="INTEGER"/>
-        <result column="masterId" property="masterid" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="hunterId" property="hunterid" jdbcType="VARCHAR"/>
+        <result column="masterId" property="masterid" jdbcType="VARCHAR"/>
         <result column="schoolInfo" property="schoolinfo" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
