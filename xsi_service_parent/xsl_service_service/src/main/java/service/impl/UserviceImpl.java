@@ -20,7 +20,6 @@ import vo.UserResVo;
 
 import java.util.*;
 
-import static util.ImageFile.fileName;
 
 @Service
 public class UserviceImpl implements UserService {
@@ -104,11 +103,10 @@ public class UserviceImpl implements UserService {
 	public XslResult quickCreateUser(XslUserRegister xslUserRegister){
 		XslUser xslUser = new XslUser();
 		xslUser.setUserId(UUID.randomUUID().toString());
-
+		//初始化猎人信息
 		XslHunter xslHunter = initXslHunter(xslUser);
-
+		//初始化雇主信息
 		XslMaster xslMaster = initXslMaster(xslUser);
-
 		//初始化用户信息
 		initUserInfo(xslUserRegister, xslUser, xslHunter, xslMaster);
 
@@ -190,6 +188,7 @@ public class UserviceImpl implements UserService {
 
 		UserResVo resVo = new UserResVo();
 		BeanUtils.copyProperties(user, resVo);
+		resVo.setId(user.getUserId());
 
         //3.校验密码
         if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
@@ -229,10 +228,10 @@ public class UserviceImpl implements UserService {
 		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
 		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
 
-		resVo.setHunterId(xslHunters.get(0).getHunterId());
-		resVo.setHunterLevel(xslHunters.get(0).getLevel());
-		resVo.setMasterId(xslMasters.get(0).getMasterId());
-		resVo.setMasterLevel(xslMasters.get(0).getLevel());
+		resVo.setHunterid(xslHunters.get(0).getHunterId());
+		resVo.setHunterlevel(xslHunters.get(0).getLevel());
+		resVo.setMasterid(xslMasters.get(0).getMasterId());
+		resVo.setMasterlevel(xslMasters.get(0).getLevel());
 
 		//6.获取学校信息
 		if(!StringUtils.isEmpty(user.getSchoolinfo())){
@@ -261,27 +260,31 @@ public class UserviceImpl implements UserService {
             return XslResult.build(403, "账户已被删除");
         }
 
-        jedisClient.set(REDIS_USER_SESSION_KEY + ":" +user.getPhone(), token);
+        jedisClient.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
         jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), Login_SESSION_EXPIRE);
-        logger.info("login return message is {}", JsonUtils.objectToJson(user));
-        return XslResult.ok(JsonUtils.objectToJson(user));
 
+        logger.info("login return message is {}", JsonUtils.objectToJson(resVo));
+
+        return XslResult.ok(JsonUtils.objectToJson(resVo));
     }
 
+
+
     /**
-     * 检查Token被更换
+     * 检验用户登录状态
      * @param token
      * @return
      */
     @Override
     public XslResult getUserByToken(String token, String phone) {
-        String json = jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone);
+        String result = jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone);
+
         //判断是否为空
-        if (!token.equals(json)) {
+        if (!token.equals(result)) {
             return XslResult.build(400, "登陆时间已经过期。请重新登录");
-        } else {
-            return XslResult.ok(jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone));
         }
+
+        return XslResult.ok(jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone));
     }
 
     /**
@@ -312,6 +315,8 @@ public class UserviceImpl implements UserService {
 		xslUser.setPhone(xslUserRegister.getPhone());
 		xslUser.setState(UserStateEnum.NA.getCode());
 		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
+		xslUser.setSex("男");
+		xslUser.setName(xslUserRegister.getPhone());
 		xslUser.setCreatedate(new Date());
 		xslUser.setUpdatedate(new Date());
 		try {
@@ -334,6 +339,7 @@ public class UserviceImpl implements UserService {
 		xslMaster.setMasterId(UUID.randomUUID().toString());
 		xslMaster.setLevel((short) 1);
 		xslMaster.setDescr("新人雇主");
+		xslMaster.setLastaccdate(new Date());
 		try {
 			int result = xslMasterMapper.insertSelective(xslMaster);
 
@@ -356,6 +362,7 @@ public class UserviceImpl implements UserService {
 		xslHunter.setHunterId(UUID.randomUUID().toString());
 		xslHunter.setLevel((short) 1);
 		xslHunter.setDescr("新手猎人");
+		xslHunter.setLastTime(new Date());
 		try {
 			int result = xslHunterMapper.insertSelective(xslHunter);
 

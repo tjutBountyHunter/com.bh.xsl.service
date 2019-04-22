@@ -1,13 +1,13 @@
 package vo;
 
 public class UserResVo {
-	private Integer id;
+	private String id;
 
-	private String userId;
+	private String userid;
 
-	private String hunterId;
+	private String hunterid;
 
-	private String masterId;
+	private String masterid;
 
 	private String name;
 
@@ -21,9 +21,9 @@ public class UserResVo {
 
 	private String school;
 
-	private Short hunterLevel;
+	private Short hunterlevel;
 
-	private Short masterLevel;
+	private Short masterlevel;
 
 	private String college;
 
@@ -31,36 +31,36 @@ public class UserResVo {
 
 	private String txUrl;
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getUserid() {
+		return userid;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 
-	public String getHunterId() {
-		return hunterId;
+	public String getHunterid() {
+		return hunterid;
 	}
 
-	public void setHunterId(String hunterId) {
-		this.hunterId = hunterId;
+	public void setHunterid(String hunterid) {
+		this.hunterid = hunterid;
 	}
 
-	public String getMasterId() {
-		return masterId;
+	public String getMasterid() {
+		return masterid;
 	}
 
-	public void setMasterId(String masterId) {
-		this.masterId = masterId;
+	public void setMasterid(String masterid) {
+		this.masterid = masterid;
 	}
 
 	public String getName() {
@@ -111,20 +111,20 @@ public class UserResVo {
 		this.school = school;
 	}
 
-	public Short getHunterLevel() {
-		return hunterLevel;
+	public Short getHunterlevel() {
+		return hunterlevel;
 	}
 
-	public void setHunterLevel(Short hunterLevel) {
-		this.hunterLevel = hunterLevel;
+	public void setHunterlevel(Short hunterlevel) {
+		this.hunterlevel = hunterlevel;
 	}
 
-	public Short getMasterLevel() {
-		return masterLevel;
+	public Short getMasterlevel() {
+		return masterlevel;
 	}
 
-	public void setMasterLevel(Short masterLevel) {
-		this.masterLevel = masterLevel;
+	public void setMasterlevel(Short masterlevel) {
+		this.masterlevel = masterlevel;
 	}
 
 	public String getCollege() {
