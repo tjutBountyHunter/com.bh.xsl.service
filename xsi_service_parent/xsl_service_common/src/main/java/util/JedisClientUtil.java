@@ -1,18 +1,18 @@
 package util;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@Service
-public class JedisClientUtil{
 
+@Component
+public class JedisClientUtil{
 
     private static JedisPool jedisPool;
 
     @Autowired
-    public void setJedisPool(JedisPool jedisPool){
+    public void setJedisPool(JedisPool jedisPool) {
         JedisClientUtil.jedisPool = jedisPool;
     }
 
@@ -23,7 +23,14 @@ public class JedisClientUtil{
         return string;
     }
 
-    public static String set(String key, String value, Integer time) {
+    public static String set(String key, String value) {
+        Jedis jedis = jedisPool.getResource();
+        String string = jedis.set(key, value);
+        jedis.close();
+        return string;
+    }
+
+    public static String setEx(String key, String value, Integer time) {
         Jedis jedis = jedisPool.getResource();
         String string = jedis.set(key, value, "nx", "ex", time);
         jedis.close();

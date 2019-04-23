@@ -14,6 +14,14 @@
         where
            schoolId=#{id}
     </select>
+    <select id="selectCollegeList" resultType="pojo.XslCollege" parameterType="java.lang.Integer">
+        select
+           id, collegeName
+        from
+           xsl_college
+        where
+           schoolId=#{id}
+    </select>
     <select id="selectBycollegeName" resultType="java.lang.Integer" parameterType="map">
         select
            id

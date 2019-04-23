@@ -1,8 +1,6 @@
 package vo;
 
 public class UserResVo {
-	private String id;
-
 	private String userid;
 
 	private String hunterid;
@@ -30,14 +28,6 @@ public class UserResVo {
 	private String major;
 
 	private String txUrl;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getUserid() {
 		return userid;

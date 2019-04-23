@@ -8,4 +8,6 @@ public interface XslSchoolMessageMapper {
     List<String> selectByXslSchool();
 
     int selectBySchoolName(String schoolName);
+
+    List<XslSchool> selectSchoolList();
 }

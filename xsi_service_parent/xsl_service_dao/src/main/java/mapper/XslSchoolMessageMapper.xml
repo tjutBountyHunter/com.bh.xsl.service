@@ -14,6 +14,14 @@
            schoolName
         from xsl_school
     </select>
+
+    <select id="selectSchoolList" resultType="pojo.XslSchool">
+        select
+           id, schoolName
+        from xsl_school
+    </select>
+
+
     <select id="selectBySchoolName" resultType="java.lang.Integer" parameterType="java.lang.String">
         select
            id

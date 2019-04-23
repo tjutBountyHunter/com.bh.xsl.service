@@ -11,6 +11,8 @@ import service.SchoolService;
 
 
 import util.XslResult;
+import vo.SchoolReqVo;
+import vo.SchoolResVo;
 
 @Controller
 @RequestMapping("/xsl/school")
@@ -26,38 +28,50 @@ public class SchoolController {
 	@RequestMapping("/schoolClasses")
 	@ResponseBody
 	public XslResult schoolMessage() {
-		String s = schoolService.schoolMessage();
-		return XslResult.ok(s);
+		XslResult resVo = schoolService.schoolMessage();
+		return resVo;
 	}
 
 	/**
 	 * 学院类别
 	 *
-	 * @param schoolName
+	 * @param schoolReqVo
 	 * @return
 	 */
 	@RequestMapping("/collegeClasses")
 	@ResponseBody
-	public XslResult collegeMessage(@Param("schoolName") String schoolName) {
-		XslResult xslResult = schoolService.collegMessage(schoolName);
+	public XslResult collegeMessage(SchoolReqVo schoolReqVo) {
+		XslResult xslResult = schoolService.collegMessage(schoolReqVo);
 		return xslResult;
 	}
 
 	/**
 	 * 专业类别
 	 *
-	 * @param collegeName
+	 * @param schoolReqVo
 	 * @return
 	 */
 	@RequestMapping("/majorClasses")
 	@ResponseBody
-	public XslResult majorMessage(@Param("collegeName") String collegeName, @Param("schoolId") Integer schoolId) {
-		XslResult xslResult = null;
+	public XslResult majorMessage(SchoolReqVo schoolReqVo) {
+		XslResult xslResult;
 		try {
-			xslResult = schoolService.majorMessage(collegeName, schoolId);
+			xslResult = schoolService.majorMessage(schoolReqVo);
 			return xslResult;
 		} catch (Exception e) {
 			return XslResult.build(500, "服务器异常");
 		}
+	}
+
+	/**
+	 * 学院类别
+	 *
+	 * @param schoolReqVo
+	 * @return
+	 */
+	@RequestMapping("/delCache")
+	@ResponseBody
+	public XslResult delCache(SchoolReqVo schoolReqVo) {
+		return schoolService.delCache(schoolReqVo);
 	}
 }

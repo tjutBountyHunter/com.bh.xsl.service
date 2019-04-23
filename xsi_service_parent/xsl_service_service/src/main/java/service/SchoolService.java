@@ -1,6 +1,7 @@
 package service;
 
 import util.XslResult;
+import vo.SchoolReqVo;
 
 public interface SchoolService {
 	/**
@@ -8,23 +9,26 @@ public interface SchoolService {
 	 *
 	 * @return
 	 */
-	String schoolMessage();
+	XslResult schoolMessage();
 
 	/**
 	 * 学院种类
 	 *
-	 * @param school
+	 * @param schoolReqVo
 	 * @return
 	 */
-	XslResult collegMessage(String school);
+	XslResult collegMessage(SchoolReqVo schoolReqVo);
 
 	/**
 	 * 专业种类
 	 *
-	 * @param college
+	 * @param schoolReqVo
 	 * @return
 	 */
-	XslResult majorMessage(String college,Integer schoolId);
+	XslResult majorMessage(SchoolReqVo schoolReqVo);
+
+
+	XslResult delCache(SchoolReqVo schoolReqVo);
 
 
 

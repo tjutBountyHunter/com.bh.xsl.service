@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import service.VerifyCodeService;
 import util.JsonUtils;
 import util.Message;
@@ -61,19 +62,15 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	@Override
 	public XslResult checkCode(String phone, String code) {
 		String num = jedisClient.get(REDIS_USER_SESSION_CODE_KEY + ":" + phone);
-
-		String message = null;
-		if (num == null) {
-			return XslResult.build(400, "您的验证码失效");
-		} else {
-			System.out.println(!code.equals(num));
-			if (!code.equals(num)) {
-				message = "验证码错误";
-				return XslResult.build(400, message);
-			} else {
-				return XslResult.ok("验证成功");
-			}
+		if (StringUtils.isEmpty(num)) {
+			return XslResult.build(403, "您的验证码失效");
 		}
+
+		if (!code.equals(num)) {
+			return XslResult.build(403, "验证码错误");
+		}
+
+		return XslResult.ok("验证成功");
 	}
 
 	/**

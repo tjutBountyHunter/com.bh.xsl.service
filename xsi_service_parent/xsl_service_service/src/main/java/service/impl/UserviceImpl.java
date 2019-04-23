@@ -77,7 +77,7 @@ public class UserviceImpl implements UserService {
             XslResult xslResult = createUseruser(xslUserRegister, (String) schoolId.getData());
 
             Map<String, Integer> map = hunMaster.insertPeople((Integer) xslResult.getData());
-            JedisClientUtil.set(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken(), Login_SESSION_EXPIRE);
+            JedisClientUtil.setEx(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken(), Login_SESSION_EXPIRE);
 
             map.put("id", (Integer) xslResult.getData());
             System.out.println(map.get("id") + " 51651");
@@ -101,6 +101,14 @@ public class UserviceImpl implements UserService {
 	 */
 	@Override
 	public XslResult quickCreateUser(XslUserRegister xslUserRegister){
+		XslUserExample example = new XslUserExample();
+		XslUserExample.Criteria criteria = example.createCriteria();
+		criteria.andPhoneEqualTo(xslUserRegister.getPhone());
+		List<XslUser> list = xslUserMapper.selectByExample(example);
+		if(list != null && list.size() > 0){
+			return XslResult.build(403,"该手机号已经注册过");
+		}
+
 		XslUser xslUser = new XslUser();
 		xslUser.setUserId(UUID.randomUUID().toString());
 		//初始化猎人信息
@@ -110,7 +118,16 @@ public class UserviceImpl implements UserService {
 		//初始化用户信息
 		initUserInfo(xslUserRegister, xslUser, xslHunter, xslMaster);
 
-		return XslResult.ok();
+		UserResVo userResVo = new UserResVo();
+		BeanUtils.copyProperties(xslUser, userResVo);
+		userResVo.setUserid(xslUser.getUserId());
+		userResVo.setMasterid(xslMaster.getMasterId());
+		userResVo.setMasterlevel(xslMaster.getLevel());
+		userResVo.setHunterid(xslHunter.getHunterId());
+		userResVo.setHunterlevel(xslHunter.getLevel());
+		userResVo.setTxUrl("http://47.93.200.190/images/default.png");
+
+		return XslResult.ok(userResVo);
 
 	}
 
@@ -188,7 +205,7 @@ public class UserviceImpl implements UserService {
 
 		UserResVo resVo = new UserResVo();
 		BeanUtils.copyProperties(user, resVo);
-		resVo.setId(user.getUserId());
+		resVo.setUserid(user.getUserId());
 
         //3.校验密码
         if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
@@ -198,7 +215,24 @@ public class UserviceImpl implements UserService {
 
 		String userId = user.getUserId();
 
-        //4.查询图片信息
+		//4.判断用户异常状态
+		Byte state = user.getState();
+		if(state == -2){
+			logger.info("login check status is {}", user.getState());
+			return XslResult.build(403, "审核未通过");
+		}
+
+		if(state == -1){
+			logger.info("login check status is {}", user.getState());
+			return XslResult.build(403, "账户被冻结");
+		}
+
+		if(state == -3){
+			logger.info("login check status is {}", user.getState());
+			return XslResult.build(403, "账户已被删除");
+		}
+
+        //5.查询图片信息
 		String imgUrl = "http://47.93.200.190/images/default.png";
 		XslUserFileExample xslUserFileExample = new XslUserFileExample();
 		XslUserFileExample.Criteria criteria2 = xslUserFileExample.createCriteria();
@@ -217,7 +251,7 @@ public class UserviceImpl implements UserService {
 
 		resVo.setTxUrl(imgUrl);
 
-		//5.查询雇主信息和猎人信息
+		//6.查询雇主信息和猎人信息
 		XslHunterExample xslHunterExample = new XslHunterExample();
 		XslMasterExample xslMasterExample = new XslMasterExample();
 		XslHunterExample.Criteria criteria1 = xslHunterExample.createCriteria();
@@ -233,7 +267,7 @@ public class UserviceImpl implements UserService {
 		resVo.setMasterid(xslMasters.get(0).getMasterId());
 		resVo.setMasterlevel(xslMasters.get(0).getLevel());
 
-		//6.获取学校信息
+		//7.获取学校信息
 		if(!StringUtils.isEmpty(user.getSchoolinfo())){
 			XslSchoolinfoExample xslSchoolinfoExample = new XslSchoolinfoExample();
 			XslSchoolinfoExample.Criteria criteria4 = xslSchoolinfoExample.createCriteria();
@@ -242,23 +276,6 @@ public class UserviceImpl implements UserService {
 			BeanUtils.copyProperties(xslSchoolinfos.get(0), user);
 		}
 
-
-        //7.判断用户异常状态
-        Byte state = user.getState();
-        if(state == -2){
-            logger.info("login check status is {}", user.getState());
-            return XslResult.build(403, "审核未通过");
-        }
-
-        if(state == -1){
-            logger.info("login check status is {}", user.getState());
-            return XslResult.build(403, "账户被冻结");
-        }
-
-        if(state == -3){
-            logger.info("login check status is {}", user.getState());
-            return XslResult.build(403, "账户已被删除");
-        }
 
         jedisClient.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
         jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), Login_SESSION_EXPIRE);

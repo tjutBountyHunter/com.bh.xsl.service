@@ -15,4 +15,14 @@
            collegeId=#{id}
     </select>
 
+    <select id="selectMajorList" resultType="pojo.XslMajor" parameterType="java.lang.Integer">
+        select
+           id, majorName
+        from
+           xsl_major
+        where
+           collegeId=#{id}
+    </select>
+
+
 </mapper>
