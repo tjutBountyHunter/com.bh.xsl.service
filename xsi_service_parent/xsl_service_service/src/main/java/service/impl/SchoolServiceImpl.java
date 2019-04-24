@@ -1,7 +1,5 @@
 package service.impl;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import dao.JedisClient;
 import mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +63,7 @@ public class SchoolServiceImpl implements SchoolService {
 
 		String infoByCache = getInfoByCache(1, REDIS_SCHOOL_LIST, null, version);
 		if(!StringUtils.isEmpty(infoByCache)){
-			schoolResVo.setColleges(infoByCache);
+			schoolResVo.setSchools(infoByCache);
 			return XslResult.ok(schoolResVo);
 		}
 
