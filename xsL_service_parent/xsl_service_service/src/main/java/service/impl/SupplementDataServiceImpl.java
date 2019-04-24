@@ -89,7 +89,7 @@ public class SupplementDataServiceImpl implements SupplementDataService {
         try {
             PythonInterpreter interpreter = new PythonInterpreter();
             PySystemState sys = Py.getSystemState();
-//            E:\ID-workspeace\xsi_service_parent\xsl_service_common\src\main\
+//            E:\ID-workspeace\xsl_service_parent\xsl_service_common\src\main\
             sys.path.add("/home/ftp/www/images/jieba-master-1/build/lib");
             sys.path.add("/home/ftp/www/images/jieba-master-1/build/lib/jieba");
             FileInputStream filepy = new FileInputStream("/home/ftp/www/images/jieba-master-1/demo/demo2.py");

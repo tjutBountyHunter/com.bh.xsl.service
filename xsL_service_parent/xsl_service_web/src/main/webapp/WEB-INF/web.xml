@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd "
          id="xsl" version="2.5">
-    <display-name>xsi_service_parent</display-name>
+    <display-name>xsl_service_parent</display-name>
     <!-- 加载spring容器 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -29,7 +29,7 @@
     </filter-mapping>
     <!-- springmvc的前端控制器 -->
     <servlet>
-        <servlet-name>xsi_service_parent</servlet-name>
+        <servlet-name>xsl_service_parent</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <!-- contextConfigLocation不是必须的， 如果不配置contextConfigLocation， springmvc的配置文件默认在：WEB-INF/servlet的name+"-servlet.xml" -->
         <init-param>
@@ -39,7 +39,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>xsi_service_parent</servlet-name>
+        <servlet-name>xsl_service_parent</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <session-config>
