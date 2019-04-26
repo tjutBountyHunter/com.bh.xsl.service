@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslMasterTagExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslMasterTag;
-import example.XslMasterTagExample;
-
-import java.util.List;
 
 public interface XslMasterTagMapper {
     int countByExample(XslMasterTagExample example);

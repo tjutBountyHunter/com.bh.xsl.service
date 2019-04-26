@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslSchoolinfoExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslSchoolinfo;
-import example.XslSchoolinfoExample;
-
-import java.util.List;
 
 public interface XslSchoolinfoMapper {
     int countByExample(XslSchoolinfoExample example);

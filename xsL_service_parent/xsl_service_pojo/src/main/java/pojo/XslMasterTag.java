@@ -5,11 +5,13 @@ import java.util.Date;
 public class XslMasterTag {
     private Integer id;
 
-    private Integer masterid;
+    private String masterid;
 
-    private Integer tagid;
+    private String tagid;
 
     private Date createdate;
+
+    private Boolean state;
 
     public Integer getId() {
         return id;
@@ -19,20 +21,20 @@ public class XslMasterTag {
         this.id = id;
     }
 
-    public Integer getMasterid() {
+    public String getMasterid() {
         return masterid;
     }
 
-    public void setMasterid(Integer masterid) {
-        this.masterid = masterid;
+    public void setMasterid(String masterid) {
+        this.masterid = masterid == null ? null : masterid.trim();
     }
 
-    public Integer getTagid() {
+    public String getTagid() {
         return tagid;
     }
 
-    public void setTagid(Integer tagid) {
-        this.tagid = tagid;
+    public void setTagid(String tagid) {
+        this.tagid = tagid == null ? null : tagid.trim();
     }
 
     public Date getCreatedate() {
@@ -41,5 +43,13 @@ public class XslMasterTag {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

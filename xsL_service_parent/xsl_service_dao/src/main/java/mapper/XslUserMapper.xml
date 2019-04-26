@@ -1,338 +1,344 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.XslUserMapper">
-    <resultMap id="BaseResultMap" type="pojo.XslUser">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="userId" property="userId" jdbcType="VARCHAR"/>
-        <result column="hunterId" property="hunterid" jdbcType="VARCHAR"/>
-        <result column="masterId" property="masterid" jdbcType="VARCHAR"/>
-        <result column="schoolInfo" property="schoolinfo" jdbcType="INTEGER"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="sex" property="sex" jdbcType="VARCHAR"/>
-        <result column="phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="state" property="state" jdbcType="TINYINT"/>
-        <result column="signature" property="signature" jdbcType="VARCHAR"/>
-        <result column="createDate" property="createdate" jdbcType="DATE"/>
-        <result column="updateDate" property="updatedate" jdbcType="DATE"/>
-    </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+<mapper namespace="mapper.XslUserMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
+    <result column="hunterId" property="hunterid" jdbcType="VARCHAR" />
+    <result column="masterId" property="masterid" jdbcType="VARCHAR" />
+    <result column="schoolInfo" property="schoolinfo" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="DATE" />
+    <result column="updateDate" property="updatedate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-    <sql id="Base_Column_List">
-    id, userId, hunterId, masterId, schoolInfo, name, password, sex, phone, email, state, signature,
-    createDate, updateDate
+          </trim>
+        </if>
+      </foreach>
+    </where>
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslUserExample">
-        select
-        <if test="distinct">
-            distinct
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
         </if>
-        <include refid="Base_Column_List"/>
-        from xsl_user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from xsl_user
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, userId, hunterId, masterId, schoolInfo, name, password, sex, phone, email, state, 
+    signature, createDate, updateDate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="mapper.XslFileMapper" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from xsl_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="example.XslUserExample">
-        delete from xsl_user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
-    <insert id="insert" parameterType="pojo.XslUser">
-    insert into xsl_user (id, hunterId, masterId, 
-      schoolInfo, name, password, 
-      sex, phone, email, 
-      state, signature, createDate, 
-      updateDate)
-    values (#{id,jdbcType=INTEGER}, #{hunterid,jdbcType=INTEGER}, #{masterid,jdbcType=INTEGER}, 
-      #{schoolinfo,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{state,jdbcType=TINYINT}, #{signature,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, 
-      #{updatedate,jdbcType=DATE})
+  <delete id="deleteByExample" parameterType="mapper.XslFileMapper" >
+    delete from xsl_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslUser" >
+    insert into xsl_user (id, userId, hunterId, 
+      masterId, schoolInfo, name, 
+      password, sex, phone, 
+      email, state, signature, 
+      createDate, updateDate)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{hunterid,jdbcType=VARCHAR}, 
+      #{masterid,jdbcType=VARCHAR}, #{schoolinfo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{signature,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=DATE}, #{updatedate,jdbcType=DATE})
   </insert>
-    <insert id="insertSelective" parameterType="pojo.XslUser">
-        insert into xsl_user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="userId != null">
-                userId,
-            </if>
-            <if test="hunterid != null">
-                hunterId,
-            </if>
-            <if test="masterid != null">
-                masterId,
-            </if>
-            <if test="schoolinfo != null">
-                schoolInfo,
-            </if>
-            <if test="name != null">
-                name,
-            </if>
-            <if test="password != null">
-                password,
-            </if>
-            <if test="sex != null">
-                sex,
-            </if>
-            <if test="phone != null">
-                phone,
-            </if>
-            <if test="email != null">
-                email,
-            </if>
-            <if test="state != null">
-                state,
-            </if>
-            <if test="signature != null">
-                signature,
-            </if>
-            <if test="createdate != null">
-                createDate,
-            </if>
-            <if test="updatedate != null">
-                updateDate,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="userId != null">
-                #{userId,jdbcType=VARCHAR},
-            </if>
-            <if test="hunterid != null">
-                #{hunterid,jdbcType=VARCHAR},
-            </if>
-            <if test="masterid != null">
-                #{masterid,jdbcType=VARCHAR},
-            </if>
-            <if test="schoolinfo != null">
-                #{schoolinfo,jdbcType=VARCHAR},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="password != null">
-                #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="sex != null">
-                #{sex,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                #{phone,jdbcType=VARCHAR},
-            </if>
-            <if test="email != null">
-                #{email,jdbcType=VARCHAR},
-            </if>
-            <if test="state != null">
-                #{state,jdbcType=TINYINT},
-            </if>
-            <if test="signature != null">
-                #{signature,jdbcType=VARCHAR},
-            </if>
-            <if test="createdate != null">
-                #{createdate,jdbcType=DATE},
-            </if>
-            <if test="updatedate != null">
-                #{updatedate,jdbcType=DATE},
-            </if>
-        </trim>
-    </insert>
-    <select id="countByExample" parameterType="example.XslUserExample" resultType="java.lang.Integer">
-        select count(*) from xsl_user
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update xsl_user
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=INTEGER},
-            </if>
-            <if test="record.hunterid != null">
-                hunterId = #{record.hunterid,jdbcType=INTEGER},
-            </if>
-            <if test="record.masterid != null">
-                masterId = #{record.masterid,jdbcType=INTEGER},
-            </if>
-            <if test="record.schoolinfo != null">
-                schoolInfo = #{record.schoolinfo,jdbcType=INTEGER},
-            </if>
-            <if test="record.name != null">
-                name = #{record.name,jdbcType=VARCHAR},
-            </if>
-            <if test="record.password != null">
-                password = #{record.password,jdbcType=VARCHAR},
-            </if>
-            <if test="record.sex != null">
-                sex = #{record.sex,jdbcType=VARCHAR},
-            </if>
-            <if test="record.phone != null">
-                phone = #{record.phone,jdbcType=VARCHAR},
-            </if>
-            <if test="record.email != null">
-                email = #{record.email,jdbcType=VARCHAR},
-            </if>
-            <if test="record.state != null">
-                state = #{record.state,jdbcType=TINYINT},
-            </if>
-            <if test="record.signature != null">
-                signature = #{record.signature,jdbcType=VARCHAR},
-            </if>
-            <if test="record.createdate != null">
-                createDate = #{record.createdate,jdbcType=DATE},
-            </if>
-            <if test="record.updatedate != null">
-                updateDate = #{record.updatedate,jdbcType=DATE},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update xsl_user
-        set id = #{record.id,jdbcType=INTEGER},
-        hunterId = #{record.hunterid,jdbcType=INTEGER},
-        masterId = #{record.masterid,jdbcType=INTEGER},
-        schoolInfo = #{record.schoolinfo,jdbcType=INTEGER},
-        name = #{record.name,jdbcType=VARCHAR},
-        password = #{record.password,jdbcType=VARCHAR},
-        sex = #{record.sex,jdbcType=VARCHAR},
-        phone = #{record.phone,jdbcType=VARCHAR},
-        email = #{record.email,jdbcType=VARCHAR},
-        state = #{record.state,jdbcType=TINYINT},
-        signature = #{record.signature,jdbcType=VARCHAR},
-        createDate = #{record.createdate,jdbcType=DATE},
-        updateDate = #{record.updatedate,jdbcType=DATE}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByPrimaryKeySelective" parameterType="pojo.XslUser">
-        update xsl_user
-        <set>
-            <if test="hunterid != null">
-                hunterId = #{hunterid,jdbcType=INTEGER},
-            </if>
-            <if test="masterid != null">
-                masterId = #{masterid,jdbcType=INTEGER},
-            </if>
-            <if test="schoolinfo != null">
-                schoolInfo = #{schoolinfo,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="password != null">
-                password = #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="sex != null">
-                sex = #{sex,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                phone = #{phone,jdbcType=VARCHAR},
-            </if>
-            <if test="email != null">
-                email = #{email,jdbcType=VARCHAR},
-            </if>
-            <if test="state != null">
-                state = #{state,jdbcType=TINYINT},
-            </if>
-            <if test="signature != null">
-                signature = #{signature,jdbcType=VARCHAR},
-            </if>
-            <if test="createdate != null">
-                createDate = #{createdate,jdbcType=DATE},
-            </if>
-            <if test="updatedate != null">
-                updateDate = #{updatedate,jdbcType=DATE},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="pojo.XslUser">
+  <insert id="insertSelective" parameterType="pojo.XslUser" >
+    insert into xsl_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="hunterid != null" >
+        hunterId,
+      </if>
+      <if test="masterid != null" >
+        masterId,
+      </if>
+      <if test="schoolinfo != null" >
+        schoolInfo,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="signature != null" >
+        signature,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+      <if test="updatedate != null" >
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="hunterid != null" >
+        #{hunterid,jdbcType=VARCHAR},
+      </if>
+      <if test="masterid != null" >
+        #{masterid,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolinfo != null" >
+        #{schoolinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="signature != null" >
+        #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=DATE},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="mapper.XslFileMapper" resultType="java.lang.Integer" >
+    select count(*) from xsl_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
     update xsl_user
-    set hunterId = #{hunterid,jdbcType=INTEGER},
-      masterId = #{masterid,jdbcType=INTEGER},
-      schoolInfo = #{schoolinfo,jdbcType=INTEGER},
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hunterid != null" >
+        hunterId = #{record.hunterid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.masterid != null" >
+        masterId = #{record.masterid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolinfo != null" >
+        schoolInfo = #{record.schoolinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=TINYINT},
+      </if>
+      <if test="record.signature != null" >
+        signature = #{record.signature,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdate != null" >
+        createDate = #{record.createdate,jdbcType=DATE},
+      </if>
+      <if test="record.updatedate != null" >
+        updateDate = #{record.updatedate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_user
+    set id = #{record.id,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=VARCHAR},
+      hunterId = #{record.hunterid,jdbcType=VARCHAR},
+      masterId = #{record.masterid,jdbcType=VARCHAR},
+      schoolInfo = #{record.schoolinfo,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=TINYINT},
+      signature = #{record.signature,jdbcType=VARCHAR},
+      createDate = #{record.createdate,jdbcType=DATE},
+      updateDate = #{record.updatedate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslUser" >
+    update xsl_user
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="hunterid != null" >
+        hunterId = #{hunterid,jdbcType=VARCHAR},
+      </if>
+      <if test="masterid != null" >
+        masterId = #{masterid,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolinfo != null" >
+        schoolInfo = #{schoolinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="signature != null" >
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=DATE},
+      </if>
+      <if test="updatedate != null" >
+        updateDate = #{updatedate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslUser" >
+    update xsl_user
+    set userId = #{userid,jdbcType=VARCHAR},
+      hunterId = #{hunterid,jdbcType=VARCHAR},
+      masterId = #{masterid,jdbcType=VARCHAR},
+      schoolInfo = #{schoolinfo,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
@@ -344,5 +350,4 @@
       updateDate = #{updatedate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 </mapper>

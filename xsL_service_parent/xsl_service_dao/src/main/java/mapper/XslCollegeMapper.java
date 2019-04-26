@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslCollegeExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslCollege;
-import example.XslCollegeExample;
-
-import java.util.List;
 
 public interface XslCollegeMapper {
     int countByExample(XslCollegeExample example);

@@ -1,199 +1,196 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.XslScoreMapper">
-    <resultMap id="BaseResultMap" type="pojo.XslScore">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="hunterId" property="hunterid" jdbcType="INTEGER"/>
-        <result column="score" property="score" jdbcType="SMALLINT"/>
-        <result column="createDate" property="createdate" jdbcType="DATE"/>
-    </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+<mapper namespace="mapper.XslScoreMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslScore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="hunterId" property="hunterid" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="SMALLINT" />
+    <result column="createDate" property="createdate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Base_Column_List">
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
     id, hunterId, score, createDate
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslScoreExample">
-        select
-        <if test="distinct">
-            distinct
-        </if>
-        <include refid="Base_Column_List"/>
-        from xsl_score
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from xsl_score
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslScoreExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_score
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from xsl_score
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="example.XslScoreExample">
-        delete from xsl_score
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
-    <insert id="insert" parameterType="pojo.XslScore">
+  <delete id="deleteByExample" parameterType="example.XslScoreExample" >
+    delete from xsl_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslScore" >
     insert into xsl_score (id, hunterId, score, 
       createDate)
-    values (#{id,jdbcType=INTEGER}, #{hunterid,jdbcType=INTEGER}, #{score,jdbcType=SMALLINT}, 
+    values (#{id,jdbcType=INTEGER}, #{hunterid,jdbcType=VARCHAR}, #{score,jdbcType=SMALLINT}, 
       #{createdate,jdbcType=DATE})
   </insert>
-    <insert id="insertSelective" parameterType="pojo.XslScore">
-        insert into xsl_score
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="hunterid != null">
-                hunterId,
-            </if>
-            <if test="score != null">
-                score,
-            </if>
-            <if test="createdate != null">
-                createDate,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="hunterid != null">
-                #{hunterid,jdbcType=INTEGER},
-            </if>
-            <if test="score != null">
-                #{score,jdbcType=SMALLINT},
-            </if>
-            <if test="createdate != null">
-                #{createdate,jdbcType=DATE},
-            </if>
-        </trim>
-    </insert>
-    <select id="countByExample" parameterType="example.XslScoreExample" resultType="java.lang.Integer">
-        select count(*) from xsl_score
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update xsl_score
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=INTEGER},
-            </if>
-            <if test="record.hunterid != null">
-                hunterId = #{record.hunterid,jdbcType=INTEGER},
-            </if>
-            <if test="record.score != null">
-                score = #{record.score,jdbcType=SMALLINT},
-            </if>
-            <if test="record.createdate != null">
-                createDate = #{record.createdate,jdbcType=DATE},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update xsl_score
-        set id = #{record.id,jdbcType=INTEGER},
-        hunterId = #{record.hunterid,jdbcType=INTEGER},
-        score = #{record.score,jdbcType=SMALLINT},
-        createDate = #{record.createdate,jdbcType=DATE}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByPrimaryKeySelective" parameterType="pojo.XslScore">
-        update xsl_score
-        <set>
-            <if test="hunterid != null">
-                hunterId = #{hunterid,jdbcType=INTEGER},
-            </if>
-            <if test="score != null">
-                score = #{score,jdbcType=SMALLINT},
-            </if>
-            <if test="createdate != null">
-                createDate = #{createdate,jdbcType=DATE},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="pojo.XslScore">
+  <insert id="insertSelective" parameterType="pojo.XslScore" >
+    insert into xsl_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="hunterid != null" >
+        hunterId,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hunterid != null" >
+        #{hunterid,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=SMALLINT},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="example.XslScoreExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
     update xsl_score
-    set hunterId = #{hunterid,jdbcType=INTEGER},
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.hunterid != null" >
+        hunterId = #{record.hunterid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=SMALLINT},
+      </if>
+      <if test="record.createdate != null" >
+        createDate = #{record.createdate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_score
+    set id = #{record.id,jdbcType=INTEGER},
+      hunterId = #{record.hunterid,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=SMALLINT},
+      createDate = #{record.createdate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslScore" >
+    update xsl_score
+    <set >
+      <if test="hunterid != null" >
+        hunterId = #{hunterid,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=SMALLINT},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslScore" >
+    update xsl_score
+    set hunterId = #{hunterid,jdbcType=VARCHAR},
       score = #{score,jdbcType=SMALLINT},
       createDate = #{createdate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 </mapper>

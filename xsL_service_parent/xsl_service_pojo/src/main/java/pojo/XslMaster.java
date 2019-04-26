@@ -5,7 +5,7 @@ import java.util.Date;
 public class XslMaster {
     private Integer id;
 
-    private String masterId;
+    private String masterid;
 
     private String userid;
 
@@ -23,6 +23,8 @@ public class XslMaster {
 
     private Date lastaccdate;
 
+    private Boolean state;
+
     public Integer getId() {
         return id;
     }
@@ -31,12 +33,12 @@ public class XslMaster {
         this.id = id;
     }
 
-    public String getMasterId() {
-        return masterId;
+    public String getMasterid() {
+        return masterid;
     }
 
-    public void setMasterId(String masterId) {
-        this.masterId = masterId;
+    public void setMasterid(String masterid) {
+        this.masterid = masterid == null ? null : masterid.trim();
     }
 
     public String getUserid() {
@@ -44,7 +46,7 @@ public class XslMaster {
     }
 
     public void setUserid(String userid) {
-        this.userid = userid;
+        this.userid = userid == null ? null : userid.trim();
     }
 
     public Short getLevel() {
@@ -87,6 +89,13 @@ public class XslMaster {
         this.credit = credit;
     }
 
+    public String getDescr() {
+        return descr;
+    }
+
+    public void setDescr(String descr) {
+        this.descr = descr == null ? null : descr.trim();
+    }
 
     public Date getLastaccdate() {
         return lastaccdate;
@@ -96,11 +105,11 @@ public class XslMaster {
         this.lastaccdate = lastaccdate;
     }
 
-    public String getDescr() {
-        return descr;
+    public Boolean getState() {
+        return state;
     }
 
-    public void setDescr(String descr) {
-        this.descr = descr;
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

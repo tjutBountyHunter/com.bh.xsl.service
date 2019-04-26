@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslMasterLevelExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslMasterLevel;
-import example.XslMasterLevelExample;
-
-import java.util.List;
 
 public interface XslMasterLevelMapper {
     int countByExample(XslMasterLevelExample example);

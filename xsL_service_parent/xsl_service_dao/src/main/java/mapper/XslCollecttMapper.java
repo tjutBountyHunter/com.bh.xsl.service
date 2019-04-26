@@ -2,9 +2,9 @@ package mapper;
 
 import java.util.List;
 
+import example.XslCollecttExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslCollectt;
-import example.XslCollecttExample;
 
 public interface XslCollecttMapper {
     int countByExample(XslCollecttExample example);

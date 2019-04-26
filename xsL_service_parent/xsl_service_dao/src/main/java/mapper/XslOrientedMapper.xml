@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslOrientedMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslOriented" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="oriented_id" property="orientedId" jdbcType="VARCHAR" />
+    <result column="oriented_name" property="orientedName" jdbcType="VARCHAR" />
+    <result column="oriented_info" property="orientedInfo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, oriented_id, oriented_name, oriented_info
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslOrientedExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_oriented
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_oriented
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from xsl_oriented
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="example.XslOrientedExample" >
+    delete from xsl_oriented
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslOriented" >
+    insert into xsl_oriented (Id, oriented_id, oriented_name, 
+      oriented_info)
+    values (#{id,jdbcType=INTEGER}, #{orientedId,jdbcType=VARCHAR}, #{orientedName,jdbcType=VARCHAR}, 
+      #{orientedInfo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="pojo.XslOriented" >
+    insert into xsl_oriented
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orientedId != null" >
+        oriented_id,
+      </if>
+      <if test="orientedName != null" >
+        oriented_name,
+      </if>
+      <if test="orientedInfo != null" >
+        oriented_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orientedId != null" >
+        #{orientedId,jdbcType=VARCHAR},
+      </if>
+      <if test="orientedName != null" >
+        #{orientedName,jdbcType=VARCHAR},
+      </if>
+      <if test="orientedInfo != null" >
+        #{orientedInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="example.XslOrientedExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_oriented
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xsl_oriented
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orientedId != null" >
+        oriented_id = #{record.orientedId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orientedName != null" >
+        oriented_name = #{record.orientedName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orientedInfo != null" >
+        oriented_info = #{record.orientedInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_oriented
+    set Id = #{record.id,jdbcType=INTEGER},
+      oriented_id = #{record.orientedId,jdbcType=VARCHAR},
+      oriented_name = #{record.orientedName,jdbcType=VARCHAR},
+      oriented_info = #{record.orientedInfo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslOriented" >
+    update xsl_oriented
+    <set >
+      <if test="orientedId != null" >
+        oriented_id = #{orientedId,jdbcType=VARCHAR},
+      </if>
+      <if test="orientedName != null" >
+        oriented_name = #{orientedName,jdbcType=VARCHAR},
+      </if>
+      <if test="orientedInfo != null" >
+        oriented_info = #{orientedInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslOriented" >
+    update xsl_oriented
+    set oriented_id = #{orientedId,jdbcType=VARCHAR},
+      oriented_name = #{orientedName,jdbcType=VARCHAR},
+      oriented_info = #{orientedInfo,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

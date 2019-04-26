@@ -18,6 +18,7 @@ import util.*;
 import vo.UserReqVo;
 import vo.UserResVo;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -110,7 +111,7 @@ public class UserviceImpl implements UserService {
 		}
 
 		XslUser xslUser = new XslUser();
-		xslUser.setUserId(UUID.randomUUID().toString());
+		xslUser.setUserid(UUID.randomUUID().toString());
 		//初始化猎人信息
 		XslHunter xslHunter = initXslHunter(xslUser);
 		//初始化雇主信息
@@ -120,10 +121,10 @@ public class UserviceImpl implements UserService {
 
 		UserResVo userResVo = new UserResVo();
 		BeanUtils.copyProperties(xslUser, userResVo);
-		userResVo.setUserid(xslUser.getUserId());
-		userResVo.setMasterid(xslMaster.getMasterId());
+		userResVo.setUserid(xslUser.getUserid());
+		userResVo.setMasterid(xslMaster.getMasterid());
 		userResVo.setMasterlevel(xslMaster.getLevel());
-		userResVo.setHunterid(xslHunter.getHunterId());
+		userResVo.setHunterid(xslHunter.getHunterid());
 		userResVo.setHunterlevel(xslHunter.getLevel());
 		userResVo.setTxUrl("http://47.93.200.190/images/default.png");
 
@@ -146,7 +147,7 @@ public class UserviceImpl implements UserService {
 				throw new RuntimeException("插入学校信息异常");
 			}
 
-			return XslResult.ok(xslSchoolinfo.getSchoolId());
+			return XslResult.ok(xslSchoolinfo.getSchoolid());
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
@@ -155,15 +156,14 @@ public class UserviceImpl implements UserService {
 
     private XslSchoolinfo initXslSchoolinfo(XslUserRegister xslUserRegister) {
         XslSchoolinfo xslSchoolinfo = new XslSchoolinfo();
-        xslSchoolinfo.setSchoolId(UUID.randomUUID().toString());
-        xslSchoolinfo.setUserId(xslUserRegister.getUserId());
+        xslSchoolinfo.setSchoolid(UUID.randomUUID().toString());
         xslSchoolinfo.setDegree((byte) 2);
         xslSchoolinfo.setSchoolhours((byte) 4);
         xslSchoolinfo.setSno(xslUserRegister.getSchoolNumber());
         xslSchoolinfo.setSchool(xslUserRegister.getSchoolinfo());
         xslSchoolinfo.setCollege(xslUserRegister.getCollege());
         xslSchoolinfo.setMajor(xslUserRegister.getMajor());
-        xslSchoolinfo.setStartdate(new Date());
+        xslSchoolinfo.setStartdate(new Date().toString());
         return xslSchoolinfo;
     }
 
@@ -205,7 +205,7 @@ public class UserviceImpl implements UserService {
 
 		UserResVo resVo = new UserResVo();
 		BeanUtils.copyProperties(user, resVo);
-		resVo.setUserid(user.getUserId());
+		resVo.setUserid(user.getUserid());
 
         //3.校验密码
         if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
@@ -213,7 +213,7 @@ public class UserviceImpl implements UserService {
             return XslResult.build(400, "用户名或密码错误");
         }
 
-		String userId = user.getUserId();
+		String userId = user.getUserid();
 
 		//4.判断用户异常状态
 		Byte state = user.getState();
@@ -262,9 +262,9 @@ public class UserviceImpl implements UserService {
 		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
 		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
 
-		resVo.setHunterid(xslHunters.get(0).getHunterId());
+		resVo.setHunterid(xslHunters.get(0).getHunterid());
 		resVo.setHunterlevel(xslHunters.get(0).getLevel());
-		resVo.setMasterid(xslMasters.get(0).getMasterId());
+		resVo.setMasterid(xslMasters.get(0).getMasterid());
 		resVo.setMasterlevel(xslMasters.get(0).getLevel());
 
 		//7.获取学校信息
@@ -327,8 +327,8 @@ public class UserviceImpl implements UserService {
     }
 
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {
-		xslUser.setHunterid(xslHunter.getHunterId());
-		xslUser.setMasterid(xslMaster.getMasterId());
+		xslUser.setHunterid(xslHunter.getHunterid());
+		xslUser.setMasterid(xslMaster.getMasterid());
 		xslUser.setPhone(xslUserRegister.getPhone());
 		xslUser.setState(UserStateEnum.NA.getCode());
 		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
@@ -352,8 +352,8 @@ public class UserviceImpl implements UserService {
 	private XslMaster initXslMaster(XslUser xslUser) {
 		//初始化雇主信息
 		XslMaster xslMaster = new XslMaster();
-		xslMaster.setUserid(xslUser.getUserId());
-		xslMaster.setMasterId(UUID.randomUUID().toString());
+		xslMaster.setUserid(xslUser.getUserid());
+		xslMaster.setMasterid(UUID.randomUUID().toString());
 		xslMaster.setLevel((short) 1);
 		xslMaster.setDescr("新人雇主");
 		xslMaster.setLastaccdate(new Date());
@@ -375,11 +375,11 @@ public class UserviceImpl implements UserService {
 	private XslHunter initXslHunter(XslUser xslUser) {
 		//初始化猎人信息
 		XslHunter xslHunter = new XslHunter();
-		xslHunter.setUserid(xslUser.getUserId());
-		xslHunter.setHunterId(UUID.randomUUID().toString());
+		xslHunter.setUserid(xslUser.getUserid());
+		xslHunter.setHunterid(UUID.randomUUID().toString());
 		xslHunter.setLevel((short) 1);
 		xslHunter.setDescr("新手猎人");
-		xslHunter.setLastTime(new Date());
+		xslHunter.setLasttime(new Date());
 		try {
 			int result = xslHunterMapper.insertSelective(xslHunter);
 

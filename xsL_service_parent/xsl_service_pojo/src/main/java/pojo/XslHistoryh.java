@@ -37,7 +37,13 @@ public class XslHistoryh {
         this.hunterid = hunterid;
     }
 
+    public String getTaskid() {
+        return taskid;
+    }
 
+    public void setTaskid(String taskid) {
+        this.taskid = taskid == null ? null : taskid.trim();
+    }
 
     public Date getCreatedate() {
         return createdate;
@@ -45,13 +51,5 @@ public class XslHistoryh {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
-    }
-
-    public String getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(String taskid) {
-        this.taskid = taskid;
     }
 }

@@ -1,10 +1,9 @@
 package mapper;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslMasterLevelRule;
-import example.XslMasterLevelRuleExample;
-
-import java.util.List;
+import pojo.XslMasterLevelRuleExample;
 
 public interface XslMasterLevelRuleMapper {
     int countByExample(XslMasterLevelRuleExample example);

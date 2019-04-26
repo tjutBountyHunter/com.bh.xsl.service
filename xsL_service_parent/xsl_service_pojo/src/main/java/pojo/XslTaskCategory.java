@@ -13,6 +13,8 @@ public class XslTaskCategory {
 
     private Integer oknum;
 
+    private Boolean state;
+
     private String failnum;
 
     private Date createdate;
@@ -55,6 +57,14 @@ public class XslTaskCategory {
 
     public void setOknum(Integer oknum) {
         this.oknum = oknum;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 
     public String getFailnum() {

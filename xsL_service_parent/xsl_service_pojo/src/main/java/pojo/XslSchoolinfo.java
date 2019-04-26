@@ -1,13 +1,9 @@
 package pojo;
 
-import java.util.Date;
-
 public class XslSchoolinfo {
     private Integer id;
 
-    private String schoolId;
-
-    private String userId;
+    private String schoolid;
 
     private String sno;
 
@@ -17,7 +13,7 @@ public class XslSchoolinfo {
 
     private String school;
 
-    private Date startdate;
+    private String startdate;
 
     private Byte degree;
 
@@ -31,20 +27,12 @@ public class XslSchoolinfo {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getSchoolid() {
+        return schoolid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(String schoolId) {
-        this.schoolId = schoolId;
+    public void setSchoolid(String schoolid) {
+        this.schoolid = schoolid == null ? null : schoolid.trim();
     }
 
     public String getSno() {
@@ -79,12 +67,12 @@ public class XslSchoolinfo {
         this.school = school == null ? null : school.trim();
     }
 
-    public Date getStartdate() {
+    public String getStartdate() {
         return startdate;
     }
 
-    public void setStartdate(Date startdate) {
-        this.startdate = startdate;
+    public void setStartdate(String startdate) {
+        this.startdate = startdate == null ? null : startdate.trim();
     }
 
     public Byte getDegree() {
@@ -102,6 +90,4 @@ public class XslSchoolinfo {
     public void setSchoolhours(Byte schoolhours) {
         this.schoolhours = schoolhours;
     }
-
-
 }

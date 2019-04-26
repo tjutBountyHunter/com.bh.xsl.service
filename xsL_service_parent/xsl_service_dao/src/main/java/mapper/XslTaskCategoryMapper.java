@@ -1,10 +1,9 @@
 package mapper;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslTaskCategory;
 import pojo.XslTaskCategoryExample;
-
-import java.util.List;
 
 public interface XslTaskCategoryMapper {
     int countByExample(XslTaskCategoryExample example);

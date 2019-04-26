@@ -1,10 +1,9 @@
 package mapper;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHunterLevelRule;
-import example.XslHunterLevelRuleExample;
-
-import java.util.List;
+import pojo.XslHunterLevelRuleExample;
 
 public interface XslHunterLevelRuleMapper {
     int countByExample(XslHunterLevelRuleExample example);

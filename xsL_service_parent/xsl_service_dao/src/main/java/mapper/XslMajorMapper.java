@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslMajorExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslMajor;
-import example.XslMajorExample;
-
-import java.util.List;
 
 public interface XslMajorMapper {
     int countByExample(XslMajorExample example);

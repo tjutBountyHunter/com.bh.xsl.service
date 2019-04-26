@@ -5,7 +5,7 @@ import java.util.Date;
 public class XslDatetime {
     private Integer id;
 
-    private Integer hunterid;
+    private String hunterid;
 
     private String taskid;
 
@@ -19,21 +19,12 @@ public class XslDatetime {
         this.id = id;
     }
 
-    public Integer getHunterid() {
+    public String getHunterid() {
         return hunterid;
     }
 
-    public void setHunterid(Integer hunterid) {
-        this.hunterid = hunterid;
-    }
-
-
-    public Date getCreatedate() {
-        return createdate;
-    }
-
-    public void setCreatedate(Date createdate) {
-        this.createdate = createdate;
+    public void setHunterid(String hunterid) {
+        this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
     public String getTaskid() {
@@ -41,6 +32,14 @@ public class XslDatetime {
     }
 
     public void setTaskid(String taskid) {
-        this.taskid = taskid;
+        this.taskid = taskid == null ? null : taskid.trim();
+    }
+
+    public Date getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
     }
 }

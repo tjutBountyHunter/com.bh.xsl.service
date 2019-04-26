@@ -5,9 +5,9 @@ import java.util.Date;
 public class XslMasterLevelRule {
     private Integer id;
 
-    private Integer masterlevelid;
+    private String masterlevelid;
 
-    private Integer ruleid;
+    private String ruleid;
 
     private Date createdate;
 
@@ -19,20 +19,20 @@ public class XslMasterLevelRule {
         this.id = id;
     }
 
-    public Integer getMasterlevelid() {
+    public String getMasterlevelid() {
         return masterlevelid;
     }
 
-    public void setMasterlevelid(Integer masterlevelid) {
-        this.masterlevelid = masterlevelid;
+    public void setMasterlevelid(String masterlevelid) {
+        this.masterlevelid = masterlevelid == null ? null : masterlevelid.trim();
     }
 
-    public Integer getRuleid() {
+    public String getRuleid() {
         return ruleid;
     }
 
-    public void setRuleid(Integer ruleid) {
-        this.ruleid = ruleid;
+    public void setRuleid(String ruleid) {
+        this.ruleid = ruleid == null ? null : ruleid.trim();
     }
 
     public Date getCreatedate() {

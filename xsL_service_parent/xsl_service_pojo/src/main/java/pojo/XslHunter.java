@@ -5,7 +5,7 @@ import java.util.Date;
 public class XslHunter {
     private Integer id;
 
-    private String hunterId;
+    private String hunterid;
 
     private String userid;
 
@@ -21,7 +21,9 @@ public class XslHunter {
 
     private String descr;
 
-    private Date lastTime;
+    private Date lasttime;
+
+    private Boolean state;
 
     public Integer getId() {
         return id;
@@ -31,12 +33,12 @@ public class XslHunter {
         this.id = id;
     }
 
-    public String getHunterId() {
-        return hunterId;
+    public String getHunterid() {
+        return hunterid;
     }
 
-    public void setHunterId(String hunterId) {
-        this.hunterId = hunterId;
+    public void setHunterid(String hunterid) {
+        this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
     public String getUserid() {
@@ -44,7 +46,7 @@ public class XslHunter {
     }
 
     public void setUserid(String userid) {
-        this.userid = userid;
+        this.userid = userid == null ? null : userid.trim();
     }
 
     public Short getLevel() {
@@ -95,11 +97,19 @@ public class XslHunter {
         this.descr = descr == null ? null : descr.trim();
     }
 
-    public Date getLastTime() {
-        return lastTime;
+    public Date getLasttime() {
+        return lasttime;
     }
 
-    public void setLastTime(Date lastTime) {
-        this.lastTime = lastTime;
+    public void setLasttime(Date lasttime) {
+        this.lasttime = lasttime;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

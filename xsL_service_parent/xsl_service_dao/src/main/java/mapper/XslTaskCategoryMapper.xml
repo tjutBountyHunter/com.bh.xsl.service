@@ -1,246 +1,258 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.XslTaskCategoryMapper">
-    <resultMap id="BaseResultMap" type="pojo.XslTaskCategory">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="parentId" jdbcType="INTEGER" property="parentid"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="taskNum" jdbcType="INTEGER" property="tasknum"/>
-        <result column="okNum" jdbcType="INTEGER" property="oknum"/>
-        <result column="failNum" jdbcType="VARCHAR" property="failnum"/>
-        <result column="createDate" jdbcType="DATE" property="createdate"/>
-    </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslTaskCategoryMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslTaskCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="parentId" property="parentid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="taskNum" property="tasknum" jdbcType="INTEGER" />
+    <result column="okNum" property="oknum" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="failNum" property="failnum" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-    <sql id="Base_Column_List">
-    id, parentId, name, taskNum, okNum, failNum, createDate
+          </trim>
+        </if>
+      </foreach>
+    </where>
   </sql>
-    <select id="selectByExample" parameterType="pojo.XslTaskCategoryExample" resultMap="BaseResultMap">
-        select
-        <if test="distinct">
-            distinct
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
         </if>
-        <include refid="Base_Column_List"/>
-        from xsl_task_category
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from xsl_task_category
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, parentId, name, taskNum, okNum, state, failNum, createDate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskCategoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_task_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_task_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from xsl_task_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="pojo.XslTaskCategoryExample">
-        delete from xsl_task_category
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
-    <insert id="insert" parameterType="pojo.XslTaskCategory">
+  <delete id="deleteByExample" parameterType="pojo.XslTaskCategoryExample" >
+    delete from xsl_task_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslTaskCategory" >
     insert into xsl_task_category (id, parentId, name, 
-      taskNum, okNum, failNum, 
-      createDate)
+      taskNum, okNum, state, 
+      failNum, createDate)
     values (#{id,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{tasknum,jdbcType=INTEGER}, #{oknum,jdbcType=INTEGER}, #{failnum,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=DATE})
+      #{tasknum,jdbcType=INTEGER}, #{oknum,jdbcType=INTEGER}, #{state,jdbcType=BIT}, 
+      #{failnum,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE})
   </insert>
-    <insert id="insertSelective" parameterType="pojo.XslTaskCategory">
-        insert into xsl_task_category
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="parentid != null">
-                parentId,
-            </if>
-            <if test="name != null">
-                name,
-            </if>
-            <if test="tasknum != null">
-                taskNum,
-            </if>
-            <if test="oknum != null">
-                okNum,
-            </if>
-            <if test="failnum != null">
-                failNum,
-            </if>
-            <if test="createdate != null">
-                createDate,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="parentid != null">
-                #{parentid,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="tasknum != null">
-                #{tasknum,jdbcType=INTEGER},
-            </if>
-            <if test="oknum != null">
-                #{oknum,jdbcType=INTEGER},
-            </if>
-            <if test="failnum != null">
-                #{failnum,jdbcType=VARCHAR},
-            </if>
-            <if test="createdate != null">
-                #{createdate,jdbcType=DATE},
-            </if>
-        </trim>
-    </insert>
-    <select id="countByExample" parameterType="pojo.XslTaskCategoryExample" resultType="java.lang.Integer">
-        select count(*) from xsl_task_category
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update xsl_task_category
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=INTEGER},
-            </if>
-            <if test="record.parentid != null">
-                parentId = #{record.parentid,jdbcType=INTEGER},
-            </if>
-            <if test="record.name != null">
-                name = #{record.name,jdbcType=VARCHAR},
-            </if>
-            <if test="record.tasknum != null">
-                taskNum = #{record.tasknum,jdbcType=INTEGER},
-            </if>
-            <if test="record.oknum != null">
-                okNum = #{record.oknum,jdbcType=INTEGER},
-            </if>
-            <if test="record.failnum != null">
-                failNum = #{record.failnum,jdbcType=VARCHAR},
-            </if>
-            <if test="record.createdate != null">
-                createDate = #{record.createdate,jdbcType=DATE},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update xsl_task_category
-        set id = #{record.id,jdbcType=INTEGER},
+  <insert id="insertSelective" parameterType="pojo.XslTaskCategory" >
+    insert into xsl_task_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="tasknum != null" >
+        taskNum,
+      </if>
+      <if test="oknum != null" >
+        okNum,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="failnum != null" >
+        failNum,
+      </if>
+      <if test="createdate != null" >
+        createDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tasknum != null" >
+        #{tasknum,jdbcType=INTEGER},
+      </if>
+      <if test="oknum != null" >
+        #{oknum,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=BIT},
+      </if>
+      <if test="failnum != null" >
+        #{failnum,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="pojo.XslTaskCategoryExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_task_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xsl_task_category
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.parentid != null" >
         parentId = #{record.parentid,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tasknum != null" >
         taskNum = #{record.tasknum,jdbcType=INTEGER},
+      </if>
+      <if test="record.oknum != null" >
         okNum = #{record.oknum,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=BIT},
+      </if>
+      <if test="record.failnum != null" >
         failNum = #{record.failnum,jdbcType=VARCHAR},
-        createDate = #{record.createdate,jdbcType=DATE}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByPrimaryKeySelective" parameterType="pojo.XslTaskCategory">
-        update xsl_task_category
-        <set>
-            <if test="parentid != null">
-                parentId = #{parentid,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="tasknum != null">
-                taskNum = #{tasknum,jdbcType=INTEGER},
-            </if>
-            <if test="oknum != null">
-                okNum = #{oknum,jdbcType=INTEGER},
-            </if>
-            <if test="failnum != null">
-                failNum = #{failnum,jdbcType=VARCHAR},
-            </if>
-            <if test="createdate != null">
-                createDate = #{createdate,jdbcType=DATE},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="pojo.XslTaskCategory">
+      </if>
+      <if test="record.createdate != null" >
+        createDate = #{record.createdate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_task_category
+    set id = #{record.id,jdbcType=INTEGER},
+      parentId = #{record.parentid,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      taskNum = #{record.tasknum,jdbcType=INTEGER},
+      okNum = #{record.oknum,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=BIT},
+      failNum = #{record.failnum,jdbcType=VARCHAR},
+      createDate = #{record.createdate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslTaskCategory" >
+    update xsl_task_category
+    <set >
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tasknum != null" >
+        taskNum = #{tasknum,jdbcType=INTEGER},
+      </if>
+      <if test="oknum != null" >
+        okNum = #{oknum,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="failnum != null" >
+        failNum = #{failnum,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null" >
+        createDate = #{createdate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslTaskCategory" >
     update xsl_task_category
     set parentId = #{parentid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       taskNum = #{tasknum,jdbcType=INTEGER},
       okNum = #{oknum,jdbcType=INTEGER},
+      state = #{state,jdbcType=BIT},
       failNum = #{failnum,jdbcType=VARCHAR},
       createDate = #{createdate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 </mapper>

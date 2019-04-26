@@ -2,9 +2,9 @@ package mapper;
 
 import java.util.List;
 
+import example.XslScoreExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslScore;
-import example.XslScoreExample;
 
 public interface XslScoreMapper {
     int countByExample(XslScoreExample example);

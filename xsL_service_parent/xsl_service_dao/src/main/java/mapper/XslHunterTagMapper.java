@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslHunterTagExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHunterTag;
-import example.XslHunterTagExample;
-
-import java.util.List;
 
 public interface XslHunterTagMapper {
     int countByExample(XslHunterTagExample example);
@@ -28,9 +28,4 @@ public interface XslHunterTagMapper {
     int updateByPrimaryKeySelective(XslHunterTag record);
 
     int updateByPrimaryKey(XslHunterTag record);
-
-    List<XslHunterTag> getHuntersByTag(Integer task_id);
-
-    List<XslHunterTag> getTagsByHunter(Integer hunter_id);
-
 }

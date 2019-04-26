@@ -5,9 +5,9 @@ import java.util.Date;
 public class XslCollecth {
     private Integer id;
 
-    private Integer userid;
+    private String userid;
 
-    private Integer hunterid;
+    private String hunterid;
 
     private Date collectdate;
 
@@ -19,20 +19,20 @@ public class XslCollecth {
         this.id = id;
     }
 
-    public Integer getUserid() {
+    public String getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserid(String userid) {
+        this.userid = userid == null ? null : userid.trim();
     }
 
-    public Integer getHunterid() {
+    public String getHunterid() {
         return hunterid;
     }
 
-    public void setHunterid(Integer hunterid) {
-        this.hunterid = hunterid;
+    public void setHunterid(String hunterid) {
+        this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
     public Date getCollectdate() {

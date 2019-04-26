@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslTagExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslTag;
-import example.XslTagExample;
-
-import java.util.List;
 
 public interface XslTagMapper {
     int countByExample(XslTagExample example);

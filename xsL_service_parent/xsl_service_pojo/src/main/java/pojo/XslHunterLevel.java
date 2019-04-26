@@ -5,6 +5,10 @@ import java.util.Date;
 public class XslHunterLevel {
     private Integer id;
 
+    private String levelid;
+
+    private Short level;
+
     private String name;
 
     private String descr;
@@ -21,6 +25,22 @@ public class XslHunterLevel {
         this.id = id;
     }
 
+    public String getLevelid() {
+        return levelid;
+    }
+
+    public void setLevelid(String levelid) {
+        this.levelid = levelid == null ? null : levelid.trim();
+    }
+
+    public Short getLevel() {
+        return level;
+    }
+
+    public void setLevel(Short level) {
+        this.level = level;
+    }
+
     public String getName() {
         return name;
     }
@@ -29,11 +49,11 @@ public class XslHunterLevel {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getDesc() {
+    public String getDescr() {
         return descr;
     }
 
-    public void setDesc(String descr) {
+    public void setDescr(String descr) {
         this.descr = descr == null ? null : descr.trim();
     }
 

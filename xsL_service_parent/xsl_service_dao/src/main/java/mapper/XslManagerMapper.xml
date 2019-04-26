@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslManagerMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslManager" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="managerId" property="managerid" jdbcType="VARCHAR" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+    <result column="manager_password" property="managerPassword" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="creat_time" property="creatTime" jdbcType="DATE" />
+    <result column="remove_time" property="removeTime" jdbcType="DATE" />
+    <result column="last_login_date" property="lastLoginDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, managerId, manager_name, manager_password, status, creat_time, remove_time, last_login_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslManagerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_manager
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from xsl_manager
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="example.XslManagerExample" >
+    delete from xsl_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslManager" >
+    insert into xsl_manager (id, managerId, manager_name, 
+      manager_password, status, creat_time, 
+      remove_time, last_login_date)
+    values (#{id,jdbcType=INTEGER}, #{managerid,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, 
+      #{managerPassword,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{creatTime,jdbcType=DATE}, 
+      #{removeTime,jdbcType=DATE}, #{lastLoginDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="pojo.XslManager" >
+    insert into xsl_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="managerid != null" >
+        managerId,
+      </if>
+      <if test="managerName != null" >
+        manager_name,
+      </if>
+      <if test="managerPassword != null" >
+        manager_password,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
+      <if test="removeTime != null" >
+        remove_time,
+      </if>
+      <if test="lastLoginDate != null" >
+        last_login_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="managerid != null" >
+        #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPassword != null" >
+        #{managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=DATE},
+      </if>
+      <if test="removeTime != null" >
+        #{removeTime,jdbcType=DATE},
+      </if>
+      <if test="lastLoginDate != null" >
+        #{lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="example.XslManagerExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xsl_manager
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.managerid != null" >
+        managerId = #{record.managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerName != null" >
+        manager_name = #{record.managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerPassword != null" >
+        manager_password = #{record.managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.creatTime != null" >
+        creat_time = #{record.creatTime,jdbcType=DATE},
+      </if>
+      <if test="record.removeTime != null" >
+        remove_time = #{record.removeTime,jdbcType=DATE},
+      </if>
+      <if test="record.lastLoginDate != null" >
+        last_login_date = #{record.lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_manager
+    set id = #{record.id,jdbcType=INTEGER},
+      managerId = #{record.managerid,jdbcType=VARCHAR},
+      manager_name = #{record.managerName,jdbcType=VARCHAR},
+      manager_password = #{record.managerPassword,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      creat_time = #{record.creatTime,jdbcType=DATE},
+      remove_time = #{record.removeTime,jdbcType=DATE},
+      last_login_date = #{record.lastLoginDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslManager" >
+    update xsl_manager
+    <set >
+      <if test="managerid != null" >
+        managerId = #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPassword != null" >
+        manager_password = #{managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=DATE},
+      </if>
+      <if test="removeTime != null" >
+        remove_time = #{removeTime,jdbcType=DATE},
+      </if>
+      <if test="lastLoginDate != null" >
+        last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslManager" >
+    update xsl_manager
+    set managerId = #{managerid,jdbcType=VARCHAR},
+      manager_name = #{managerName,jdbcType=VARCHAR},
+      manager_password = #{managerPassword,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      creat_time = #{creatTime,jdbcType=DATE},
+      remove_time = #{removeTime,jdbcType=DATE},
+      last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

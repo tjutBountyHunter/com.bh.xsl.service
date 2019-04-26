@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslNetworkMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslNetwork" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="AId" property="aid" jdbcType="VARCHAR" />
+    <result column="BId" property="bid" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="firstDate" property="firstdate" jdbcType="DATE" />
+    <result column="lastDate" property="lastdate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, AId, BId, num, firstDate, lastDate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslNetworkExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_network
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_network
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from xsl_network
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="example.XslNetworkExample" >
+    delete from xsl_network
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslNetwork" >
+    insert into xsl_network (id, AId, BId, 
+      num, firstDate, lastDate)
+    values (#{id,jdbcType=INTEGER}, #{aid,jdbcType=VARCHAR}, #{bid,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{firstdate,jdbcType=DATE}, #{lastdate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="pojo.XslNetwork" >
+    insert into xsl_network
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="aid != null" >
+        AId,
+      </if>
+      <if test="bid != null" >
+        BId,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="firstdate != null" >
+        firstDate,
+      </if>
+      <if test="lastdate != null" >
+        lastDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null" >
+        #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="firstdate != null" >
+        #{firstdate,jdbcType=DATE},
+      </if>
+      <if test="lastdate != null" >
+        #{lastdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="example.XslNetworkExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_network
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xsl_network
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.aid != null" >
+        AId = #{record.aid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bid != null" >
+        BId = #{record.bid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstdate != null" >
+        firstDate = #{record.firstdate,jdbcType=DATE},
+      </if>
+      <if test="record.lastdate != null" >
+        lastDate = #{record.lastdate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_network
+    set id = #{record.id,jdbcType=INTEGER},
+      AId = #{record.aid,jdbcType=VARCHAR},
+      BId = #{record.bid,jdbcType=VARCHAR},
+      num = #{record.num,jdbcType=INTEGER},
+      firstDate = #{record.firstdate,jdbcType=DATE},
+      lastDate = #{record.lastdate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslNetwork" >
+    update xsl_network
+    <set >
+      <if test="aid != null" >
+        AId = #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        BId = #{bid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="firstdate != null" >
+        firstDate = #{firstdate,jdbcType=DATE},
+      </if>
+      <if test="lastdate != null" >
+        lastDate = #{lastdate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslNetwork" >
+    update xsl_network
+    set AId = #{aid,jdbcType=VARCHAR},
+      BId = #{bid,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      firstDate = #{firstdate,jdbcType=DATE},
+      lastDate = #{lastdate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

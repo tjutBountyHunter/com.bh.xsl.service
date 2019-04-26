@@ -2,9 +2,9 @@ package mapper;
 
 import java.util.List;
 
+import example.XslHistoryhExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHistoryh;
-import example.XslHistoryhExample;
 
 public interface XslHistoryhMapper {
     int countByExample(XslHistoryhExample example);

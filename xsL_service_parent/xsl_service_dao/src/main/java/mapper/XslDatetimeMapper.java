@@ -2,9 +2,9 @@ package mapper;
 
 import java.util.List;
 
+import example.XslDatetimeExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslDatetime;
-import example.XslDatetimeExample;
 
 public interface XslDatetimeMapper {
     int countByExample(XslDatetimeExample example);

@@ -108,7 +108,7 @@
       #{descr,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{updatedate,jdbcType=DATE}
       )
   </insert>
-  <insert id="insertSelective" parameterType="example.XslFileExample" >
+  <insert id="insertSelective" parameterType="pojo.XslFile" >
     insert into xsl_file
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

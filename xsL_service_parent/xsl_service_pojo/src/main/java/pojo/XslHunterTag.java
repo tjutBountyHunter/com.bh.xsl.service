@@ -5,11 +5,13 @@ import java.util.Date;
 public class XslHunterTag {
     private Integer id;
 
-    private Integer hunterid;
+    private String hunterid;
 
     private Integer tagid;
 
     private Date createdate;
+
+    private Boolean state;
 
     public Integer getId() {
         return id;
@@ -19,12 +21,12 @@ public class XslHunterTag {
         this.id = id;
     }
 
-    public Integer getHunterid() {
+    public String getHunterid() {
         return hunterid;
     }
 
-    public void setHunterid(Integer hunterid) {
-        this.hunterid = hunterid;
+    public void setHunterid(String hunterid) {
+        this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
     public Integer getTagid() {
@@ -41,5 +43,13 @@ public class XslHunterTag {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

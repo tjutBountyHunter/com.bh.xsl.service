@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslTokenExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslToken;
-import example.XslTokenExample;
-
-import java.util.List;
 
 public interface XslTokenMapper {
     int countByExample(XslTokenExample example);

@@ -5,7 +5,7 @@ import java.util.Date;
 public class XslScore {
     private Integer id;
 
-    private Integer hunterid;
+    private String hunterid;
 
     private Short score;
 
@@ -19,12 +19,12 @@ public class XslScore {
         this.id = id;
     }
 
-    public Integer getHunterid() {
+    public String getHunterid() {
         return hunterid;
     }
 
-    public void setHunterid(Integer hunterid) {
-        this.hunterid = hunterid;
+    public void setHunterid(String hunterid) {
+        this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
     public Short getScore() {

@@ -1,10 +1,10 @@
 package mapper;
 
+import java.util.List;
+
+import example.XslHunterExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHunter;
-import example.XslHunterExample;
-
-import java.util.List;
 
 public interface XslHunterMapper {
     int countByExample(XslHunterExample example);

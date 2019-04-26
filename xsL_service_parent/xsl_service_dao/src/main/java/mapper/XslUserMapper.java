@@ -1,10 +1,10 @@
 package mapper;
 
-import pojo.XslUser;
+import java.util.List;
+
 import example.XslUserExample;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import pojo.XslUser;
 
 public interface XslUserMapper {
     int countByExample(XslUserExample example);

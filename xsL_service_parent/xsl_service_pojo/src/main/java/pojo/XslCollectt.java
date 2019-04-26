@@ -5,9 +5,9 @@ import java.util.Date;
 public class XslCollectt {
     private Integer id;
 
-    private Integer userid;
+    private String userid;
 
-    private Integer taskid;
+    private String taskid;
 
     private Date collectdate;
 
@@ -19,20 +19,20 @@ public class XslCollectt {
         this.id = id;
     }
 
-    public Integer getUserid() {
+    public String getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserid(String userid) {
+        this.userid = userid == null ? null : userid.trim();
     }
 
-    public Integer getTaskid() {
+    public String getTaskid() {
         return taskid;
     }
 
-    public void setTaskid(Integer taskid) {
-        this.taskid = taskid;
+    public void setTaskid(String taskid) {
+        this.taskid = taskid == null ? null : taskid.trim();
     }
 
     public Date getCollectdate() {

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslInputBillMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslInputBill" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="inputId" property="inputid" jdbcType="VARCHAR" />
+    <result column="input_money" property="inputMoney" jdbcType="DOUBLE" />
+    <result column="tradeTime" property="tradetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, inputId, input_money, tradeTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslInputBillExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_input_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_input_bill
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from xsl_input_bill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="example.XslInputBillExample" >
+    delete from xsl_input_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslInputBill" >
+    insert into xsl_input_bill (id, inputId, input_money, 
+      tradeTime)
+    values (#{id,jdbcType=INTEGER}, #{inputid,jdbcType=VARCHAR}, #{inputMoney,jdbcType=DOUBLE}, 
+      #{tradetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="pojo.XslInputBill" >
+    insert into xsl_input_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="inputid != null" >
+        inputId,
+      </if>
+      <if test="inputMoney != null" >
+        input_money,
+      </if>
+      <if test="tradetime != null" >
+        tradeTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="inputid != null" >
+        #{inputid,jdbcType=VARCHAR},
+      </if>
+      <if test="inputMoney != null" >
+        #{inputMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="tradetime != null" >
+        #{tradetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="example.XslInputBillExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_input_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xsl_input_bill
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.inputid != null" >
+        inputId = #{record.inputid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputMoney != null" >
+        input_money = #{record.inputMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.tradetime != null" >
+        tradeTime = #{record.tradetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_input_bill
+    set id = #{record.id,jdbcType=INTEGER},
+      inputId = #{record.inputid,jdbcType=VARCHAR},
+      input_money = #{record.inputMoney,jdbcType=DOUBLE},
+      tradeTime = #{record.tradetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslInputBill" >
+    update xsl_input_bill
+    <set >
+      <if test="inputid != null" >
+        inputId = #{inputid,jdbcType=VARCHAR},
+      </if>
+      <if test="inputMoney != null" >
+        input_money = #{inputMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="tradetime != null" >
+        tradeTime = #{tradetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslInputBill" >
+    update xsl_input_bill
+    set inputId = #{inputid,jdbcType=VARCHAR},
+      input_money = #{inputMoney,jdbcType=DOUBLE},
+      tradeTime = #{tradetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

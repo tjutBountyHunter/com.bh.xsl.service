@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.XslMatchMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslMatch" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="match_id" property="matchId" jdbcType="VARCHAR" />
+    <result column="match_name" property="matchName" jdbcType="VARCHAR" />
+    <result column="match_rank_id" property="matchRankId" jdbcType="VARCHAR" />
+    <result column="match_website" property="matchWebsite" jdbcType="VARCHAR" />
+    <result column="match_oriented_id" property="matchOrientedId" jdbcType="VARCHAR" />
+    <result column="match_startTime" property="matchStarttime" jdbcType="DATE" />
+    <result column="match_endTime" property="matchEndtime" jdbcType="DATE" />
+    <result column="match_state" property="matchState" jdbcType="INTEGER" />
+    <result column="match_signUp_endTime" property="matchSignupEndtime" jdbcType="TIMESTAMP" />
+    <result column="match_address" property="matchAddress" jdbcType="VARCHAR" />
+    <result column="match_signUp_maxNum" property="matchSignupMaxnum" jdbcType="INTEGER" />
+    <result column="match_form" property="matchForm" jdbcType="INTEGER" />
+    <result column="match_teamNum" property="matchTeamnum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    Id, match_id, match_name, match_rank_id, match_website, match_oriented_id, match_startTime, 
+    match_endTime, match_state, match_signUp_endTime, match_address, match_signUp_maxNum, 
+    match_form, match_teamNum
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslMatchExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xsl_match
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from xsl_match
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from xsl_match
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="example.XslMatchExample" >
+    delete from xsl_match
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pojo.XslMatch" >
+    insert into xsl_match (Id, match_id, match_name, 
+      match_rank_id, match_website, match_oriented_id, 
+      match_startTime, match_endTime, match_state, 
+      match_signUp_endTime, match_address, match_signUp_maxNum, 
+      match_form, match_teamNum)
+    values (#{id,jdbcType=INTEGER}, #{matchId,jdbcType=VARCHAR}, #{matchName,jdbcType=VARCHAR}, 
+      #{matchRankId,jdbcType=VARCHAR}, #{matchWebsite,jdbcType=VARCHAR}, #{matchOrientedId,jdbcType=VARCHAR}, 
+      #{matchStarttime,jdbcType=DATE}, #{matchEndtime,jdbcType=DATE}, #{matchState,jdbcType=INTEGER}, 
+      #{matchSignupEndtime,jdbcType=TIMESTAMP}, #{matchAddress,jdbcType=VARCHAR}, #{matchSignupMaxnum,jdbcType=INTEGER}, 
+      #{matchForm,jdbcType=INTEGER}, #{matchTeamnum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="pojo.XslMatch" >
+    insert into xsl_match
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="matchId != null" >
+        match_id,
+      </if>
+      <if test="matchName != null" >
+        match_name,
+      </if>
+      <if test="matchRankId != null" >
+        match_rank_id,
+      </if>
+      <if test="matchWebsite != null" >
+        match_website,
+      </if>
+      <if test="matchOrientedId != null" >
+        match_oriented_id,
+      </if>
+      <if test="matchStarttime != null" >
+        match_startTime,
+      </if>
+      <if test="matchEndtime != null" >
+        match_endTime,
+      </if>
+      <if test="matchState != null" >
+        match_state,
+      </if>
+      <if test="matchSignupEndtime != null" >
+        match_signUp_endTime,
+      </if>
+      <if test="matchAddress != null" >
+        match_address,
+      </if>
+      <if test="matchSignupMaxnum != null" >
+        match_signUp_maxNum,
+      </if>
+      <if test="matchForm != null" >
+        match_form,
+      </if>
+      <if test="matchTeamnum != null" >
+        match_teamNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="matchId != null" >
+        #{matchId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchName != null" >
+        #{matchName,jdbcType=VARCHAR},
+      </if>
+      <if test="matchRankId != null" >
+        #{matchRankId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchWebsite != null" >
+        #{matchWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="matchOrientedId != null" >
+        #{matchOrientedId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchStarttime != null" >
+        #{matchStarttime,jdbcType=DATE},
+      </if>
+      <if test="matchEndtime != null" >
+        #{matchEndtime,jdbcType=DATE},
+      </if>
+      <if test="matchState != null" >
+        #{matchState,jdbcType=INTEGER},
+      </if>
+      <if test="matchSignupEndtime != null" >
+        #{matchSignupEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="matchAddress != null" >
+        #{matchAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="matchSignupMaxnum != null" >
+        #{matchSignupMaxnum,jdbcType=INTEGER},
+      </if>
+      <if test="matchForm != null" >
+        #{matchForm,jdbcType=INTEGER},
+      </if>
+      <if test="matchTeamnum != null" >
+        #{matchTeamnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="example.XslMatchExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_match
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xsl_match
+    <set >
+      <if test="record.id != null" >
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchId != null" >
+        match_id = #{record.matchId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchName != null" >
+        match_name = #{record.matchName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchRankId != null" >
+        match_rank_id = #{record.matchRankId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchWebsite != null" >
+        match_website = #{record.matchWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchOrientedId != null" >
+        match_oriented_id = #{record.matchOrientedId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchStarttime != null" >
+        match_startTime = #{record.matchStarttime,jdbcType=DATE},
+      </if>
+      <if test="record.matchEndtime != null" >
+        match_endTime = #{record.matchEndtime,jdbcType=DATE},
+      </if>
+      <if test="record.matchState != null" >
+        match_state = #{record.matchState,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchSignupEndtime != null" >
+        match_signUp_endTime = #{record.matchSignupEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.matchAddress != null" >
+        match_address = #{record.matchAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchSignupMaxnum != null" >
+        match_signUp_maxNum = #{record.matchSignupMaxnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchForm != null" >
+        match_form = #{record.matchForm,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchTeamnum != null" >
+        match_teamNum = #{record.matchTeamnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xsl_match
+    set Id = #{record.id,jdbcType=INTEGER},
+      match_id = #{record.matchId,jdbcType=VARCHAR},
+      match_name = #{record.matchName,jdbcType=VARCHAR},
+      match_rank_id = #{record.matchRankId,jdbcType=VARCHAR},
+      match_website = #{record.matchWebsite,jdbcType=VARCHAR},
+      match_oriented_id = #{record.matchOrientedId,jdbcType=VARCHAR},
+      match_startTime = #{record.matchStarttime,jdbcType=DATE},
+      match_endTime = #{record.matchEndtime,jdbcType=DATE},
+      match_state = #{record.matchState,jdbcType=INTEGER},
+      match_signUp_endTime = #{record.matchSignupEndtime,jdbcType=TIMESTAMP},
+      match_address = #{record.matchAddress,jdbcType=VARCHAR},
+      match_signUp_maxNum = #{record.matchSignupMaxnum,jdbcType=INTEGER},
+      match_form = #{record.matchForm,jdbcType=INTEGER},
+      match_teamNum = #{record.matchTeamnum,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslMatch" >
+    update xsl_match
+    <set >
+      <if test="matchId != null" >
+        match_id = #{matchId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchName != null" >
+        match_name = #{matchName,jdbcType=VARCHAR},
+      </if>
+      <if test="matchRankId != null" >
+        match_rank_id = #{matchRankId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchWebsite != null" >
+        match_website = #{matchWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="matchOrientedId != null" >
+        match_oriented_id = #{matchOrientedId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchStarttime != null" >
+        match_startTime = #{matchStarttime,jdbcType=DATE},
+      </if>
+      <if test="matchEndtime != null" >
+        match_endTime = #{matchEndtime,jdbcType=DATE},
+      </if>
+      <if test="matchState != null" >
+        match_state = #{matchState,jdbcType=INTEGER},
+      </if>
+      <if test="matchSignupEndtime != null" >
+        match_signUp_endTime = #{matchSignupEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="matchAddress != null" >
+        match_address = #{matchAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="matchSignupMaxnum != null" >
+        match_signUp_maxNum = #{matchSignupMaxnum,jdbcType=INTEGER},
+      </if>
+      <if test="matchForm != null" >
+        match_form = #{matchForm,jdbcType=INTEGER},
+      </if>
+      <if test="matchTeamnum != null" >
+        match_teamNum = #{matchTeamnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pojo.XslMatch" >
+    update xsl_match
+    set match_id = #{matchId,jdbcType=VARCHAR},
+      match_name = #{matchName,jdbcType=VARCHAR},
+      match_rank_id = #{matchRankId,jdbcType=VARCHAR},
+      match_website = #{matchWebsite,jdbcType=VARCHAR},
+      match_oriented_id = #{matchOrientedId,jdbcType=VARCHAR},
+      match_startTime = #{matchStarttime,jdbcType=DATE},
+      match_endTime = #{matchEndtime,jdbcType=DATE},
+      match_state = #{matchState,jdbcType=INTEGER},
+      match_signUp_endTime = #{matchSignupEndtime,jdbcType=TIMESTAMP},
+      match_address = #{matchAddress,jdbcType=VARCHAR},
+      match_signUp_maxNum = #{matchSignupMaxnum,jdbcType=INTEGER},
+      match_form = #{matchForm,jdbcType=INTEGER},
+      match_teamNum = #{matchTeamnum,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

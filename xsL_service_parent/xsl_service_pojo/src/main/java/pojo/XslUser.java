@@ -5,7 +5,7 @@ import java.util.Date;
 public class XslUser {
     private Integer id;
 
-    private String userId;
+    private String userid;
 
     private String hunterid;
 
@@ -39,12 +39,12 @@ public class XslUser {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserid(String userid) {
+        this.userid = userid == null ? null : userid.trim();
     }
 
     public String getHunterid() {
@@ -52,7 +52,7 @@ public class XslUser {
     }
 
     public void setHunterid(String hunterid) {
-        this.hunterid = hunterid;
+        this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
     public String getMasterid() {
@@ -60,7 +60,7 @@ public class XslUser {
     }
 
     public void setMasterid(String masterid) {
-        this.masterid = masterid;
+        this.masterid = masterid == null ? null : masterid.trim();
     }
 
     public String getSchoolinfo() {
@@ -68,7 +68,7 @@ public class XslUser {
     }
 
     public void setSchoolinfo(String schoolinfo) {
-        this.schoolinfo = schoolinfo;
+        this.schoolinfo = schoolinfo == null ? null : schoolinfo.trim();
     }
 
     public String getName() {
@@ -142,5 +142,4 @@ public class XslUser {
     public void setUpdatedate(Date updatedate) {
         this.updatedate = updatedate;
     }
-
 }

@@ -1,24 +1,24 @@
 package pojo;
 
-import org.joda.time.DateTime;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class XslTask {
     private Integer id;
 
-    private String taskid;
-
     private Integer cid;
+
+    private String taskid;
 
     private String descr;
 
-    private Integer sendid;
+    private String sendid;
 
     private BigDecimal money;
 
     private Byte state;
+
+    private Integer number;
 
     private Date createdate;
 
@@ -26,22 +26,12 @@ public class XslTask {
 
     private Date deadline;
 
-    private Integer number;
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(String taskid) {
-        this.taskid = taskid == null ? null : taskid.trim();
     }
 
     public Integer getCid() {
@@ -52,6 +42,14 @@ public class XslTask {
         this.cid = cid;
     }
 
+    public String getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(String taskid) {
+        this.taskid = taskid == null ? null : taskid.trim();
+    }
+
     public String getDescr() {
         return descr;
     }
@@ -60,12 +58,12 @@ public class XslTask {
         this.descr = descr == null ? null : descr.trim();
     }
 
-    public Integer getSendid() {
+    public String getSendid() {
         return sendid;
     }
 
-    public void setSendid(Integer sendid) {
-        this.sendid = sendid;
+    public void setSendid(String sendid) {
+        this.sendid = sendid == null ? null : sendid.trim();
     }
 
     public BigDecimal getMoney() {
@@ -84,6 +82,14 @@ public class XslTask {
         this.state = state;
     }
 
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
     public Date getCreatedate() {
         return createdate;
     }
@@ -98,16 +104,6 @@ public class XslTask {
 
     public void setUpdatedate(Date updatedate) {
         this.updatedate = updatedate;
-    }
-
-
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public Date getDeadline() {
