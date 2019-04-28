@@ -192,6 +192,76 @@ public class XslTagExample {
             return (Criteria) this;
         }
 
+        public Criteria andTagidIsNull() {
+            addCriterion("tagId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidIsNotNull() {
+            addCriterion("tagId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidEqualTo(String value) {
+            addCriterion("tagId =", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidNotEqualTo(String value) {
+            addCriterion("tagId <>", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidGreaterThan(String value) {
+            addCriterion("tagId >", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidGreaterThanOrEqualTo(String value) {
+            addCriterion("tagId >=", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidLessThan(String value) {
+            addCriterion("tagId <", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidLessThanOrEqualTo(String value) {
+            addCriterion("tagId <=", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidLike(String value) {
+            addCriterion("tagId like", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidNotLike(String value) {
+            addCriterion("tagId not like", value, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidIn(List<String> values) {
+            addCriterion("tagId in", values, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidNotIn(List<String> values) {
+            addCriterion("tagId not in", values, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidBetween(String value1, String value2) {
+            addCriterion("tagId between", value1, value2, "tagid");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagidNotBetween(String value1, String value2) {
+            addCriterion("tagId not between", value1, value2, "tagid");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;

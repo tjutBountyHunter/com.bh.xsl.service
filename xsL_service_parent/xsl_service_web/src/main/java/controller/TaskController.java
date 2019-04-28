@@ -233,18 +233,6 @@ public class TaskController {
         return xslResult;
     }
 
-    /**
-     * 自定义标签
-     *
-     * @param json
-     * @return
-     */
-    @RequestMapping("/makeselftag")
-    @ResponseBody
-    public XslResult makeTag(String json) {
-        XslResult xslResult = supplementDataService.SupplementTagWrite(json);
-        return xslResult;
-    }
 
     /**
      * 任务大厅

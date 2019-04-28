@@ -10,6 +10,5 @@ public interface SupplementDataService {
 
     XslResult SupplementTaskTagData(String json, Integer taskId);
 
-    XslResult SupplementTagWrite(String json);
 
 }

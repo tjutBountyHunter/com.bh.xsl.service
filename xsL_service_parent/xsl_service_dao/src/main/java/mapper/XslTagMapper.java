@@ -19,6 +19,8 @@ public interface XslTagMapper {
 
     List<XslTag> selectByExample(XslTagExample example);
 
+    List<XslTag> selectByExampleLimit(@Param("example")XslTagExample example, @Param("limit")Integer limit);
+
     XslTag selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") XslTag record, @Param("example") XslTagExample example);
