@@ -41,7 +41,7 @@ public class HunMasterImpl implements HunMaster {
         xslHunter.setTaskfailnum(0);
         xslHunter.setEmpirical(0);
         xslHunter.setCredit((short) 100);
-        xslHunter.setLastTime(new Date());
+        xslHunter.setLasttime(new Date());
         xslHunter.setDescr("");
         xslMaster.setLevel((short) 1);
         xslMaster.setTaskaccnum(0);
@@ -69,11 +69,11 @@ public class HunMasterImpl implements HunMaster {
         XslHunterLevel xslHunterLevel = new XslHunterLevel();
         XslMasterLevel xslMasterLevel = new XslMasterLevel();
         xslHunterLevel.setName("铜牌猎人");
-        xslHunterLevel.setDesc("");
+        xslHunterLevel.setDescr("");
         xslHunterLevel.setCreatedate(new Date());
         xslHunterLevel.setUpdatedate(new Date());
         xslMasterLevel.setName("铜牌雇主");
-        xslMasterLevel.setDesc("");
+        xslMasterLevel.setDescr("");
         xslMasterLevel.setCreatedate(new Date());
         xslMasterLevel.setUpdatedate(new Date());
         xslHunterLevelMapper.insert(xslHunterLevel);

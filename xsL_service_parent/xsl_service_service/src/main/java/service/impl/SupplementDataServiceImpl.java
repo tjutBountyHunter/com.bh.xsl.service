@@ -50,7 +50,8 @@ public class SupplementDataServiceImpl implements SupplementDataService {
             XslDateTask xslDateTask = JsonUtils.jsonToPojo(json, XslDateTask.class);
             XslTask xslTask = new XslTask();
             xslTask.setCid(xslDateTaskMapperr.getCidByName(xslDateTask.getCategoryname()));
-            xslTask.setSendid(xslDateTask.getSendId());
+            // TODO
+//            xslTask.setSendid(xslDateTask.getSendId());
             xslTask.setTaskid(UuidTaskId.getUUID());
             xslTask.setDescr(xslDateTask.getDescr());
             xslTask.setMoney(xslDateTask.getMoney());
@@ -167,13 +168,14 @@ public class SupplementDataServiceImpl implements SupplementDataService {
                 XslTagExample xslTagExample = new XslTagExample();
                 XslTagExample.Criteria criteria = xslTagExample.createCriteria();
                 String json_taglist = commenderList.get(i);
-                SupplementTagWrite(commenderList.get(i));
+//                SupplementTagWrite(commenderList.get(i));
                 System.out.println(commenderList.get(i));
                 criteria.andNameEqualTo(commenderList.get(i));
                 List<XslTag> list_Tag = xslTagMapper.selectByExample(xslTagExample);
                 xslTaskTag.setCreatedate(new Date());
-                xslTaskTag.setTagid(list_Tag.get(0).getId());
-                xslTaskTag.setTaskid(taskId);
+                // TODO
+//                xslTaskTag.setTagid(list_Tag.get(0).getId());
+//                xslTaskTag.setTaskid(taskId);
                 xslTaskTagMapper.insert(xslTaskTag);
             }
             return XslResult.ok(taskId);
@@ -183,39 +185,39 @@ public class SupplementDataServiceImpl implements SupplementDataService {
         }
     }
 
-    /**
-     * 自定义标签
-     *
-     * @param json
-     * @return
-     */
-    @Override
-    public XslResult SupplementTagWrite(String json) {
-        try {
-            XslTag xslTag = new XslTag();
-            XslTagExample xslTagExample = new XslTagExample();
-            XslTagExample.Criteria criteria = xslTagExample.createCriteria();
-            criteria.andNameEqualTo(json);
-            List<XslTag> list = xslTagMapper.selectByExample(xslTagExample);
-            if (list.size() == 0 & list.isEmpty()) {
-                xslTag.setName(json);
-                xslTag.setCreatedate(new Date());
-                xslTag.setUsenum((short) 1);
-//                xslTag.setState((Byte)1);
-                xslTagMapper.insertSelective(xslTag);
-            } else {
-                int num = list.get(0).getUsenum();
-                num++;
-                xslTag.setUsenum((short) num);
-                Map<String, Object> map = new HashMap<>();
-                map.put("name", json);
-                map.put("useNum", num);
-                xslUpdateTagMapper.updateTag(map);
-            }
-            return XslResult.ok("插入成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
+//    /**
+//     * 自定义标签
+//     *
+//     * @param json
+//     * @return
+//     */
+//    @Override
+//    public XslResult SupplementTagWrite(String json) {
+//        try {
+//            XslTag xslTag = new XslTag();
+//            XslTagExample xslTagExample = new XslTagExample();
+//            XslTagExample.Criteria criteria = xslTagExample.createCriteria();
+//            criteria.andNameEqualTo(json);
+//            List<XslTag> list = xslTagMapper.selectByExample(xslTagExample);
+//            if (list.size() == 0 & list.isEmpty()) {
+//                xslTag.setName(json);
+//                xslTag.setCreatedate(new Date());
+//                xslTag.setUsenum((short) 1);
+////                xslTag.setState((Byte)1);
+//                xslTagMapper.insertSelective(xslTag);
+//            } else {
+//                int num = list.get(0).getUsenum();
+//                num++;
+//                xslTag.setUsenum((short) num);
+//                Map<String, Object> map = new HashMap<>();
+//                map.put("name", json);
+//                map.put("useNum", num);
+//                xslUpdateTagMapper.updateTag(map);
+//            }
+//            return XslResult.ok("插入成功");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return XslResult.build(500, "服务器异常");
+//        }
+//    }
 }

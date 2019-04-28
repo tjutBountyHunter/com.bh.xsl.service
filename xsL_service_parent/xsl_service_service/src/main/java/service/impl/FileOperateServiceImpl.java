@@ -81,7 +81,7 @@ public class FileOperateServiceImpl implements FileOperateService {
 		XslUser xslUser = list.get(0);
 		//建立用户与文件关联
 		XslUserFile xslUserFile = new XslUserFile();
-		xslUserFile.setUserid(xslUser.getUserId());
+		xslUserFile.setUserid(xslUser.getUserid());
 		xslUserFile.setFileid(xslFile.getFileid());
 		xslUserFile.setType(type);
 		xslUserFile.setCreatedate(new Date());
