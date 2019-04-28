@@ -21,20 +21,15 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	public XslResult createTags(TagReqVo tagReqVo) {
-		List<String> tags = tagReqVo.getTags();
-
-		if(tags == null || tags.size() < 1){
-			return XslResult.build(400, "请求参数错误");
-		}
+		String tagName = tagReqVo.getTagName();
 
 		try {
-			for(String tagName : tags){
 				XslTagExample xslTagExample = new XslTagExample();
 				XslTagExample.Criteria criteria = xslTagExample.createCriteria();
 				criteria.andNameEqualTo(tagName);
 				List<XslTag> list = xslTagMapper.selectByExample(xslTagExample);
 				if(list != null && list.size()>0){
-					continue;
+					return XslResult.build(200, "标签创建成功");
 				}
 
 				XslTag xslTag = new XslTag();
@@ -42,7 +37,6 @@ public class TagServiceImpl implements TagService {
 				xslTag.setName(tagName);
 				xslTag.setCreatedate(new Date());
 				xslTagMapper.insertSelective(xslTag);
-			}
 
 			return XslResult.build(200, "标签创建成功");
 		} catch (Exception e) {

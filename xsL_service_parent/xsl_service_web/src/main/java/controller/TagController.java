@@ -23,7 +23,7 @@ public class TagController {
 	 */
 	@RequestMapping("/createTag")
 	@ResponseBody
-	public XslResult createTag(@RequestBody TagReqVo tagReqVo) {
+	public XslResult createTag(TagReqVo tagReqVo) {
 		XslResult xslResult = tagService.createTags(tagReqVo);
 		return xslResult;
 	}

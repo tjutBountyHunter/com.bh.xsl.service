@@ -38,4 +38,11 @@
     </bean>
     <bean id="jedisClientSingle" class="dao.impl.JedisClientSingle"></bean>
     <bean id="jedisClientUtil" class="util.JedisClientUtil"></bean>
+
+    <!--极光推送客户端-->
+    <bean id="jedjpushClient" class="cn.jpush.api.JPushClient">
+        <constructor-arg name="masterSecret" value="82f57646236b6d99d9e52280"></constructor-arg>
+        <constructor-arg name="appKey" value="58bb0db196bb64bdd5ccd70c"></constructor-arg>
+    </bean>
+
 </beans>

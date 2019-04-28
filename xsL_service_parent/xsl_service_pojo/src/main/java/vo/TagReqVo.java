@@ -5,7 +5,7 @@ import java.util.List;
 public class TagReqVo {
 	private Integer tagNum;
 	private List<String> obtainedTags;
-	private List<String> tags;
+	private String tagName;
 
 	public Integer getTagNum() {
 		return tagNum;
@@ -23,11 +23,11 @@ public class TagReqVo {
 		this.obtainedTags = obtainedTags;
 	}
 
-	public List<String> getTags() {
-		return tags;
+	public String getTagName() {
+		return tagName;
 	}
 
-	public void setTags(List<String> tags) {
-		this.tags = tags;
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
 }
