@@ -43,7 +43,7 @@ public class TagServiceImpl implements TagService {
 				xslTag.setCreatedate(new Date());
 				xslTagMapper.insertSelective(xslTag);
 
-			return XslResult.build(200, "标签创建成功");
+			return XslResult.ok(xslTag.getTagid());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return XslResult.build(500, "服务器异常");

@@ -1,7 +1,9 @@
 package service.impl;
 
+import example.XslTagExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.*;
@@ -32,9 +34,14 @@ public class TaskServiceImpl implements TaskService {
 	private XslTaskTagMapper xslTaskTagMapper;
 	@Autowired
 	private XslTaskFileMapper xslTaskFileMapper;
+	@Autowired
+	private XslTagMapper xslTagMapper;
 
 	@Autowired
 	private XslDateTaskMapper xslDateTaskMapperr;
+
+	@Autowired
+	private ThreadPoolTaskExecutor taskExecutor;
 
     /**
      * 分页展示分类猎人
@@ -152,7 +159,7 @@ public class TaskServiceImpl implements TaskService {
 			XslResult xslResultFile = addTaskFile(taskReqVo, xslTask.getTaskid());
 
 			if(xslResultFile.isOK() && xslResultTag.isOK()){
-				return XslResult.ok();
+				return XslResult.ok(xslTask.getTaskid());
 			}
 
 			return XslResult.build(500, "服务器异常");
@@ -207,11 +214,30 @@ public class TaskServiceImpl implements TaskService {
 				throw new RuntimeException();
 			}
 
+			//异步去处理标签使用的次数
+			taskExecutor.execute(() -> updateTagNum(taskReqVo.getTags()));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return XslResult.build(500, "服务器异常");
 		}
 
+		return XslResult.ok();
+	}
+
+	private XslResult updateTagNum(List<tagVo> tags){
+		List<String> tagIds = new ArrayList<>(tags.size());
+		for (tagVo tagVo : tags){
+			tagIds.add(tagVo.getTagId());
+		}
+
+		XslTagExample xslTagExample = new XslTagExample();
+		XslTagExample.Criteria criteria = xslTagExample.createCriteria();
+		criteria.andTagidIn(tagIds);
+		int i = xslTagMapper.updateUseNumByExample(xslTagExample);
+		if(i < 1){
+			throw new RuntimeException();
+		}
 		return XslResult.ok();
 	}
 

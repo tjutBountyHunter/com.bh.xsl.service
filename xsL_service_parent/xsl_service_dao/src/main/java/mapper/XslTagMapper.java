@@ -30,4 +30,6 @@ public interface XslTagMapper {
     int updateByPrimaryKeySelective(XslTag record);
 
     int updateByPrimaryKey(XslTag record);
+
+    int updateUseNumByExample(XslTagExample example);
 }
