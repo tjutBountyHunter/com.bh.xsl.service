@@ -7,10 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="xsl_service_common" />
-        <module name="xsl_service_dao" />
+        <module name="xsl_service_web" />
         <module name="xsl_service_pojo" />
         <module name="xsl_service_service" />
-        <module name="xsl_service_web" />
+        <module name="xsl_service_dao" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8" />

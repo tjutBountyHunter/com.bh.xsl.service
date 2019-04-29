@@ -208,4 +208,18 @@
       state = #{state,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getTagsByTaskId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from xsl_task_tag
+    where taskId = #{taskId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getTasksByTagId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from xsl_task_tag
+    where tagId = #{taskTag,jdbcType=INTEGER}
+  </select>
 </mapper>

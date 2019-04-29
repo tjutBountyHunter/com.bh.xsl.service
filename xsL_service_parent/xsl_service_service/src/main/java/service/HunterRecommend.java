@@ -1,8 +1,13 @@
 package service;
 
-import java.util.List;
-
 public interface HunterRecommend {
-    int[] recommend(Integer task_id);
+
+    /**
+     * 猎人推荐
+     *
+     * @param taskId
+     * @return 猎人id数组
+     */
+    String[] recommend(String taskId);
 
 }

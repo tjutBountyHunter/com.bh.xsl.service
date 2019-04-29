@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="pojo.XslHunterTag" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="hunterId" property="hunterid" jdbcType="VARCHAR" />
-    <result column="tagId" property="tagid" jdbcType="INTEGER" />
+    <result column="tagId" property="tagid" jdbcType="VARCHAR" />
     <result column="createDate" property="createdate" jdbcType="DATE" />
     <result column="state" property="state" jdbcType="BIT" />
   </resultMap>
@@ -208,4 +208,18 @@
       state = #{state,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getHuntersByTagId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from xsl_hunter_tag
+    where tagId = #{taskTag,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getTagsByHunterId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from xsl_hunter_tag
+    where hunterId = #{hunterId,jdbcType=VARCHAR}
+  </select>
 </mapper>

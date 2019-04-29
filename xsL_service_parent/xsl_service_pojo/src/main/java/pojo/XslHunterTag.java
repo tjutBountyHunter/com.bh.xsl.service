@@ -7,7 +7,7 @@ public class XslHunterTag {
 
     private String hunterid;
 
-    private Integer tagid;
+    private String tagid;
 
     private Date createdate;
 
@@ -29,11 +29,11 @@ public class XslHunterTag {
         this.hunterid = hunterid == null ? null : hunterid.trim();
     }
 
-    public Integer getTagid() {
+    public String getTagid() {
         return tagid;
     }
 
-    public void setTagid(Integer tagid) {
+    public void setTagid(String tagid) {
         this.tagid = tagid;
     }
 
