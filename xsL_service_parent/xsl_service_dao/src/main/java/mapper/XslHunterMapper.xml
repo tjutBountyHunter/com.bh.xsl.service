@@ -303,4 +303,23 @@
       state = #{state,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectMaxLevel" resultType="java.lang.Integer" >
+    select
+     max(`level`)
+    from xsl_hunter
+  </select>
+
+  <select id="selectMaxTaskAccNum" resultType="java.lang.Integer" >
+    select
+     max(`taskAccNum`)
+    from xsl_hunter
+  </select>
+
+  <select id="selectHunterByHunterId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from xsl_hunter
+    where hunterId = #{hunterId,jdbcType=VARCHAR}
+  </select>
 </mapper>

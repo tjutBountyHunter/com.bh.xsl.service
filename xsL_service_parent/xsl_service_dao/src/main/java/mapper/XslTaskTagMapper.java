@@ -30,4 +30,9 @@ public interface XslTaskTagMapper {
     int updateByPrimaryKey(XslTaskTag record);
 
     int insertSelectiveBatch(List<XslTaskTag> xslTaskFiles);
+
+//    重写
+    List<XslTaskTag> getTagsByTaskId(String taskId);
+
+    List<XslTaskTag> getTasksByTagId(String taskTag);
 }
