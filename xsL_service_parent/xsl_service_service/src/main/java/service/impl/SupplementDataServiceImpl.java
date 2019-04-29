@@ -43,47 +43,7 @@ public class SupplementDataServiceImpl implements SupplementDataService {
      */
     @Override
     public XslResult SupplementTaskData(String json) {
-        XslResult xslResult = null;
-        try {
-            System.out.println(json);
-
-            XslDateTask xslDateTask = JsonUtils.jsonToPojo(json, XslDateTask.class);
-            XslTask xslTask = new XslTask();
-            xslTask.setCid(xslDateTaskMapperr.getCidByName(xslDateTask.getCategoryname()));
-            // TODO
-//            xslTask.setSendid(xslDateTask.getSendId());
-            xslTask.setTaskid(UuidTaskId.getUUID());
-            xslTask.setDescr(xslDateTask.getDescr());
-            xslTask.setMoney(xslDateTask.getMoney());
-            xslTask.setState((byte) 0);
-            xslTask.setNumber(0);
-            xslTask.setCreatedate(new Date());
-            xslTask.setUpdatedate(new Date());
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date dateTime = formatter.parse(xslDateTask.getDeadline());
-            xslTask.setDeadline(dateTime);
-            Map<String, String> map = new HashMap<>(1);
-            map.put("sentence", xslDateTask.getDescr());
-            String wordFind = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
-            XslResultOk xslResultWord = XslResultOk.format(wordFind);
-            List<String> data = (List<String>) xslResultWord.getData();
-            if (data == null || data.size() == 0) {
-                searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
-                searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
-                xslTaskMapper.insert(xslTask);
-                XslTaskExample xslTaskExample = new XslTaskExample();
-                XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
-                criteria.andTaskidEqualTo(xslTask.getTaskid());
-                List<XslTask> list = xslTaskMapper.selectByExample(xslTaskExample);
-                xslResult = SupplementTaskTagData(json, list.get(0).getId());
-                return xslResult;
-            } else {
-                return XslResult.build(400, "有违规词组出现");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
+        return null;
     }
 
     public XslResult wordFind(String descr) {
@@ -147,43 +107,7 @@ public class SupplementDataServiceImpl implements SupplementDataService {
         }
     }
 
-    /**
-     * 添加任务标签关系数据
-     *
-     * @param json
-     * @return
-     */
-    @Override
-    public XslResult SupplementTaskTagData(String json, Integer taskId) {
-        try {
-            XslDateTask xslDateTask = JsonUtils.jsonToPojo(json, XslDateTask.class);
-            String json_tagName = xslDateTask.getTagname();
-            List<String> commenderList = new ArrayList<String>();
-            StringTokenizer st = new StringTokenizer(json_tagName, ",");
-            while (st.hasMoreTokens()) {
-                commenderList.add(st.nextToken());
-            }
-            XslTaskTag xslTaskTag = new XslTaskTag();
-            for (int i = 0; i < commenderList.size(); i++) {
-                XslTagExample xslTagExample = new XslTagExample();
-                XslTagExample.Criteria criteria = xslTagExample.createCriteria();
-                String json_taglist = commenderList.get(i);
-//                SupplementTagWrite(commenderList.get(i));
-                System.out.println(commenderList.get(i));
-                criteria.andNameEqualTo(commenderList.get(i));
-                List<XslTag> list_Tag = xslTagMapper.selectByExample(xslTagExample);
-                xslTaskTag.setCreatedate(new Date());
-                // TODO
-//                xslTaskTag.setTagid(list_Tag.get(0).getId());
-//                xslTaskTag.setTaskid(taskId);
-                xslTaskTagMapper.insert(xslTaskTag);
-            }
-            return XslResult.ok(taskId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
+
 
 //    /**
 //     * 自定义标签
