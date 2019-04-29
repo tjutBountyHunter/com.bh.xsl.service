@@ -60,7 +60,7 @@ public class UserviceImpl implements UserService {
         try {
 
 //            all = new String(all.getBytes("iso-8859-1"), "utf-8");
-//            XslUserRegister xslUserRegister = JsonUtils.jsonToPojo(all, XslUserRegister.class);
+//            XslUserRegister xslUserRegister = JsonUtils.jsonToObject(all, XslUserRegister.class);
 //            XslUserExample example = new XslUserExample();
 //            XslUserExample.Criteria criteria = example.createCriteria();
 //            criteria.andPhoneEqualTo(xslUserRegister.getPhone());

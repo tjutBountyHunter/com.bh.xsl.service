@@ -5,14 +5,14 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="cid" property="cid" jdbcType="INTEGER" />
     <result column="taskId" property="taskid" jdbcType="VARCHAR" />
-    <result column="descr" property="descr" jdbcType="VARCHAR" />
-    <result column="sendId" property="sendid" jdbcType="VARCHAR" />
+    <result column="taskTitle" property="tasktitle" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="sendId" property="sendid" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="TINYINT" />
-    <result column="number" property="number" jdbcType="INTEGER" />
-    <result column="createDate" property="createdate" jdbcType="DATE" />
-    <result column="updateDate" property="updatedate" jdbcType="DATE" />
-    <result column="deadline" property="deadline" jdbcType="DATE" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,9 +73,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, cid, taskId, descr, sendId, money, state, number, createDate, updateDate, deadline
+    id, cid, taskId, taskTitle, content, money, sendId, state, createDate, updateDate, 
+    deadline
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslTaskExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskExample" >
     select
     <if test="distinct" >
       distinct
@@ -99,7 +100,7 @@
     delete from xsl_task
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="example.XslTaskExample" >
+  <delete id="deleteByExample" parameterType="pojo.XslTaskExample" >
     delete from xsl_task
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -107,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="pojo.XslTask" >
     insert into xsl_task (id, cid, taskId, 
-      descr, sendId, money, 
-      state, number, createDate, 
+      taskTitle, content, money, 
+      sendId, state, createDate, 
       updateDate, deadline)
     values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{taskid,jdbcType=VARCHAR}, 
-      #{descr,jdbcType=VARCHAR}, #{sendid,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
-      #{state,jdbcType=TINYINT}, #{number,jdbcType=INTEGER}, #{createdate,jdbcType=DATE}, 
-      #{updatedate,jdbcType=DATE}, #{deadline,jdbcType=DATE})
+      #{tasktitle,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{sendid,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{updatedate,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="pojo.XslTask" >
     insert into xsl_task
@@ -127,20 +128,20 @@
       <if test="taskid != null" >
         taskId,
       </if>
-      <if test="descr != null" >
-        descr,
+      <if test="tasktitle != null" >
+        taskTitle,
       </if>
-      <if test="sendid != null" >
-        sendId,
+      <if test="content != null" >
+        content,
       </if>
       <if test="money != null" >
         money,
       </if>
+      <if test="sendid != null" >
+        sendId,
+      </if>
       <if test="state != null" >
         state,
-      </if>
-      <if test="number != null" >
-        number,
       </if>
       <if test="createdate != null" >
         createDate,
@@ -162,33 +163,33 @@
       <if test="taskid != null" >
         #{taskid,jdbcType=VARCHAR},
       </if>
-      <if test="descr != null" >
-        #{descr,jdbcType=VARCHAR},
+      <if test="tasktitle != null" >
+        #{tasktitle,jdbcType=VARCHAR},
       </if>
-      <if test="sendid != null" >
-        #{sendid,jdbcType=VARCHAR},
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="money != null" >
         #{money,jdbcType=DECIMAL},
       </if>
+      <if test="sendid != null" >
+        #{sendid,jdbcType=VARCHAR},
+      </if>
       <if test="state != null" >
         #{state,jdbcType=TINYINT},
       </if>
-      <if test="number != null" >
-        #{number,jdbcType=INTEGER},
-      </if>
       <if test="createdate != null" >
-        #{createdate,jdbcType=DATE},
+        #{createdate,jdbcType=TIMESTAMP},
       </if>
       <if test="updatedate != null" >
-        #{updatedate,jdbcType=DATE},
+        #{updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="deadline != null" >
-        #{deadline,jdbcType=DATE},
+        #{deadline,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="example.XslTaskExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="pojo.XslTaskExample" resultType="java.lang.Integer" >
     select count(*) from xsl_task
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -206,29 +207,29 @@
       <if test="record.taskid != null" >
         taskId = #{record.taskid,jdbcType=VARCHAR},
       </if>
-      <if test="record.descr != null" >
-        descr = #{record.descr,jdbcType=VARCHAR},
+      <if test="record.tasktitle != null" >
+        taskTitle = #{record.tasktitle,jdbcType=VARCHAR},
       </if>
-      <if test="record.sendid != null" >
-        sendId = #{record.sendid,jdbcType=VARCHAR},
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.money != null" >
         money = #{record.money,jdbcType=DECIMAL},
       </if>
+      <if test="record.sendid != null" >
+        sendId = #{record.sendid,jdbcType=VARCHAR},
+      </if>
       <if test="record.state != null" >
         state = #{record.state,jdbcType=TINYINT},
       </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=INTEGER},
-      </if>
       <if test="record.createdate != null" >
-        createDate = #{record.createdate,jdbcType=DATE},
+        createDate = #{record.createdate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updatedate != null" >
-        updateDate = #{record.updatedate,jdbcType=DATE},
+        updateDate = #{record.updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.deadline != null" >
-        deadline = #{record.deadline,jdbcType=DATE},
+        deadline = #{record.deadline,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -240,14 +241,14 @@
     set id = #{record.id,jdbcType=INTEGER},
       cid = #{record.cid,jdbcType=INTEGER},
       taskId = #{record.taskid,jdbcType=VARCHAR},
-      descr = #{record.descr,jdbcType=VARCHAR},
-      sendId = #{record.sendid,jdbcType=VARCHAR},
+      taskTitle = #{record.tasktitle,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
+      sendId = #{record.sendid,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=TINYINT},
-      number = #{record.number,jdbcType=INTEGER},
-      createDate = #{record.createdate,jdbcType=DATE},
-      updateDate = #{record.updatedate,jdbcType=DATE},
-      deadline = #{record.deadline,jdbcType=DATE}
+      createDate = #{record.createdate,jdbcType=TIMESTAMP},
+      updateDate = #{record.updatedate,jdbcType=TIMESTAMP},
+      deadline = #{record.deadline,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -261,29 +262,29 @@
       <if test="taskid != null" >
         taskId = #{taskid,jdbcType=VARCHAR},
       </if>
-      <if test="descr != null" >
-        descr = #{descr,jdbcType=VARCHAR},
+      <if test="tasktitle != null" >
+        taskTitle = #{tasktitle,jdbcType=VARCHAR},
       </if>
-      <if test="sendid != null" >
-        sendId = #{sendid,jdbcType=VARCHAR},
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="money != null" >
         money = #{money,jdbcType=DECIMAL},
       </if>
+      <if test="sendid != null" >
+        sendId = #{sendid,jdbcType=VARCHAR},
+      </if>
       <if test="state != null" >
         state = #{state,jdbcType=TINYINT},
       </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=INTEGER},
-      </if>
       <if test="createdate != null" >
-        createDate = #{createdate,jdbcType=DATE},
+        createDate = #{createdate,jdbcType=TIMESTAMP},
       </if>
       <if test="updatedate != null" >
-        updateDate = #{updatedate,jdbcType=DATE},
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
       </if>
       <if test="deadline != null" >
-        deadline = #{deadline,jdbcType=DATE},
+        deadline = #{deadline,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -292,14 +293,14 @@
     update xsl_task
     set cid = #{cid,jdbcType=INTEGER},
       taskId = #{taskid,jdbcType=VARCHAR},
-      descr = #{descr,jdbcType=VARCHAR},
-      sendId = #{sendid,jdbcType=VARCHAR},
+      taskTitle = #{tasktitle,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
+      sendId = #{sendid,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},
-      number = #{number,jdbcType=INTEGER},
-      createDate = #{createdate,jdbcType=DATE},
-      updateDate = #{updatedate,jdbcType=DATE},
-      deadline = #{deadline,jdbcType=DATE}
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      deadline = #{deadline,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -28,4 +28,6 @@ public interface XslTaskTagMapper {
     int updateByPrimaryKeySelective(XslTaskTag record);
 
     int updateByPrimaryKey(XslTaskTag record);
+
+    int insertSelectiveBatch(List<XslTaskTag> xslTaskFiles);
 }

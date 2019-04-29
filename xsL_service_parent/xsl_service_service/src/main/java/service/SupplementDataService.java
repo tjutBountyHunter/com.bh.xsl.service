@@ -8,7 +8,4 @@ public interface SupplementDataService {
 
     XslResult SupplementCategoryData(String json);
 
-    XslResult SupplementTaskTagData(String json, Integer taskId);
-
-
 }

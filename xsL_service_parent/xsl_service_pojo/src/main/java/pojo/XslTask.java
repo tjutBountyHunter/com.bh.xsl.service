@@ -10,15 +10,15 @@ public class XslTask {
 
     private String taskid;
 
-    private String descr;
+    private String tasktitle;
 
-    private String sendid;
+    private String content;
 
     private BigDecimal money;
 
-    private Byte state;
+    private String sendid;
 
-    private Integer number;
+    private Byte state;
 
     private Date createdate;
 
@@ -50,20 +50,20 @@ public class XslTask {
         this.taskid = taskid == null ? null : taskid.trim();
     }
 
-    public String getDescr() {
-        return descr;
+    public String getTasktitle() {
+        return tasktitle;
     }
 
-    public void setDescr(String descr) {
-        this.descr = descr == null ? null : descr.trim();
+    public void setTasktitle(String tasktitle) {
+        this.tasktitle = tasktitle == null ? null : tasktitle.trim();
     }
 
-    public String getSendid() {
-        return sendid;
+    public String getContent() {
+        return content;
     }
 
-    public void setSendid(String sendid) {
-        this.sendid = sendid == null ? null : sendid.trim();
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public BigDecimal getMoney() {
@@ -74,20 +74,20 @@ public class XslTask {
         this.money = money;
     }
 
+    public String getSendid() {
+        return sendid;
+    }
+
+    public void setSendid(String sendid) {
+        this.sendid = sendid == null ? null : sendid.trim();
+    }
+
     public Byte getState() {
         return state;
     }
 
     public void setState(Byte state) {
         this.state = state;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public Date getCreatedate() {

@@ -44,7 +44,7 @@ public class JsonUtils {
      * @param beanType
      * @return
      */
-    public static <T> T jsonToPojo(String jsonData, Class<T> beanType) {
+    public static <T> T jsonToObject(String jsonData, Class<T> beanType) {
         try {
             //将json转换为bean
             T t = (T) MAPPER.readValue(jsonData, beanType);
