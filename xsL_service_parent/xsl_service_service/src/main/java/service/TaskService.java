@@ -1,8 +1,9 @@
 package service;
 
 import util.XslResult;
+import vo.TaskReqVo;
 
-public interface UpTaskService {
+public interface TaskService {
 
     XslResult UpuseTask(String json);
 
@@ -23,5 +24,12 @@ public interface UpTaskService {
      * @return
      */
     XslResult hunterDire(int task_id);
+
+    /**
+     * 发送任务
+     *
+     * @return
+     */
+    XslResult sendTask(TaskReqVo taskReqVo);
 
 }

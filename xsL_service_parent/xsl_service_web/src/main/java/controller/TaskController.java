@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import service.*;
 import util.XslResult;
+import vo.TaskReqVo;
 
 import java.text.ParseException;
 
@@ -24,7 +25,7 @@ public class TaskController {
     @Autowired
     private Collect collect;
     @Autowired
-    private UpTaskService upTaskService;
+    private TaskService taskService;
     @Autowired
     private SupplementDataService supplementDataService;
     @Autowired
@@ -223,13 +224,12 @@ public class TaskController {
     /**
      * 发送任务
      *
-     * @param json
      * @return
      */
-    @RequestMapping(value = "/sendtask", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendTask", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult sendTask(String json) {
-        XslResult xslResult = upTaskService.UpuseTask(json);
+    public XslResult sendTask(TaskReqVo taskReqVo) {
+        XslResult xslResult = taskService.sendTask(taskReqVo);
         return xslResult;
     }
 
@@ -265,7 +265,7 @@ public class TaskController {
     @ResponseBody
     public XslResult hunterChange(int task_id) {
         XslResult xslResult = null;
-        xslResult = upTaskService.hunterDire(task_id);
+        xslResult = taskService.hunterDire(task_id);
         return xslResult;
     }
 

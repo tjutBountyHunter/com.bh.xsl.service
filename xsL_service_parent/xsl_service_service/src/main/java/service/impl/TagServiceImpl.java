@@ -4,6 +4,7 @@ import example.XslTagExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import pojo.XslTag;
 import service.TagService;
 import util.XslResult;
@@ -22,6 +23,10 @@ public class TagServiceImpl implements TagService {
 	@Override
 	public XslResult createTags(TagReqVo tagReqVo) {
 		String tagName = tagReqVo.getTagName();
+
+		if(StringUtils.isEmpty(tagName)){
+			return XslResult.build(400, "参数错误");
+		}
 
 		try {
 				XslTagExample xslTagExample = new XslTagExample();

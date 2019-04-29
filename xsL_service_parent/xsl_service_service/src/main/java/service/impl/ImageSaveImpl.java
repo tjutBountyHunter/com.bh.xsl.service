@@ -10,6 +10,7 @@ import util.IdUtil;
 import service.ImageSave;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,10 +49,10 @@ public class ImageSaveImpl implements ImageSave {
             String oldName = uploadFile.getOriginalFilename();
             // 生成新的文件名
             // UUID.randomUUID();
-            String newName = IdUtil.genImageName() + (new Date());
+            String newName = IdUtil.genImageName();
             newName = newName + oldName.substring(oldName.indexOf("."));
             // 图片上传
-            String imagePath = new DateTime().toString("/yyyy/MMM/dd");
+            String imagePath = new DateTime().toString("/yyyy/MM/dd");
             boolean result = FtpUtil.uploadFile(FTP_ADDRESS, FTP_PORT, FTP_USERNAME, FTP_PASSWORD,
                     FTP_BASE_PATH, imagePath, newName, uploadFile.getInputStream());
             // 返回结果

@@ -32,33 +32,31 @@ public class FileOperateServiceImpl implements FileOperateService {
 	 * 上传图片
 	 *
 	 * @param uploadFile
-	 * @param phone
 	 * @return
 	 */
 	@Override
-	public XslResult fileUpload(MultipartFile uploadFile, String phone, String type) {
+	public XslResult fileUpload(MultipartFile uploadFile) {
+		if(uploadFile == null){
+			return XslResult.build(400, "参数错误");
+		}
+
 		//初始化文件信息
 		XslFile xslFile = new XslFile();
 		xslFile.setFileid(UUID.randomUUID().toString());
-		xslFile.setUpdatedate(new Date());
-		xslFile.setCreatedate(new Date());
-		Map map = imageSave.uploadPicture(uploadFile);
-		if ("1".equals(map.get("error"))) {
-			return XslResult.build(500, "图片上传失败");
-		}
-		xslFile.setUrl((String) map.get("url"));
 
 		try {
-			int insert = xslFileMapper.insert(xslFile);
+			Map map = imageSave.uploadPicture(uploadFile);
+			if ("1".equals(map.get("error"))) {
+				return XslResult.build(500, "图片上传失败");
+			}
+			xslFile.setUrl((String) map.get("url"));
+
+			int insert = xslFileMapper.insertSelective(xslFile);
 			if(insert < 1){
 				return XslResult.build(500, "服务器异常");
 			}
-			XslResult userFile = createUserFile(xslFile, phone, type);
 
-			if(!"OK".equals(userFile.getMsg())){
-				throw new RuntimeException("文件上传失败");
-			}
-			return XslResult.ok(xslFile.getUrl());
+			return XslResult.ok(xslFile);
 
 		} catch (Exception e) {
 			e.printStackTrace();

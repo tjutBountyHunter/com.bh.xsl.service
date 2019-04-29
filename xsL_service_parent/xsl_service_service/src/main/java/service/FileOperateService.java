@@ -9,8 +9,7 @@ public interface FileOperateService {
 	 * 上传图片
 	 *
 	 * @param uploadFile
-	 * @param phone
 	 * @return
 	 */
-	XslResult fileUpload(MultipartFile uploadFile, String phone, String type);
+	XslResult fileUpload(MultipartFile uploadFile);
 }

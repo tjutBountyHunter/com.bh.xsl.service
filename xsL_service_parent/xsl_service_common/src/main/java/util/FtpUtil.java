@@ -56,7 +56,7 @@ public class FtpUtil {
             }
 
             //切换到上传目录（if里面是先执行后判断，要留心）
-            if (!ftp.changeWorkingDirectory(basePath + filePath)) {
+            if (!ftp.changeWorkingDirectory(basePath + 2)) {
                 //如果发现该目录不存在则创建一个目录
                 String[] dirs = filePath.split("/");
                 String tempPath = basePath;

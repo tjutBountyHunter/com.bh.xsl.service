@@ -3,7 +3,7 @@ package controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import service.UpTaskService;
+import service.TaskService;
 import util.XslResult;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public class ShowCategoryController {
 
     @Resource
-    private UpTaskService upTaskService;
+    private TaskService upTaskService;
 
     @RequestMapping("/kindhunter")
     @ResponseBody

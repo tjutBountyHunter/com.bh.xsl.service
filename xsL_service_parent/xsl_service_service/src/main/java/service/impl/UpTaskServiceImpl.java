@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pojo.XslOneHunter;
 import service.*;
 import util.XslResult;
+import vo.TaskReqVo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UpTaskServiceImpl implements UpTaskService {
+public class UpTaskServiceImpl implements TaskService {
 
     @Autowired
     private SupplementDataService supplementDataService;
@@ -94,4 +95,13 @@ public class UpTaskServiceImpl implements UpTaskService {
             return XslResult.build(500, "服务器异常");
         }
     }
+
+    @Override
+    public XslResult sendTask(TaskReqVo taskReqVo) {
+
+
+        return null;
+    }
+
+
 }

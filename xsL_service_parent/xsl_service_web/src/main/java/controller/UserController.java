@@ -14,8 +14,6 @@ import vo.UserReqVo;
 /**
  * 登录注册
  *
- * @author 高山潍
- * @after 何林鸿
  */
 @Controller
 @RequestMapping("/xsl/user")
@@ -61,10 +59,8 @@ public class UserController {
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     @ResponseBody
     public XslResult fileUp(@Param("uploadFile") MultipartFile uploadFile, @Param("phone") String phone, @Param("type") String type) {
-        XslResult xslResult = fileOperateService.fileUpload(uploadFile, phone, type);
+        XslResult xslResult = fileOperateService.fileUpload(uploadFile);
         return xslResult;
-
-
     }
 
     /**
