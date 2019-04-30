@@ -166,7 +166,7 @@ public class TaskServiceImpl implements TaskService {
 			if(xslResultFile.isOK() && xslResultTag.isOK()){
 				//异步启动推荐
 				if(taskReqVo.getRecommend()){
-					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask, taskReqVo));
+					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask));
 				}
 				return XslResult.ok(xslTask.getTaskid());
 			}
@@ -251,18 +251,23 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 
-	private XslResult hunterRecommendAndPush(XslTask xslTask, TaskReqVo taskReqVo){
+	private XslResult hunterRecommendAndPush(XslTask xslTask){
 		List<String> recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
 		JPushVo jPushVo = new JPushVo();
+		jPushVo.setMsgTitle("悬赏任务推荐");
+		jPushVo.setMsgContent("有一个适合你的悬赏任务");
+		jPushVo.setNotificationTitle("悬赏任务推荐");
+		jPushVo.setExtrasparam("");
 
 		for (String hunterId : recommend){
 			//查电话号码
 			XslUserExample xslUserExample = new XslUserExample();
-			xslUserExample.createCriteria().andHunteridEqualTo(1);
+			xslUserExample.createCriteria().andHunteridEqualTo(hunterId);
 			List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
 			String phone = xslUsers.get(0).getPhone();
 			//获取设备码
 			String s = JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone);
+			jPushVo.setRegistrationId(s);
 			//发推送
 			jpushService.sendToAll(jPushVo);
 		}

@@ -255,18 +255,18 @@ public class TaskController {
         return xslResult;
     }
 
-    /**
-     * 猎人推优
-     *
-     * @param task_id
-     * @return
-     */
-    @RequestMapping("/hunterChange")
-    @ResponseBody
-    public XslResult hunterChange(int task_id) {
-        XslResult xslResult = null;
-        xslResult = taskService.hunterDire(task_id);
-        return xslResult;
-    }
+//    /**
+//     * 猎人推优
+//     *
+//     * @param task_id
+//     * @return
+//     */
+//    @RequestMapping("/hunterChange")
+//    @ResponseBody
+//    public XslResult hunterChange(int task_id) {
+//        XslResult xslResult = null;
+//        xslResult = taskService.hunterDire(task_id);
+//        return XslResult.ok();
+//    }
 
 }
