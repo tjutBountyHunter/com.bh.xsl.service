@@ -276,7 +276,7 @@ public class UserviceImpl implements UserService {
 
 	private XslHunter getHunterInfo(String userid, String hunterid) {
 		String hunterInfo = JedisClientUtil.get(USER_HUNTER_INFO + ":" + userid);
-		Gson gson = new Gson();
+		Gson gson = GsonSingle.getGson();
 
 		if(!StringUtils.isEmpty(hunterInfo)){
 			return gson.fromJson(hunterInfo, XslHunter.class);
@@ -287,7 +287,7 @@ public class UserviceImpl implements UserService {
 		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
 
 		if(xslHunters != null && xslHunters.size() > 0){
-			JedisClientUtil.set(USER_HUNTER_INFO + ":" + userid, gson.toJson(xslHunters.get(0)));
+			JedisClientUtil.setEx(USER_HUNTER_INFO + ":" + userid, gson.toJson(xslHunters.get(0)), 300);
 			return xslHunters.get(0);
 		}
 
@@ -296,7 +296,7 @@ public class UserviceImpl implements UserService {
 
 	private XslMaster getMasterInfo(String userid, String masterid) {
 		String userInfo = JedisClientUtil.get(USER_MASTER_INFO + ":" + userid);
-		Gson gson = new Gson();
+		Gson gson = GsonSingle.getGson();
 
 		if(!StringUtils.isEmpty(userInfo)){
 			return gson.fromJson(userInfo, XslMaster.class);
@@ -307,7 +307,7 @@ public class UserviceImpl implements UserService {
 		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
 
 		if(xslMasters != null && xslMasters.size() > 0){
-			JedisClientUtil.set(USER_MASTER_INFO + ":" + userid, gson.toJson(xslMasters.get(0)));
+			JedisClientUtil.setEx(USER_MASTER_INFO + ":" + userid, gson.toJson(xslMasters.get(0)), 300);
 			return xslMasters.get(0);
 		}
 
@@ -315,7 +315,7 @@ public class UserviceImpl implements UserService {
 	}
 
 	private XslUser getUserInfo(String useid){
-		Gson gson = new Gson();
+		Gson gson = GsonSingle.getGson();
 		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
 
 		if(!StringUtils.isEmpty(userInfo)){
@@ -327,7 +327,7 @@ public class UserviceImpl implements UserService {
 		List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
 
 		if(xslUsers != null && xslUsers.size() > 0){
-			JedisClientUtil.set(USER_INFO + ":" + useid, gson.toJson(xslUsers.get(0)));
+			JedisClientUtil.setEx(USER_INFO + ":" + useid, gson.toJson(xslUsers.get(0)), 300);
 			return xslUsers.get(0);
 		}
 

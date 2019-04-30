@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.jpushService;
+import util.JedisClientUtil;
 import vo.JPushVo;
 
 @Controller
@@ -22,6 +23,13 @@ public class testController {
 		jPushVo.setMsgContent("老子是测试");
 		jPushVo.setExtrasparam("");
 		return jpushService.sendToAll(jPushVo);
+	}
+
+	@RequestMapping("/delCache")
+	@ResponseBody
+	public long delCache(String key) {
+		long delete = JedisClientUtil.delete(key);
+		return delete;
 	}
 
 }
