@@ -2,7 +2,7 @@ package vo;
 
 public class tagVo {
 	private String tagName;
-	private String tagId;
+	private String tagid;
 
 	public String getTagName() {
 		return tagName;
@@ -12,11 +12,11 @@ public class tagVo {
 		this.tagName = tagName;
 	}
 
-	public String getTagId() {
-		return tagId;
+	public String getTagid() {
+		return tagid;
 	}
 
-	public void setTagId(String tagId) {
-		this.tagId = tagId;
+	public void setTagid(String tagid) {
+		this.tagid = tagid;
 	}
 }

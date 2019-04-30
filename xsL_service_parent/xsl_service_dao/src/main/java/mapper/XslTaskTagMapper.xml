@@ -212,23 +212,12 @@
   <!-- 批量插入 -->
   <insert id="insertSelectiveBatch" parameterType="java.util.List">
     insert into xsl_task_tag
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-          <if test="taskid != null" >
-            taskId,
-          </if>
-          <if test="tagid != null" >
-            tagId,
-          </if>
-          <if test="state != null" >
-            state,
-          </if>
-        </trim>
+    (taskId, tagId)
     values
       <foreach collection="list" item="item" index="index" separator=",">
         (
           #{item.taskid,jdbcType=VARCHAR},
-          #{item.tagid,jdbcType=VARCHAR},
-          #{item.state,jdbcType=BIT}
+          #{item.tagid,jdbcType=VARCHAR}
         )
       </foreach>
   </insert>

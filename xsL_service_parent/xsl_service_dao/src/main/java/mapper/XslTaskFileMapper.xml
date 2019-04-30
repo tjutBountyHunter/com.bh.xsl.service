@@ -229,17 +229,7 @@
   <!-- 批量插入 -->
   <insert id="insertSelectiveBatch" parameterType="java.util.List">
     insert into xsl_task_file
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="taskid != null" >
-        taskId,
-      </if>
-      <if test="fileid != null" >
-        fileId,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-    </trim>
+    (taskId,fileId,type)
     values
     <foreach collection="list" item="item" index="index" separator=",">
       (

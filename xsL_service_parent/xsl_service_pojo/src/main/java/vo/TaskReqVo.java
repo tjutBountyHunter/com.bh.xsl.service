@@ -48,11 +48,11 @@ public class TaskReqVo {
 		this.tags = tags;
 	}
 
-	public Boolean getRecommend() {
+	public Boolean getIsRecommend() {
 		return isRecommend;
 	}
 
-	public void setRecommend(Boolean recommend) {
+	public void setIsRecommend(Boolean recommend) {
 		isRecommend = recommend;
 	}
 

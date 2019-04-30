@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import pojo.*;
 import service.*;
 import util.*;
@@ -119,11 +120,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public XslResult sendTask(TaskReqVo taskReqVo) {
 		try {
+			if(StringUtils.isEmpty(taskReqVo.getContent())){
+				return XslResult.build(400, "参数错误");
+			}
 			//文字扫描屏蔽
 			Map<String, String> map = new HashMap<>(1);
 			map.put("sentence", taskReqVo.getContent());
 			String result = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
-			XslResult fcResult = XslResult.format(result);
+			XslResultOk fcResult = XslResultOk.format(result);
 			List<String> data = (List<String>) fcResult.getData();
 			if (data != null && data.size() > 0) {
 				return XslResult.build(400, "悬赏任务不合法");
@@ -143,8 +147,13 @@ public class TaskServiceImpl implements TaskService {
 			xslTask.setDeadline(taskReqVo.getDeadLineDate());
 			//未启动推荐
 			xslTask.setState((byte) 0);
+
+			if(taskReqVo.getIsRecommend() == null){
+				return XslResult.build(400, "参数错误");
+			}
+
 			//启动推荐
-			if(taskReqVo.getRecommend()){
+			if(taskReqVo.getIsRecommend()){
 				xslTask.setState((byte) 1);
 				List<String> recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
 			}
@@ -165,7 +174,7 @@ public class TaskServiceImpl implements TaskService {
 
 			if(xslResultFile.isOK() && xslResultTag.isOK()){
 				//异步启动推荐
-				if(taskReqVo.getRecommend()){
+				if(taskReqVo.getIsRecommend()){
 					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask));
 				}
 				return XslResult.ok(xslTask.getTaskid());
@@ -179,8 +188,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {
-		try {
+    	try {
 			List<ImageVo> images = taskReqVo.getImages();
+
+			if(images.size() < 1){
+				return XslResult.ok();
+			}
+
 			List<XslTaskFile> xslTaskFiles = new ArrayList<>();
 			for (ImageVo imageVo : images){
 				XslTaskFile xslTaskFile = new XslTaskFile();
@@ -210,11 +224,16 @@ public class TaskServiceImpl implements TaskService {
 	private XslResult addTaskTag(TaskReqVo taskReqVo, String taskId) {
 		try {
 			List<tagVo> tags = taskReqVo.getTags();
+
+			if(tags.size() < 1){
+				return XslResult.ok();
+			}
+
 			List<XslTaskTag> xslTaskTags = new ArrayList<>();
 			for (tagVo tagVo : tags){
 				XslTaskTag xslTaskTag = new XslTaskTag();
 				xslTaskTag.setTaskid(taskId);
-				xslTaskTag.setTagid(tagVo.getTagId());
+				xslTaskTag.setTagid(tagVo.getTagid());
 				xslTaskTags.add(xslTaskTag);
 			}
 
@@ -237,7 +256,7 @@ public class TaskServiceImpl implements TaskService {
 	private XslResult updateTagNum(List<tagVo> tags){
 		List<String> tagIds = new ArrayList<>(tags.size());
 		for (tagVo tagVo : tags){
-			tagIds.add(tagVo.getTagId());
+			tagIds.add(tagVo.getTagid());
 		}
 
 		XslTagExample xslTagExample = new XslTagExample();
@@ -262,6 +281,7 @@ public class TaskServiceImpl implements TaskService {
 		for (String hunterId : recommend){
 			//查电话号码
 			XslUserExample xslUserExample = new XslUserExample();
+
 			xslUserExample.createCriteria().andHunteridEqualTo(hunterId);
 			List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
 			String phone = xslUsers.get(0).getPhone();
@@ -269,7 +289,7 @@ public class TaskServiceImpl implements TaskService {
 			String s = JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone);
 			jPushVo.setRegistrationId(s);
 			//发推送
-			jpushService.sendToAll(jPushVo);
+			jpushService.sendToRegistrationId(jPushVo);
 		}
 
 		return XslResult.ok();

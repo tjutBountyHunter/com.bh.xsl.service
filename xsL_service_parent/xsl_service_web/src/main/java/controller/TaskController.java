@@ -228,7 +228,7 @@ public class TaskController {
      */
     @RequestMapping(value = "/sendTask", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult sendTask(TaskReqVo taskReqVo) {
+    public XslResult sendTask(@RequestBody TaskReqVo taskReqVo) {
         XslResult xslResult = taskService.sendTask(taskReqVo);
         return xslResult;
     }
