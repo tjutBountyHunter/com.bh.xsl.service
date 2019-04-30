@@ -23,18 +23,6 @@ public class UserController {
     @Autowired
     private FileOperateService fileOperateService;
 
-    /**
-     * 注册
-     *
-     * @param xslUserRegister
-     * @return
-     */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ResponseBody
-    public XslResult register(XslUserRegister xslUserRegister) {
-        XslResult xslResult = userService.createUser(xslUserRegister);
-        return xslResult;
-    }
 
     /**
      * 快速注册

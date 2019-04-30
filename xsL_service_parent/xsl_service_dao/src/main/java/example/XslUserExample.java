@@ -262,7 +262,7 @@ public class XslUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andMasteridEqualTo(Integer value) {
+        public Criteria andMasteridEqualTo(String value) {
             addCriterion("masterId =", value, "masterid");
             return (Criteria) this;
         }

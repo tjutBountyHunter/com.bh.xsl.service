@@ -1,5 +1,6 @@
 package service.impl;
 
+import example.XslNetworkExample;
 import example.XslTagExample;
 import example.XslUserExample;
 import mapper.*;
@@ -36,6 +37,10 @@ public class TaskServiceImpl implements TaskService {
 	private XslTagMapper xslTagMapper;
 	@Autowired
 	private XslUserMapper xslUserMapper;
+	@Autowired
+	private XslNetworkMapper xslNetworkMapper;
+	@Autowired
+	private XslHunterMapper xslHunterMapper;
 
 	@Autowired
 	private HunterRecommend hunterRecommend;
@@ -138,7 +143,7 @@ public class TaskServiceImpl implements TaskService {
 			XslTask xslTask = new XslTask();
 			xslTask.setCid(1);
             xslTask.setSendid(taskReqVo.getMasterId());
-			xslTask.setTaskid(UuidTaskId.getUUID());
+			xslTask.setTaskid(UuidUtil.getUUID());
 			xslTask.setContent(taskReqVo.getContent());
 			xslTask.setMoney(taskReqVo.getMoney());
 			xslTask.setTasktitle(taskReqVo.getTaskTitle());
@@ -271,7 +276,23 @@ public class TaskServiceImpl implements TaskService {
 
 
 	private XslResult hunterRecommendAndPush(XslTask xslTask){
-		List<String> recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
+
+		List<String> recommend = new ArrayList<>();
+		//猎人标签推优算法
+		recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
+
+		if(recommend == null || recommend.size() == 0){
+			//血缘关系推荐算法启动
+			Set<String> hunters = networkHunter(xslTask);
+
+			recommend.addAll(hunters);
+
+			if(hunters.size() == 0){
+				 recommend = getGoodHunter();
+			}
+
+		}
+
 		JPushVo jPushVo = new JPushVo();
 		jPushVo.setMsgTitle("悬赏任务推荐");
 		jPushVo.setMsgContent("有一个适合你的悬赏任务");
@@ -295,5 +316,35 @@ public class TaskServiceImpl implements TaskService {
 		return XslResult.ok();
 	}
 
+	private List<String> getGoodHunter() {
+		return xslHunterMapper.selectGoodHunter();
+	}
+
+	private Set<String> networkHunter(XslTask xslTask) {
+		//1.获取用户ID
+		XslUserExample xslUserExample = new XslUserExample();
+		String masterId = xslTask.getSendid();
+		xslUserExample.createCriteria().andMasteridEqualTo(masterId);
+		List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
+		String userId = xslUsers.get(0).getUserid();
+
+		//2.符合条件的用户
+		Set<String> hunterIds = new HashSet<>();
+		XslNetworkExample xslNetworkExample = new XslNetworkExample();
+		xslNetworkExample.createCriteria().andAidEqualTo(userId);
+		List<XslNetwork> xslNetworkAs = xslNetworkMapper.selectByExample(xslNetworkExample);
+		for(XslNetwork xslNetworkA : xslNetworkAs){
+			hunterIds.add(xslNetworkA.getBid());
+		}
+
+		xslNetworkExample.createCriteria().andBidEqualTo(userId);
+		List<XslNetwork> xslNetworkBs = xslNetworkMapper.selectByExample(xslNetworkExample);
+
+		for(XslNetwork xslNetworkB : xslNetworkBs){
+			hunterIds.add(xslNetworkB.getAid());
+		}
+
+		return hunterIds;
+	}
 
 }

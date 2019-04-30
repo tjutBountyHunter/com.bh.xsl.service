@@ -322,4 +322,16 @@
     from xsl_hunter
     where hunterId = #{hunterId,jdbcType=VARCHAR}
   </select>
+
+
+  <select id="selectGoodHunter" resultType="java.lang.String">
+    select
+          hunterId
+    from
+          xsl_hunter
+    order by
+          level
+    limit 10
+  </select>
+
 </mapper>

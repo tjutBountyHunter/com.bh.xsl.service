@@ -35,4 +35,6 @@ public interface XslHunterMapper {
     int selectMaxTaskAccNum();
 
     XslHunter selectHunterByHunterId(String hunterId);
+
+    List<String> selectGoodHunter();
 }

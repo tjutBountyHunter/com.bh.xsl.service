@@ -10,14 +10,6 @@ import vo.UserReqVo;
  */
 public interface UserService {
     /**
-     * 注册
-     * @param xslUserRegister
-     * @return
-     * @throws Exception
-     */
-    XslResult createUser(XslUserRegister xslUserRegister);
-
-    /**
      * 快速注册
      * @param xslUserRegister
      * @return

@@ -44,7 +44,4 @@ public class IdUtil {
         return 0;
     }
 
-    public static void main(String[] args) {
-        System.out.println(getId());
-    }
 }

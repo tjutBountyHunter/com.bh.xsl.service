@@ -25,8 +25,6 @@ import java.util.*;
 @Service
 public class UserviceImpl implements UserService {
     @Autowired
-    private HunMaster hunMaster;
-    @Autowired
     private XslFileMapper xslFileMapper;
 	@Autowired
 	private XslHunterMapper xslHunterMapper;
@@ -36,8 +34,6 @@ public class UserviceImpl implements UserService {
     private XslUserMapper xslUserMapper;
     @Autowired
     private XslSchoolinfoMapper xslSchoollinfoMapper;
-    @Autowired
-    private XslUserUpdateMapper xslUserUpdateMapper;
 	@Autowired
 	private XslUserFileMapper xslUserFileMapper;
     @Autowired
@@ -45,55 +41,9 @@ public class UserviceImpl implements UserService {
 
     @Value("${REDIS_USER_SESSION_KEY}")
     private String REDIS_USER_SESSION_KEY;
-    @Value("${Login_SESSION_EXPIRE}")
-    private Integer Login_SESSION_EXPIRE;
-    @Value("${Login_SESSION_EXPIRE_CODE}")
-    private Integer Login_SESSION_EXPIRE_CODE;
-    @Value("${Login_SESSION_EXPIRE_PASSWORD}")
-    private Integer Login_SESSION_EXPIRE_PASSWORD;
 
     private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
 
-    //注册
-    @Override
-    public XslResult createUser(XslUserRegister xslUserRegister) {
-        try {
-
-//            all = new String(all.getBytes("iso-8859-1"), "utf-8");
-//            XslUserRegister xslUserRegister = JsonUtils.jsonToObject(all, XslUserRegister.class);
-//            XslUserExample example = new XslUserExample();
-//            XslUserExample.Criteria criteria = example.createCriteria();
-//            criteria.andPhoneEqualTo(xslUserRegister.getPhone());
-//            List<XslUser> list = xslUserMapper.selectByExample(example);
-//            if(list.size()!=0&&!list.equals("")){
-//                return XslResult.build(400,"该手机号已经注册过");
-//            }
-
-            xslUserRegister.setUserId(UUID.randomUUID().toString());
-
-            //初始化学校信息
-            XslResult schoolId = createUserSchool(xslUserRegister);
-
-            //初始化用户表
-            XslResult xslResult = createUseruser(xslUserRegister, (String) schoolId.getData());
-
-            Map<String, Integer> map = hunMaster.insertPeople((Integer) xslResult.getData());
-            JedisClientUtil.setEx(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken(), Login_SESSION_EXPIRE);
-
-            map.put("id", (Integer) xslResult.getData());
-            System.out.println(map.get("id") + " 51651");
-            xslUserUpdateMapper.updateXslUser(map);
-            XslUserExample example1 = new XslUserExample();
-            XslUserExample.Criteria criteria1 = example1.createCriteria();
-            criteria1.andPhoneEqualTo(xslUserRegister.getPhone());
-            List<XslUser> list1 = xslUserMapper.selectByExample(example1);
-            XslUser xslUser = list1.get(0);
-            return XslResult.ok(xslUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
 
 	/**
 	 * 快速注册
@@ -111,7 +61,7 @@ public class UserviceImpl implements UserService {
 		}
 
 		XslUser xslUser = new XslUser();
-		xslUser.setUserid(UUID.randomUUID().toString());
+		xslUser.setUserid(UuidUtil.getUUID().substring(0, 12));
 		//初始化猎人信息
 		XslHunter xslHunter = initXslHunter(xslUser);
 		//初始化雇主信息
@@ -131,41 +81,6 @@ public class UserviceImpl implements UserService {
 		return XslResult.ok(userResVo);
 
 	}
-
-    /**
-     * 用户学校信息
-     *
-     * @param xslUserRegister
-     * @return
-     */
-    private XslResult createUserSchool(XslUserRegister xslUserRegister) {
-        XslSchoolinfo xslSchoolinfo = initXslSchoolinfo(xslUserRegister);
-        try {
-			int i = xslSchoollinfoMapper.insertSelective(xslSchoolinfo);
-
-			if(i < 1){
-				throw new RuntimeException("插入学校信息异常");
-			}
-
-			return XslResult.ok(xslSchoolinfo.getSchoolid());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
-
-    private XslSchoolinfo initXslSchoolinfo(XslUserRegister xslUserRegister) {
-        XslSchoolinfo xslSchoolinfo = new XslSchoolinfo();
-        xslSchoolinfo.setSchoolid(UUID.randomUUID().toString());
-        xslSchoolinfo.setDegree((byte) 2);
-        xslSchoolinfo.setSchoolhours((byte) 4);
-        xslSchoolinfo.setSno(xslUserRegister.getSchoolNumber());
-        xslSchoolinfo.setSchool(xslUserRegister.getSchoolinfo());
-        xslSchoolinfo.setCollege(xslUserRegister.getCollege());
-        xslSchoolinfo.setMajor(xslUserRegister.getMajor());
-        xslSchoolinfo.setStartdate(new Date().toString());
-        return xslSchoolinfo;
-    }
 
     /**
      * 登录
@@ -278,7 +193,6 @@ public class UserviceImpl implements UserService {
 
 
         jedisClient.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
-        jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), Login_SESSION_EXPIRE);
 
         logger.info("login return message is {}", JsonUtils.objectToJson(resVo));
 
@@ -321,7 +235,7 @@ public class UserviceImpl implements UserService {
             return XslResult.build(400, "手机号没有注册，请注册!");
         }
         XslUser xslUser = list.get(0);
-        xslUser.setPassword(password);
+        xslUser.setPassword(Md5Utils.digestMds(password));
         xslUserMapper.updateByExample(xslUser, example);
         return XslResult.build(200, "修改成功！");
     }
@@ -334,8 +248,7 @@ public class UserviceImpl implements UserService {
 		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
 		xslUser.setSex("男");
 		xslUser.setName(xslUserRegister.getPhone());
-		xslUser.setCreatedate(new Date());
-		xslUser.setUpdatedate(new Date());
+
 		try {
 			int result = xslUserMapper.insertSelective(xslUser);
 
@@ -353,10 +266,9 @@ public class UserviceImpl implements UserService {
 		//初始化雇主信息
 		XslMaster xslMaster = new XslMaster();
 		xslMaster.setUserid(xslUser.getUserid());
-		xslMaster.setMasterid(UUID.randomUUID().toString());
+		xslMaster.setMasterid(UuidUtil.getUUID().substring(0, 12));
 		xslMaster.setLevel((short) 1);
 		xslMaster.setDescr("新人雇主");
-		xslMaster.setLastaccdate(new Date());
 		try {
 			int result = xslMasterMapper.insertSelective(xslMaster);
 
@@ -376,10 +288,9 @@ public class UserviceImpl implements UserService {
 		//初始化猎人信息
 		XslHunter xslHunter = new XslHunter();
 		xslHunter.setUserid(xslUser.getUserid());
-		xslHunter.setHunterid(UUID.randomUUID().toString());
+		xslHunter.setHunterid(UuidUtil.getUUID().substring(0, 12));
 		xslHunter.setLevel((short) 1);
 		xslHunter.setDescr("新手猎人");
-		xslHunter.setLasttime(new Date());
 		try {
 			int result = xslHunterMapper.insertSelective(xslHunter);
 
@@ -395,33 +306,4 @@ public class UserviceImpl implements UserService {
 		return xslHunter;
 	}
 
-	/**
-	 * 用户表
-	 *
-	 * @param xslUserRegister
-	 * @param schoolId
-	 * @return
-	 */
-	private XslResult createUseruser(XslUserRegister xslUserRegister, String schoolId) {
-		XslUser xslUser = new XslUser();
-		xslUser.setPhone(xslUserRegister.getPhone());
-		xslUser.setSchoolinfo(schoolId);
-		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
-		xslUser.setName(xslUserRegister.getName());
-		xslUser.setSex(xslUserRegister.getSex());
-		xslUser.setUpdatedate(new Date());
-		xslUser.setCreatedate(new Date());
-		try {
-			xslUserMapper.insertSelective(xslUser);
-			XslUserExample xslUserExample = new XslUserExample();
-			XslUserExample.Criteria criteria = xslUserExample.createCriteria();
-			criteria.andPhoneEqualTo(xslUserRegister.getPhone());
-			List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
-			return XslResult.ok(list.get(0).getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return XslResult.build(500, "服务器异常");
-		}
-
-	}
 }
