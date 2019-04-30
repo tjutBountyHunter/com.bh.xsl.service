@@ -1,14 +1,17 @@
 package service.impl;
 
 import example.XslTagExample;
+import example.XslUserExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import pojo.*;
 import service.*;
 import util.*;
 import vo.ImageVo;
+import vo.JPushVo;
 import vo.TaskReqVo;
 import vo.tagVo;
 
@@ -20,13 +23,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private SupplementDataService supplementDataService;
     @Autowired
-    private TaskTopush taskTopush;
-    @Autowired
-    private HunterRecommend hunterRecommend;
-    @Autowired
     private XslHuntershowMapper xslHuntershowMapper;
-    @Autowired
-    private XslHunterShopMapper xslHunterShopMapper;
 
 	@Autowired
 	private XslTaskMapper xslTaskMapper;
@@ -36,12 +33,19 @@ public class TaskServiceImpl implements TaskService {
 	private XslTaskFileMapper xslTaskFileMapper;
 	@Autowired
 	private XslTagMapper xslTagMapper;
+	@Autowired
+	private XslUserMapper xslUserMapper;
 
 	@Autowired
-	private XslDateTaskMapper xslDateTaskMapperr;
+	private HunterRecommend hunterRecommend;
+	@Autowired
+	private jpushService jpushService;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
+
+	@Value("${REDIS_USER_SESSION_KEY}")
+	private String REDIS_USER_SESSION_KEY;
 
     /**
      * 分页展示分类猎人
@@ -75,29 +79,29 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    /**
-     * 猎人推优
-     *
-     * @param task_id
-     * @return
-     */
-    @Override
-    public XslResult hunterDire(int task_id) {
-        try {
-            int[] hunterid = hunterRecommend.recommend(task_id);
-            List<XslOneHunter> list = new ArrayList<>();
-            for (int i = 0; i < hunterid.length; i++) {
-                XslOneHunter xslOneHunter = new XslOneHunter();
-                Integer hunterId = hunterid[i];
-                xslOneHunter = xslHunterShopMapper.selectByhunterId(hunterId);
-                list.add(xslOneHunter);
-            }
-            return XslResult.ok(list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
+//    /**
+//     * 猎人推优
+//     *
+//     * @param task_id
+//     * @return
+//     */
+//    @Override
+//    public XslResult hunterDire(int task_id) {
+//        try {
+//            int[] hunterid = hunterRecommend.recommend(task_id);
+//            List<XslOneHunter> list = new ArrayList<>();
+//            for (int i = 0; i < hunterid.length; i++) {
+//                XslOneHunter xslOneHunter = new XslOneHunter();
+//                Integer hunterId = hunterid[i];
+//                xslOneHunter = xslHunterShopMapper.selectByhunterId(hunterId);
+//                list.add(xslOneHunter);
+//            }
+//            return XslResult.ok(list);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return XslResult.build(500, "服务器异常");
+//        }
+//    }
 
     @Override
     public XslResult UpuseTask(String json) {
@@ -142,6 +146,7 @@ public class TaskServiceImpl implements TaskService {
 			//启动推荐
 			if(taskReqVo.getRecommend()){
 				xslTask.setState((byte) 1);
+				List<String> recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
 			}
 
 			//记录任务
@@ -159,6 +164,10 @@ public class TaskServiceImpl implements TaskService {
 			XslResult xslResultFile = addTaskFile(taskReqVo, xslTask.getTaskid());
 
 			if(xslResultFile.isOK() && xslResultTag.isOK()){
+				//异步启动推荐
+				if(taskReqVo.getRecommend()){
+					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask, taskReqVo));
+				}
 				return XslResult.ok(xslTask.getTaskid());
 			}
 
@@ -238,6 +247,26 @@ public class TaskServiceImpl implements TaskService {
 		if(i < 1){
 			throw new RuntimeException();
 		}
+		return XslResult.ok();
+	}
+
+
+	private XslResult hunterRecommendAndPush(XslTask xslTask, TaskReqVo taskReqVo){
+		List<String> recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
+		JPushVo jPushVo = new JPushVo();
+
+		for (String hunterId : recommend){
+			//查电话号码
+			XslUserExample xslUserExample = new XslUserExample();
+			xslUserExample.createCriteria().andHunteridEqualTo(1);
+			List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
+			String phone = xslUsers.get(0).getPhone();
+			//获取设备码
+			String s = JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone);
+			//发推送
+			jpushService.sendToAll(jPushVo);
+		}
+
 		return XslResult.ok();
 	}
 

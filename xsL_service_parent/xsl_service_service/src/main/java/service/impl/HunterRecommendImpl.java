@@ -46,7 +46,7 @@ public class HunterRecommendImpl implements HunterRecommend {
 
 
     //    调用
-    public String[] recommend(String taskId){
+    public  List<String> recommend(String taskId, Integer recommendNum){
         this.taskId = taskId;
 
         taskTags = new LinkedList<>();  //78 tag 17 18 19 20
@@ -65,10 +65,9 @@ public class HunterRecommendImpl implements HunterRecommend {
         countAttribute();
         getTopN();
 
-        int topN = 10;
-        String[] res = new String[topN];
-        for (int i = 0; (i<res.length)&&(topMap.size()>0); i++) {
-            res[i] = topMap.pollLastEntry().getValue();
+        List<String> res = new ArrayList<>(recommendNum);
+        for (int i = 0; ( i< res.size() ) && (topMap.size() >0 ); i++) {
+            res.add(topMap.pollLastEntry().getValue());
         }
         return res;
     }

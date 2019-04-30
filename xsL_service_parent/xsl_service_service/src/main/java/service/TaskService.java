@@ -17,13 +17,13 @@ public interface TaskService {
      */
     XslResult UpCategoryHunter(String tagName, Integer type, Integer rows);
 
-    /**
-     * 猎人推优
-     *
-     * @param task_id
-     * @return
-     */
-    XslResult hunterDire(int task_id);
+//    /**
+//     * 猎人推优
+//     *
+//     * @param task_id
+//     * @return
+//     */
+//    XslResult hunterDire(int task_id);
 
     /**
      * 发送任务

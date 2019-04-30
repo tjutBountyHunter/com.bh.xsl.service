@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 public interface HunterRecommend {
 
     /**
@@ -8,6 +10,6 @@ public interface HunterRecommend {
      * @param taskId
      * @return 猎人id数组
      */
-    String[] recommend(String taskId);
+    List<String> recommend(String taskId, Integer recommendNum);
 
 }
