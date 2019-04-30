@@ -192,6 +192,76 @@ public class XslMasterExample {
             return (Criteria) this;
         }
 
+        public Criteria andMasteridIsNull() {
+            addCriterion("masterId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridIsNotNull() {
+            addCriterion("masterId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridEqualTo(String value) {
+            addCriterion("masterId =", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridNotEqualTo(String value) {
+            addCriterion("masterId <>", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridGreaterThan(String value) {
+            addCriterion("masterId >", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridGreaterThanOrEqualTo(String value) {
+            addCriterion("masterId >=", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridLessThan(String value) {
+            addCriterion("masterId <", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridLessThanOrEqualTo(String value) {
+            addCriterion("masterId <=", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridLike(String value) {
+            addCriterion("masterId like", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridNotLike(String value) {
+            addCriterion("masterId not like", value, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridIn(List<String> values) {
+            addCriterion("masterId in", values, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridNotIn(List<String> values) {
+            addCriterion("masterId not in", values, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridBetween(String value1, String value2) {
+            addCriterion("masterId between", value1, value2, "masterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasteridNotBetween(String value1, String value2) {
+            addCriterion("masterId not between", value1, value2, "masterid");
+            return (Criteria) this;
+        }
+
         public Criteria andUseridIsNull() {
             addCriterion("userId is null");
             return (Criteria) this;
@@ -207,47 +277,57 @@ public class XslMasterExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotEqualTo(Integer value) {
+        public Criteria andUseridNotEqualTo(String value) {
             addCriterion("userId <>", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThan(Integer value) {
+        public Criteria andUseridGreaterThan(String value) {
             addCriterion("userId >", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUseridGreaterThanOrEqualTo(String value) {
             addCriterion("userId >=", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThan(Integer value) {
+        public Criteria andUseridLessThan(String value) {
             addCriterion("userId <", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThanOrEqualTo(Integer value) {
+        public Criteria andUseridLessThanOrEqualTo(String value) {
             addCriterion("userId <=", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridIn(List<Integer> values) {
+        public Criteria andUseridLike(String value) {
+            addCriterion("userId like", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotLike(String value) {
+            addCriterion("userId not like", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIn(List<String> values) {
             addCriterion("userId in", values, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotIn(List<Integer> values) {
+        public Criteria andUseridNotIn(List<String> values) {
             addCriterion("userId not in", values, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridBetween(Integer value1, Integer value2) {
+        public Criteria andUseridBetween(String value1, String value2) {
             addCriterion("userId between", value1, value2, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotBetween(Integer value1, Integer value2) {
+        public Criteria andUseridNotBetween(String value1, String value2) {
             addCriterion("userId not between", value1, value2, "userid");
             return (Criteria) this;
         }
@@ -552,73 +632,73 @@ public class XslMasterExample {
             return (Criteria) this;
         }
 
-        public Criteria andDescIsNull() {
-            addCriterion("desc is null");
+        public Criteria andDescrIsNull() {
+            addCriterion("descr is null");
             return (Criteria) this;
         }
 
-        public Criteria andDescIsNotNull() {
-            addCriterion("desc is not null");
+        public Criteria andDescrIsNotNull() {
+            addCriterion("descr is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDescEqualTo(String value) {
-            addCriterion("desc =", value, "desc");
+        public Criteria andDescrEqualTo(String value) {
+            addCriterion("descr =", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotEqualTo(String value) {
-            addCriterion("desc <>", value, "desc");
+        public Criteria andDescrNotEqualTo(String value) {
+            addCriterion("descr <>", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescGreaterThan(String value) {
-            addCriterion("desc >", value, "desc");
+        public Criteria andDescrGreaterThan(String value) {
+            addCriterion("descr >", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescGreaterThanOrEqualTo(String value) {
-            addCriterion("desc >=", value, "desc");
+        public Criteria andDescrGreaterThanOrEqualTo(String value) {
+            addCriterion("descr >=", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescLessThan(String value) {
-            addCriterion("desc <", value, "desc");
+        public Criteria andDescrLessThan(String value) {
+            addCriterion("descr <", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescLessThanOrEqualTo(String value) {
-            addCriterion("desc <=", value, "desc");
+        public Criteria andDescrLessThanOrEqualTo(String value) {
+            addCriterion("descr <=", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescLike(String value) {
-            addCriterion("desc like", value, "desc");
+        public Criteria andDescrLike(String value) {
+            addCriterion("descr like", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotLike(String value) {
-            addCriterion("desc not like", value, "desc");
+        public Criteria andDescrNotLike(String value) {
+            addCriterion("descr not like", value, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescIn(List<String> values) {
-            addCriterion("desc in", values, "desc");
+        public Criteria andDescrIn(List<String> values) {
+            addCriterion("descr in", values, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotIn(List<String> values) {
-            addCriterion("desc not in", values, "desc");
+        public Criteria andDescrNotIn(List<String> values) {
+            addCriterion("descr not in", values, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescBetween(String value1, String value2) {
-            addCriterion("desc between", value1, value2, "desc");
+        public Criteria andDescrBetween(String value1, String value2) {
+            addCriterion("descr between", value1, value2, "descr");
             return (Criteria) this;
         }
 
-        public Criteria andDescNotBetween(String value1, String value2) {
-            addCriterion("desc not between", value1, value2, "desc");
+        public Criteria andDescrNotBetween(String value1, String value2) {
+            addCriterion("descr not between", value1, value2, "descr");
             return (Criteria) this;
         }
 
@@ -679,6 +759,66 @@ public class XslMasterExample {
 
         public Criteria andLastaccdateNotBetween(Date value1, Date value2) {
             addCriterionForJDBCDate("lastAccDate not between", value1, value2, "lastaccdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNull() {
+            addCriterion("state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNotNull() {
+            addCriterion("state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateEqualTo(Boolean value) {
+            addCriterion("state =", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotEqualTo(Boolean value) {
+            addCriterion("state <>", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThan(Boolean value) {
+            addCriterion("state >", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("state >=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThan(Boolean value) {
+            addCriterion("state <", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThanOrEqualTo(Boolean value) {
+            addCriterion("state <=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIn(List<Boolean> values) {
+            addCriterion("state in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotIn(List<Boolean> values) {
+            addCriterion("state not in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateBetween(Boolean value1, Boolean value2) {
+            addCriterion("state between", value1, value2, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
     }

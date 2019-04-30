@@ -192,6 +192,76 @@ public class XslHunterExample {
             return (Criteria) this;
         }
 
+        public Criteria andHunteridIsNull() {
+            addCriterion("hunterId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridIsNotNull() {
+            addCriterion("hunterId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridEqualTo(String value) {
+            addCriterion("hunterId =", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridNotEqualTo(String value) {
+            addCriterion("hunterId <>", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridGreaterThan(String value) {
+            addCriterion("hunterId >", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridGreaterThanOrEqualTo(String value) {
+            addCriterion("hunterId >=", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridLessThan(String value) {
+            addCriterion("hunterId <", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridLessThanOrEqualTo(String value) {
+            addCriterion("hunterId <=", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridLike(String value) {
+            addCriterion("hunterId like", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridNotLike(String value) {
+            addCriterion("hunterId not like", value, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridIn(List<String> values) {
+            addCriterion("hunterId in", values, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridNotIn(List<String> values) {
+            addCriterion("hunterId not in", values, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridBetween(String value1, String value2) {
+            addCriterion("hunterId between", value1, value2, "hunterid");
+            return (Criteria) this;
+        }
+
+        public Criteria andHunteridNotBetween(String value1, String value2) {
+            addCriterion("hunterId not between", value1, value2, "hunterid");
+            return (Criteria) this;
+        }
+
         public Criteria andUseridIsNull() {
             addCriterion("userId is null");
             return (Criteria) this;
@@ -207,47 +277,57 @@ public class XslHunterExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotEqualTo(Integer value) {
+        public Criteria andUseridNotEqualTo(String value) {
             addCriterion("userId <>", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThan(Integer value) {
+        public Criteria andUseridGreaterThan(String value) {
             addCriterion("userId >", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUseridGreaterThanOrEqualTo(String value) {
             addCriterion("userId >=", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThan(Integer value) {
+        public Criteria andUseridLessThan(String value) {
             addCriterion("userId <", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridLessThanOrEqualTo(Integer value) {
+        public Criteria andUseridLessThanOrEqualTo(String value) {
             addCriterion("userId <=", value, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridIn(List<Integer> values) {
+        public Criteria andUseridLike(String value) {
+            addCriterion("userId like", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotLike(String value) {
+            addCriterion("userId not like", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIn(List<String> values) {
             addCriterion("userId in", values, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotIn(List<Integer> values) {
+        public Criteria andUseridNotIn(List<String> values) {
             addCriterion("userId not in", values, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridBetween(Integer value1, Integer value2) {
+        public Criteria andUseridBetween(String value1, String value2) {
             addCriterion("userId between", value1, value2, "userid");
             return (Criteria) this;
         }
 
-        public Criteria andUseridNotBetween(Integer value1, Integer value2) {
+        public Criteria andUseridNotBetween(String value1, String value2) {
             addCriterion("userId not between", value1, value2, "userid");
             return (Criteria) this;
         }
@@ -622,63 +702,123 @@ public class XslHunterExample {
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateIsNull() {
-            addCriterion("lastAccDate is null");
+        public Criteria andLasttimeIsNull() {
+            addCriterion("lastTime is null");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateIsNotNull() {
-            addCriterion("lastAccDate is not null");
+        public Criteria andLasttimeIsNotNull() {
+            addCriterion("lastTime is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateEqualTo(Date value) {
-            addCriterionForJDBCDate("lastAccDate =", value, "lastaccdate");
+        public Criteria andLasttimeEqualTo(Date value) {
+            addCriterionForJDBCDate("lastTime =", value, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("lastAccDate <>", value, "lastaccdate");
+        public Criteria andLasttimeNotEqualTo(Date value) {
+            addCriterionForJDBCDate("lastTime <>", value, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateGreaterThan(Date value) {
-            addCriterionForJDBCDate("lastAccDate >", value, "lastaccdate");
+        public Criteria andLasttimeGreaterThan(Date value) {
+            addCriterionForJDBCDate("lastTime >", value, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("lastAccDate >=", value, "lastaccdate");
+        public Criteria andLasttimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("lastTime >=", value, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateLessThan(Date value) {
-            addCriterionForJDBCDate("lastAccDate <", value, "lastaccdate");
+        public Criteria andLasttimeLessThan(Date value) {
+            addCriterionForJDBCDate("lastTime <", value, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("lastAccDate <=", value, "lastaccdate");
+        public Criteria andLasttimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("lastTime <=", value, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateIn(List<Date> values) {
-            addCriterionForJDBCDate("lastAccDate in", values, "lastaccdate");
+        public Criteria andLasttimeIn(List<Date> values) {
+            addCriterionForJDBCDate("lastTime in", values, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("lastAccDate not in", values, "lastaccdate");
+        public Criteria andLasttimeNotIn(List<Date> values) {
+            addCriterionForJDBCDate("lastTime not in", values, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("lastAccDate between", value1, value2, "lastaccdate");
+        public Criteria andLasttimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("lastTime between", value1, value2, "lasttime");
             return (Criteria) this;
         }
 
-        public Criteria andLastaccdateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("lastAccDate not between", value1, value2, "lastaccdate");
+        public Criteria andLasttimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("lastTime not between", value1, value2, "lasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNull() {
+            addCriterion("state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIsNotNull() {
+            addCriterion("state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateEqualTo(Boolean value) {
+            addCriterion("state =", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotEqualTo(Boolean value) {
+            addCriterion("state <>", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThan(Boolean value) {
+            addCriterion("state >", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("state >=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThan(Boolean value) {
+            addCriterion("state <", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateLessThanOrEqualTo(Boolean value) {
+            addCriterion("state <=", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateIn(List<Boolean> values) {
+            addCriterion("state in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotIn(List<Boolean> values) {
+            addCriterion("state not in", values, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateBetween(Boolean value1, Boolean value2) {
+            addCriterion("state between", value1, value2, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andStateNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
     }

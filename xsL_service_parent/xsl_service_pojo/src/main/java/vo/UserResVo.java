@@ -19,6 +19,8 @@ public class UserResVo {
 
 	private String school;
 
+	private Byte state;
+
 	private Short hunterlevel;
 
 	private Short masterlevel;
@@ -99,6 +101,14 @@ public class UserResVo {
 
 	public void setSchool(String school) {
 		this.school = school;
+	}
+
+	public Byte getState() {
+		return state;
+	}
+
+	public void setState(Byte state) {
+		this.state = state;
 	}
 
 	public Short getHunterlevel() {

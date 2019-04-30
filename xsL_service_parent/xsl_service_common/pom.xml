@@ -121,6 +121,12 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
         <!--二维码生成组件-->
         <!--<dependency>-->
             <!--<groupId>or.core.qr</groupId>-->

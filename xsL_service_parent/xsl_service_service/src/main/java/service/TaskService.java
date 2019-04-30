@@ -1,6 +1,7 @@
 package service;
 
 import util.XslResult;
+import vo.SendAndRecTaskReqVo;
 import vo.TaskReqVo;
 
 public interface TaskService {
@@ -31,5 +32,18 @@ public interface TaskService {
      * @return
      */
     XslResult sendTask(TaskReqVo taskReqVo);
+
+    /**
+     * 获取已发任务
+     * @return
+     */
+    XslResult querySendTask(SendAndRecTaskReqVo sendAndRecTaskReqVo);
+
+    /**
+     * 获取已接任务
+     * @return
+     */
+    XslResult queryReceiveTask(SendAndRecTaskReqVo sendAndRecTaskReqVo);
+
 
 }

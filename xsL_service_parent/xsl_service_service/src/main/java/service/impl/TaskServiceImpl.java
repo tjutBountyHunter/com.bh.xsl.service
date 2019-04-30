@@ -12,10 +12,7 @@ import org.springframework.util.StringUtils;
 import pojo.*;
 import service.*;
 import util.*;
-import vo.ImageVo;
-import vo.JPushVo;
-import vo.TaskReqVo;
-import vo.tagVo;
+import vo.*;
 
 import java.util.*;
 
@@ -191,6 +188,18 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(500, "服务器异常");
 		}
     }
+
+	@Override
+	public XslResult querySendTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
+		String masterid = sendAndRecTaskReqVo.getMasterid();
+
+		return null;
+	}
+
+	@Override
+	public XslResult queryReceiveTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
+		return null;
+	}
 
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {
     	try {

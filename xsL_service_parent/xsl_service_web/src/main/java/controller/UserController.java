@@ -106,4 +106,21 @@ public class UserController {
         }
     }
 
+	/**
+	 * 获取猎人雇主信息
+	 *
+	 * @param userReqVo
+	 * @return
+	 */
+	@RequestMapping(value = "/gethminfo")
+	@ResponseBody
+	public XslResult updataPassword(UserReqVo userReqVo) {
+		try {
+			return userService.getHMinfo(userReqVo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器异常");
+		}
+	}
+
 }

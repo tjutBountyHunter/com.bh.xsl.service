@@ -38,4 +38,10 @@ public interface UserService {
      * @return
      */
     XslResult Password(String phone, String password);
+
+	/**
+	 * 获取雇主和猎人信息
+	 * @return
+	 */
+	XslResult getHMinfo(UserReqVo userReqVo);
 }

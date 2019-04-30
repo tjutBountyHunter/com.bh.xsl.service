@@ -1,5 +1,6 @@
 package service.impl;
 
+import com.google.gson.Gson;
 import dao.JedisClient;
 import enums.UserStateEnum;
 import example.*;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import pojo.*;
 import service.*;
 import util.*;
+import vo.UserHMResVo;
 import vo.UserReqVo;
 import vo.UserResVo;
 
@@ -41,6 +43,13 @@ public class UserviceImpl implements UserService {
 
     @Value("${REDIS_USER_SESSION_KEY}")
     private String REDIS_USER_SESSION_KEY;
+
+    @Value("${USER_INFO}")
+    private String USER_INFO;
+	@Value("${USER_HUNTER_INFO}")
+	private String USER_HUNTER_INFO;
+	@Value("${USER_MASTER_INFO}")
+	private String USER_MASTER_INFO;
 
     private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
 
@@ -132,19 +141,15 @@ public class UserviceImpl implements UserService {
 
 		//4.判断用户异常状态
 		Byte state = user.getState();
-		if(state == -2){
-			logger.info("login check status is {}", user.getState());
-			return XslResult.build(403, "审核未通过");
-		}
 
 		if(state == -1){
 			logger.info("login check status is {}", user.getState());
-			return XslResult.build(403, "账户被冻结");
+			return XslResult.build(403, "用户被冻结");
 		}
 
 		if(state == -3){
 			logger.info("login check status is {}", user.getState());
-			return XslResult.build(403, "账户已被删除");
+			return XslResult.build(403, "用户不存在");
 		}
 
         //5.查询图片信息
@@ -194,6 +199,8 @@ public class UserviceImpl implements UserService {
 
         jedisClient.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
 
+		jedisClient.set(USER_INFO + ":" + user.getUserid(), JsonUtils.objectToJson(user));
+
         logger.info("login return message is {}", JsonUtils.objectToJson(resVo));
 
         return XslResult.ok(JsonUtils.objectToJson(resVo));
@@ -240,6 +247,93 @@ public class UserviceImpl implements UserService {
         return XslResult.build(200, "修改成功！");
     }
 
+	public XslResult getHMinfo(UserReqVo userReqVo){
+		String userid = userReqVo.getUserid();
+		if(StringUtils.isEmpty(userid)){
+			return XslResult.build(403, "参数错误");
+		}
+
+		XslUser userInfo = getUserInfo(userid);
+
+		String hunterid = userInfo.getHunterid();
+		String masterid = userInfo.getMasterid();
+
+		if(StringUtils.isEmpty(hunterid) || StringUtils.isEmpty(masterid)){
+			return XslResult.build(403, "用户不存在");
+		}
+
+		XslMaster masterInfo = getMasterInfo(userid, masterid);
+		XslHunter hunterInfo = getHunterInfo(userid, hunterid);
+
+		UserHMResVo userHMResVo = new UserHMResVo();
+		userHMResVo.setHunterEmpirical(hunterInfo.getEmpirical());
+		userHMResVo.setHunterLevel(hunterInfo.getLevel());
+		userHMResVo.setMasterEmpirical(masterInfo.getEmpirical());
+		userHMResVo.setMasterLevel(masterInfo.getLevel());
+
+		return XslResult.ok(userHMResVo);
+	}
+
+	private XslHunter getHunterInfo(String userid, String hunterid) {
+		String hunterInfo = JedisClientUtil.get(USER_HUNTER_INFO + ":" + userid);
+		Gson gson = new Gson();
+
+		if(!StringUtils.isEmpty(hunterInfo)){
+			return gson.fromJson(hunterInfo, XslHunter.class);
+		}
+
+		XslHunterExample xslHunterExample = new XslHunterExample();
+		xslHunterExample.createCriteria().andHunteridEqualTo(hunterid);
+		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
+
+		if(xslHunters != null && xslHunters.size() > 0){
+			JedisClientUtil.set(USER_HUNTER_INFO + ":" + userid, gson.toJson(xslHunters.get(0)));
+			return xslHunters.get(0);
+		}
+
+		return new XslHunter();
+	}
+
+	private XslMaster getMasterInfo(String userid, String masterid) {
+		String userInfo = JedisClientUtil.get(USER_MASTER_INFO + ":" + userid);
+		Gson gson = new Gson();
+
+		if(!StringUtils.isEmpty(userInfo)){
+			return gson.fromJson(userInfo, XslMaster.class);
+		}
+
+		XslMasterExample xslMasterExample = new XslMasterExample();
+		xslMasterExample.createCriteria().andMasteridEqualTo(masterid);
+		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
+
+		if(xslMasters != null && xslMasters.size() > 0){
+			JedisClientUtil.set(USER_MASTER_INFO + ":" + userid, gson.toJson(xslMasters.get(0)));
+			return xslMasters.get(0);
+		}
+
+		return new XslMaster();
+	}
+
+	private XslUser getUserInfo(String useid){
+		Gson gson = new Gson();
+		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
+
+		if(!StringUtils.isEmpty(userInfo)){
+			return gson.fromJson(userInfo, XslUser.class);
+		}
+
+		XslUserExample xslUserExample = new XslUserExample();
+		xslUserExample.createCriteria().andUseridEqualTo(useid);
+		List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
+
+		if(xslUsers != null && xslUsers.size() > 0){
+			JedisClientUtil.set(USER_INFO + ":" + useid, gson.toJson(xslUsers.get(0)));
+			return xslUsers.get(0);
+		}
+
+		return new XslUser();
+	}
+
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {
 		xslUser.setHunterid(xslHunter.getHunterid());
 		xslUser.setMasterid(xslMaster.getMasterid());
@@ -247,7 +341,7 @@ public class UserviceImpl implements UserService {
 		xslUser.setState(UserStateEnum.NA.getCode());
 		xslUser.setPassword(Md5Utils.digestMds(xslUserRegister.getPassword()));
 		xslUser.setSex("男");
-		xslUser.setName(xslUserRegister.getPhone());
+		xslUser.setName("xsl_"+xslUserRegister.getPhone());
 
 		try {
 			int result = xslUserMapper.insertSelective(xslUser);
