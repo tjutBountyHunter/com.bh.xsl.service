@@ -1,25 +1,25 @@
 package vo;
 
 public class UserHMResVo {
-	private Short hunterLevel;
-	private Short masterLevel;
+	private Short hunterlevel;
+	private Short masterlevel;
 	private Integer hunterEmpirical;
 	private Integer masterEmpirical;
 
-	public Short getHunterLevel() {
-		return hunterLevel;
+	public Short getHunterlevel() {
+		return hunterlevel;
 	}
 
-	public void setHunterLevel(Short hunterLevel) {
-		this.hunterLevel = hunterLevel;
+	public void setHunterlevel(Short hunterlevel) {
+		this.hunterlevel = hunterlevel;
 	}
 
-	public Short getMasterLevel() {
-		return masterLevel;
+	public Short getMasterlevel() {
+		return masterlevel;
 	}
 
-	public void setMasterLevel(Short masterLevel) {
-		this.masterLevel = masterLevel;
+	public void setMasterlevel(Short masterlevel) {
+		this.masterlevel = masterlevel;
 	}
 
 	public Integer getHunterEmpirical() {

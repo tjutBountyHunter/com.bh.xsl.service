@@ -16,9 +16,7 @@ import org.springframework.util.StringUtils;
 import pojo.*;
 import service.*;
 import util.*;
-import vo.UserHMResVo;
-import vo.UserReqVo;
-import vo.UserResVo;
+import vo.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -38,18 +36,19 @@ public class UserviceImpl implements UserService {
     private XslSchoolinfoMapper xslSchoollinfoMapper;
 	@Autowired
 	private XslUserFileMapper xslUserFileMapper;
+	@Autowired
+	private XslHunterTagMapper xslHunterTagMapper;
+
+
     @Autowired
     private JedisClient jedisClient;
+    @Autowired
+	private UserInfoService userInfoService;
 
     @Value("${REDIS_USER_SESSION_KEY}")
     private String REDIS_USER_SESSION_KEY;
-
-    @Value("${USER_INFO}")
-    private String USER_INFO;
-	@Value("${USER_HUNTER_INFO}")
-	private String USER_HUNTER_INFO;
-	@Value("${USER_MASTER_INFO}")
-	private String USER_MASTER_INFO;
+	@Value("${USER_INFO}")
+	private String USER_INFO;
 
     private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
 
@@ -199,9 +198,11 @@ public class UserviceImpl implements UserService {
 
         jedisClient.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
 
-		jedisClient.set(USER_INFO + ":" + user.getUserid(), JsonUtils.objectToJson(user));
+		Gson gson = GsonSingle.getGson();
+		String userInfo = gson.toJson(user);
+		JedisClientUtil.setEx(USER_INFO + ":" + user.getUserid(), userInfo, 300);
 
-        logger.info("login return message is {}", JsonUtils.objectToJson(resVo));
+		logger.info("login return message is {}", JsonUtils.objectToJson(resVo));
 
         return XslResult.ok(JsonUtils.objectToJson(resVo));
     }
@@ -253,7 +254,7 @@ public class UserviceImpl implements UserService {
 			return XslResult.build(403, "参数错误");
 		}
 
-		XslUser userInfo = getUserInfo(userid);
+		XslUser userInfo = userInfoService.getUserInfo(userid);
 
 		String hunterid = userInfo.getHunterid();
 		String masterid = userInfo.getMasterid();
@@ -262,76 +263,82 @@ public class UserviceImpl implements UserService {
 			return XslResult.build(403, "用户不存在");
 		}
 
-		XslMaster masterInfo = getMasterInfo(userid, masterid);
-		XslHunter hunterInfo = getHunterInfo(userid, hunterid);
+		XslMaster masterInfo = userInfoService.getMasterInfo(userid, masterid);
+		XslHunter hunterInfo = userInfoService.getHunterInfo(userid, hunterid);
 
 		UserHMResVo userHMResVo = new UserHMResVo();
 		userHMResVo.setHunterEmpirical(hunterInfo.getEmpirical());
-		userHMResVo.setHunterLevel(hunterInfo.getLevel());
+		userHMResVo.setHunterlevel(hunterInfo.getLevel());
 		userHMResVo.setMasterEmpirical(masterInfo.getEmpirical());
-		userHMResVo.setMasterLevel(masterInfo.getLevel());
+		userHMResVo.setMasterlevel(masterInfo.getLevel());
 
 		return XslResult.ok(userHMResVo);
 	}
 
-	private XslHunter getHunterInfo(String userid, String hunterid) {
-		String hunterInfo = JedisClientUtil.get(USER_HUNTER_INFO + ":" + userid);
-		Gson gson = GsonSingle.getGson();
+	@Override
+	public XslResult userAcc(UserAccReqVo userAccReqVo){
+    	XslSchoolinfo xslSchoolinfo = new XslSchoolinfo();
 
-		if(!StringUtils.isEmpty(hunterInfo)){
-			return gson.fromJson(hunterInfo, XslHunter.class);
+    	//初步信息录入
+    	BeanUtils.copyProperties(userAccReqVo, xslSchoolinfo);
+    	xslSchoolinfo.setSchoolid(UuidUtil.getUUID());
+    	xslSchoolinfo.setStartdate("2015-09-01");
+    	xslSchoolinfo.setDegree((byte) 2);
+    	xslSchoolinfo.setSchoolhours((byte) 4);
+
+		int i = xslSchoollinfoMapper.insertSelective(xslSchoolinfo);
+
+		if(i < 1){
+			return XslResult.build(500, "服务器繁忙，请重试");
 		}
 
-		XslHunterExample xslHunterExample = new XslHunterExample();
-		xslHunterExample.createCriteria().andHunteridEqualTo(hunterid);
-		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
-
-		if(xslHunters != null && xslHunters.size() > 0){
-			JedisClientUtil.setEx(USER_HUNTER_INFO + ":" + userid, gson.toJson(xslHunters.get(0)), 300);
-			return xslHunters.get(0);
-		}
-
-		return new XslHunter();
-	}
-
-	private XslMaster getMasterInfo(String userid, String masterid) {
-		String userInfo = JedisClientUtil.get(USER_MASTER_INFO + ":" + userid);
-		Gson gson = GsonSingle.getGson();
-
-		if(!StringUtils.isEmpty(userInfo)){
-			return gson.fromJson(userInfo, XslMaster.class);
-		}
-
-		XslMasterExample xslMasterExample = new XslMasterExample();
-		xslMasterExample.createCriteria().andMasteridEqualTo(masterid);
-		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
-
-		if(xslMasters != null && xslMasters.size() > 0){
-			JedisClientUtil.setEx(USER_MASTER_INFO + ":" + userid, gson.toJson(xslMasters.get(0)), 300);
-			return xslMasters.get(0);
-		}
-
-		return new XslMaster();
-	}
-
-	private XslUser getUserInfo(String useid){
-		Gson gson = GsonSingle.getGson();
-		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
-
-		if(!StringUtils.isEmpty(userInfo)){
-			return gson.fromJson(userInfo, XslUser.class);
-		}
-
+		String userid = userAccReqVo.getUserid();
+		XslUser xslUser = new XslUser();
+    	xslUser.setSchoolinfo(xslSchoolinfo.getSchoolid());
+    	xslUser.setState((byte) 2);
 		XslUserExample xslUserExample = new XslUserExample();
-		xslUserExample.createCriteria().andUseridEqualTo(useid);
-		List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
+		xslUserExample.createCriteria().andUseridEqualTo(userid);
+		int count = xslUserMapper.updateByExampleSelective(xslUser, xslUserExample);
 
-		if(xslUsers != null && xslUsers.size() > 0){
-			JedisClientUtil.setEx(USER_INFO + ":" + useid, gson.toJson(xslUsers.get(0)), 300);
-			return xslUsers.get(0);
+		if(count < 1){
+			return XslResult.build(500, "服务器繁忙，请重试");
 		}
 
-		return new XslUser();
+		JedisClientUtil.delete(USER_INFO +":"+ userid);
+
+		//二次自动审核认证
+		List<tagVo> tagVos = userAccReqVo.getTagVos();
+		if(tagVos == null || tagVos.size() == 0){
+			return XslResult.build(200, "认证成功，待管理员审核");
+		}
+
+		XslUser userInfo = userInfoService.getUserInfo(userid);
+		String hunterId = userInfo.getHunterid();
+
+		List<XslHunterTag> xslHunterTags = new ArrayList<>();
+
+		for (tagVo tagVo : tagVos){
+			XslHunterTag xslHunterTag = new XslHunterTag();
+			xslHunterTag.setHunterid(hunterId);
+			xslHunterTag.setTagid(tagVo.getTagid());
+
+			xslHunterTags.add(xslHunterTag);
+		}
+
+		int tagCount = xslHunterTagMapper.insertSelectiveBatch(xslHunterTags);
+
+		if(tagCount < 1){
+			return XslResult.build(200, "认证成功，待管理员审核");
+		}
+
+		xslUser.setState((byte) 1);
+		int AccCount = xslUserMapper.updateByExampleSelective(xslUser, xslUserExample);
+
+		if(AccCount < 1){
+			return XslResult.build(200, "认证成功，待管理员审核");
+		}
+
+		return XslResult.ok();
 	}
 
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {

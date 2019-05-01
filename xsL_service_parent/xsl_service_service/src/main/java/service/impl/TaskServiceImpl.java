@@ -1,9 +1,8 @@
 package service.impl;
 
 import com.github.pagehelper.PageHelper;
-import example.XslNetworkExample;
-import example.XslTagExample;
-import example.XslUserExample;
+import com.google.gson.Gson;
+import example.*;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.*;
+import pojo.XslTaskExample;
 import service.*;
 import util.*;
 import vo.*;
@@ -41,6 +41,10 @@ public class TaskServiceImpl implements TaskService {
 	private XslHunterMapper xslHunterMapper;
 	@Autowired
 	private XslHunterTaskMapper xslHunterTaskMapper;
+	@Autowired
+	private XslSchoolTaskMapper xslSchoolTaskMapper;
+	@Autowired
+	private XslSchoolMapper xslSchoolMapper;
 
 	@Autowired
 	private HunterRecommend hunterRecommend;
@@ -52,6 +56,12 @@ public class TaskServiceImpl implements TaskService {
 
 	@Value("${REDIS_USER_SESSION_KEY}")
 	private String REDIS_USER_SESSION_KEY;
+	@Value("${USER_INFO}")
+	private String USER_INFO;
+	@Value("${USER_HUNTER_INFO}")
+	private String USER_HUNTER_INFO;
+	@Value("${USER_MASTER_INFO}")
+	private String USER_MASTER_INFO;
 
     /**
      * 分页展示分类猎人
@@ -150,6 +160,7 @@ public class TaskServiceImpl implements TaskService {
 			xslTask.setCreatedate(taskReqVo.getCreateDate());
 			xslTask.setUpdatedate(taskReqVo.getCreateDate());
 			xslTask.setDeadline(taskReqVo.getDeadLineDate());
+			xslTask.setSourcetype(taskReqVo.getSourceType());
 			//未启动推荐
 			xslTask.setState((byte) 0);
 
@@ -160,11 +171,10 @@ public class TaskServiceImpl implements TaskService {
 			//启动推荐
 			if(taskReqVo.getIsRecommend()){
 				xslTask.setState((byte) 1);
-				List<String> recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
 			}
 
 			//记录任务
-			int insert = xslTaskMapper.insert(xslTask);
+			int insert = xslTaskMapper.insertSelective(xslTask);
 
 			if(insert < 1){
 				return XslResult.build(500, "服务器异常");
@@ -217,6 +227,32 @@ public class TaskServiceImpl implements TaskService {
 
 		return XslResult.ok(taskList);
 	}
+
+	@Override
+	public XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
+		//1.获取学校id
+    	String schoolName = taskInfoListReqVo.getSchoolName();
+		XslSchoolExample xslSchoolExample = new XslSchoolExample();
+		xslSchoolExample.createCriteria().andSchoolnameEqualTo(schoolName);
+		List<XslSchool> xslSchools = xslSchoolMapper.selectByExample(xslSchoolExample);
+
+		if(xslSchools == null || xslSchools.size() < 1){
+			return XslResult.build(403, "请重新选择学校");
+		}
+		Integer schoolId = xslSchools.get(0).getId();
+
+		//2.获取学校id对应的任务
+		XslSchoolTaskExample xslSchoolTaskExample = new XslSchoolTaskExample();
+		xslSchoolTaskExample.createCriteria().andSchoolidEqualTo(schoolId);
+		Integer size = taskInfoListReqVo.getSize();
+		PageHelper.startPage(1, size);
+		List<XslSchoolTask> xslSchoolTasks = xslSchoolTaskMapper.selectByExample(xslSchoolTaskExample);
+
+		//获取任务信息
+
+		return XslResult.ok();
+	}
+
 
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {
     	try {

@@ -9,6 +9,7 @@ import pojo.XslUserRegister;
 import service.FileOperateService;
 import service.UserService;
 import util.XslResult;
+import vo.UserAccReqVo;
 import vo.UserReqVo;
 
 /**
@@ -114,7 +115,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/gethminfo")
 	@ResponseBody
-	public XslResult updataPassword(UserReqVo userReqVo) {
+	public XslResult gethminfo(UserReqVo userReqVo) {
 		try {
 			return userService.getHMinfo(userReqVo);
 		} catch (Exception e) {
@@ -122,5 +123,25 @@ public class UserController {
 			return XslResult.build(500, "服务器异常");
 		}
 	}
+
+
+	/**
+	 * 获取猎人雇主信息
+	 *
+	 * @param userAccReqVo
+	 * @return
+	 */
+	@RequestMapping(value = "/userAcc")
+	@ResponseBody
+	public XslResult userAcc(UserAccReqVo userAccReqVo) {
+		try {
+			return userService.userAcc(userAccReqVo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器异常");
+		}
+	}
+
+
 
 }

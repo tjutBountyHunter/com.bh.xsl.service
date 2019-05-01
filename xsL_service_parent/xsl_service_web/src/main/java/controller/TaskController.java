@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import service.*;
 import util.XslResult;
 import vo.SendAndRecTaskReqVo;
+import vo.TaskInfoListReqVo;
 import vo.TaskReqVo;
 
 import java.text.ParseException;
@@ -248,18 +249,15 @@ public class TaskController {
         return xslResult;
     }
 
-//    /**
-//     * 猎人推优
-//     *
-//     * @param task_id
-//     * @return
-//     */
-//    @RequestMapping("/hunterChange")
-//    @ResponseBody
-//    public XslResult hunterChange(int task_id) {
-//        XslResult xslResult = null;
-//        xslResult = taskService.hunterDire(task_id);
-//        return XslResult.ok();
-//    }
+    /**
+     * 初始化任务大厅
+     *
+     * @return
+     */
+    @RequestMapping("/initTaskInfo")
+    @ResponseBody
+    public XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
+        return taskService.initTaskInfo(taskInfoListReqVo);
+    }
 
 }

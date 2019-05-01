@@ -3,6 +3,7 @@ package service;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.XslUserRegister;
 import util.XslResult;
+import vo.UserAccReqVo;
 import vo.UserReqVo;
 
 /**
@@ -44,4 +45,10 @@ public interface UserService {
 	 * @return
 	 */
 	XslResult getHMinfo(UserReqVo userReqVo);
+
+	/**
+	 * 用户认证
+	 * @return
+	 */
+	XslResult userAcc(UserAccReqVo userAccReqVo);
 }

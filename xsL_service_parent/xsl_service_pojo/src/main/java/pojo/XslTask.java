@@ -26,6 +26,8 @@ public class XslTask {
 
     private Date deadline;
 
+    private String sourcetype;
+
     public Integer getId() {
         return id;
     }
@@ -112,5 +114,13 @@ public class XslTask {
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+    public String getSourcetype() {
+        return sourcetype;
+    }
+
+    public void setSourcetype(String sourcetype) {
+        this.sourcetype = sourcetype;
     }
 }

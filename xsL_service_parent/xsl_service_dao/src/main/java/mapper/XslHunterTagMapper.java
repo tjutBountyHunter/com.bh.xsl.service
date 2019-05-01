@@ -33,4 +33,6 @@ public interface XslHunterTagMapper {
     List<XslHunterTag> getHuntersByTagId(String taskTag);
 
     List<XslHunterTag> getTagsByHunterId(String hunterId);
+
+    int insertSelectiveBatch(List<XslHunterTag> list);
 }

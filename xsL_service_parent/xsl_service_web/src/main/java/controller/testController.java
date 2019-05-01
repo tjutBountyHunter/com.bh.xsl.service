@@ -32,4 +32,11 @@ public class testController {
 		return delete;
 	}
 
+	@RequestMapping("/getCache")
+	@ResponseBody
+	public String getCache(String key) {
+		String data = JedisClientUtil.get(key);
+		return data;
+	}
+
 }

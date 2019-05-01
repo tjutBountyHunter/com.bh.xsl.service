@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.XslTaskMapper" >
-  <resultMap id="BaseResultMap" type="pojo.XslTask" >
+<mapper namespace="mapper.XslSchoolTaskMapper" >
+  <resultMap id="BaseResultMap" type="pojo.XslSchoolTask" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="schoolId" property="schoolid" jdbcType="INTEGER" />
     <result column="taskId" property="taskid" jdbcType="VARCHAR" />
-    <result column="taskTitle" property="tasktitle" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="money" property="money" jdbcType="DECIMAL" />
-    <result column="sendId" property="sendid" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="TINYINT" />
     <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP" />
-    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,16 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, cid, taskId, taskTitle, content, money, sendId, state, createDate, updateDate, 
-    deadline
+    id, schoolId, taskId, createDate, updateDate, state
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="example.XslSchoolTaskExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from xsl_task
+    from xsl_school_task
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,55 +87,38 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from xsl_task
+    from xsl_school_task
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from xsl_task
+    delete from xsl_school_task
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="pojo.XslTaskExample" >
-    delete from xsl_task
+  <delete id="deleteByExample" parameterType="example.XslSchoolTaskExample" >
+    delete from xsl_school_task
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="pojo.XslTask" >
-    insert into xsl_task (id, cid, taskId, 
-      taskTitle, content, money, 
-      sendId, state, createDate, 
-      updateDate, deadline,sourceType)
-    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{taskid,jdbcType=VARCHAR}, 
-      #{tasktitle,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
-      #{sendid,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{createdate,jdbcType=TIMESTAMP}, 
-      #{updatedate,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP}, #{sourcetype,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="pojo.XslSchoolTask" >
+    insert into xsl_school_task (id, schoolId, taskId, 
+      createDate, updateDate, state
+      )
+    values (#{id,jdbcType=INTEGER}, #{schoolid,jdbcType=INTEGER}, #{taskid,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="pojo.XslTask" >
-    insert into xsl_task
+  <insert id="insertSelective" parameterType="pojo.XslSchoolTask" >
+    insert into xsl_school_task
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="cid != null" >
-        cid,
+      <if test="schoolid != null" >
+        schoolId,
       </if>
       <if test="taskid != null" >
         taskId,
-      </if>
-      <if test="tasktitle != null" >
-        taskTitle,
-      </if>
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="money != null" >
-        money,
-      </if>
-      <if test="sendid != null" >
-        sendId,
-      </if>
-      <if test="state != null" >
-        state,
       </if>
       <if test="createdate != null" >
         createDate,
@@ -149,37 +126,19 @@
       <if test="updatedate != null" >
         updateDate,
       </if>
-      <if test="deadline != null" >
-        deadline,
-      </if>
-      <if test="sourcetype != null" >
-        sourceType,
+      <if test="state != null" >
+        state,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="cid != null" >
-        #{cid,jdbcType=INTEGER},
+      <if test="schoolid != null" >
+        #{schoolid,jdbcType=INTEGER},
       </if>
       <if test="taskid != null" >
         #{taskid,jdbcType=VARCHAR},
-      </if>
-      <if test="tasktitle != null" >
-        #{tasktitle,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="money != null" >
-        #{money,jdbcType=DECIMAL},
-      </if>
-      <if test="sendid != null" >
-        #{sendid,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        #{state,jdbcType=TINYINT},
       </if>
       <if test="createdate != null" >
         #{createdate,jdbcType=TIMESTAMP},
@@ -187,46 +146,28 @@
       <if test="updatedate != null" >
         #{updatedate,jdbcType=TIMESTAMP},
       </if>
-      <if test="deadline != null" >
-        #{deadline,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sourcetype != null" >
-        #{sourcetype,jdbcType=VARCHAR},
+      <if test="state != null" >
+        #{state,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="pojo.XslTaskExample" resultType="java.lang.Integer" >
-    select count(*) from xsl_task
+  <select id="countByExample" parameterType="example.XslSchoolTaskExample" resultType="java.lang.Integer" >
+    select count(*) from xsl_school_task
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update xsl_task
+    update xsl_school_task
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.cid != null" >
-        cid = #{record.cid,jdbcType=INTEGER},
+      <if test="record.schoolid != null" >
+        schoolId = #{record.schoolid,jdbcType=INTEGER},
       </if>
       <if test="record.taskid != null" >
         taskId = #{record.taskid,jdbcType=VARCHAR},
-      </if>
-      <if test="record.tasktitle != null" >
-        taskTitle = #{record.tasktitle,jdbcType=VARCHAR},
-      </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
-      </if>
-      <if test="record.money != null" >
-        money = #{record.money,jdbcType=DECIMAL},
-      </if>
-      <if test="record.sendid != null" >
-        sendId = #{record.sendid,jdbcType=VARCHAR},
-      </if>
-      <if test="record.state != null" >
-        state = #{record.state,jdbcType=TINYINT},
       </if>
       <if test="record.createdate != null" >
         createDate = #{record.createdate,jdbcType=TIMESTAMP},
@@ -234,8 +175,8 @@
       <if test="record.updatedate != null" >
         updateDate = #{record.updatedate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.deadline != null" >
-        deadline = #{record.deadline,jdbcType=TIMESTAMP},
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=CHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -243,45 +184,25 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update xsl_task
+    update xsl_school_task
     set id = #{record.id,jdbcType=INTEGER},
-      cid = #{record.cid,jdbcType=INTEGER},
+      schoolId = #{record.schoolid,jdbcType=INTEGER},
       taskId = #{record.taskid,jdbcType=VARCHAR},
-      taskTitle = #{record.tasktitle,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR},
-      money = #{record.money,jdbcType=DECIMAL},
-      sendId = #{record.sendid,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=TINYINT},
       createDate = #{record.createdate,jdbcType=TIMESTAMP},
       updateDate = #{record.updatedate,jdbcType=TIMESTAMP},
-      deadline = #{record.deadline,jdbcType=TIMESTAMP}
+      state = #{record.state,jdbcType=CHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslTask" >
-    update xsl_task
+  <update id="updateByPrimaryKeySelective" parameterType="pojo.XslSchoolTask" >
+    update xsl_school_task
     <set >
-      <if test="cid != null" >
-        cid = #{cid,jdbcType=INTEGER},
+      <if test="schoolid != null" >
+        schoolId = #{schoolid,jdbcType=INTEGER},
       </if>
       <if test="taskid != null" >
         taskId = #{taskid,jdbcType=VARCHAR},
-      </if>
-      <if test="tasktitle != null" >
-        taskTitle = #{tasktitle,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="money != null" >
-        money = #{money,jdbcType=DECIMAL},
-      </if>
-      <if test="sendid != null" >
-        sendId = #{sendid,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=TINYINT},
       </if>
       <if test="createdate != null" >
         createDate = #{createdate,jdbcType=TIMESTAMP},
@@ -289,37 +210,19 @@
       <if test="updatedate != null" >
         updateDate = #{updatedate,jdbcType=TIMESTAMP},
       </if>
-      <if test="deadline != null" >
-        deadline = #{deadline,jdbcType=TIMESTAMP},
+      <if test="state != null" >
+        state = #{state,jdbcType=CHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pojo.XslTask" >
-    update xsl_task
-    set cid = #{cid,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="pojo.XslSchoolTask" >
+    update xsl_school_task
+    set schoolId = #{schoolid,jdbcType=INTEGER},
       taskId = #{taskid,jdbcType=VARCHAR},
-      taskTitle = #{tasktitle,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
-      money = #{money,jdbcType=DECIMAL},
-      sendId = #{sendid,jdbcType=VARCHAR},
-      state = #{state,jdbcType=TINYINT},
       createDate = #{createdate,jdbcType=TIMESTAMP},
       updateDate = #{updatedate,jdbcType=TIMESTAMP},
-      deadline = #{deadline,jdbcType=TIMESTAMP}
+      state = #{state,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-  <select id="selectBySendId" resultMap="BaseResultMap" parameterType="vo.SendAndRecTaskReqVo" >
-    select
-    <include refid="Base_Column_List" />
-    from xsl_task
-    WHERE
-      sendId = #{masterid,jdbcType=VARCHAR}
-    <if test="state != null" >
-      and state = #{state,jdbcType=TINYINT}
-    </if>
-      order by updateDate DESC
-  </select>
 </mapper>

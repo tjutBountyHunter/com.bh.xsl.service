@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TaskReqVo {
+	private String sourceType;
 	private String taskTitle;
 	private String content;
 	private List<ImageVo> images;
@@ -15,6 +16,21 @@ public class TaskReqVo {
 	private Date createDate;
 	private Date deadLineDate;
 
+	public String getSourceType() {
+		return sourceType;
+	}
+
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
+	}
+
+	public Boolean getRecommend() {
+		return isRecommend;
+	}
+
+	public void setRecommend(Boolean recommend) {
+		isRecommend = recommend;
+	}
 
 	public String getTaskTitle() {
 		return taskTitle;

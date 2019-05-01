@@ -222,4 +222,17 @@
     from xsl_hunter_tag
     where hunterId = #{hunterId,jdbcType=VARCHAR}
   </select>
+
+  <!-- 批量插入 -->
+  <insert id="insertSelectiveBatch" parameterType="java.util.List">
+    insert into xsl_hunter_tag
+    (hunterId, tagId)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.hunterid,jdbcType=VARCHAR},
+      #{item.tagid,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
 </mapper>
