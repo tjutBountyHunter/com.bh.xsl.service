@@ -1,5 +1,6 @@
 package service.impl;
 
+import com.github.pagehelper.PageHelper;
 import example.XslNetworkExample;
 import example.XslTagExample;
 import example.XslUserExample;
@@ -38,6 +39,8 @@ public class TaskServiceImpl implements TaskService {
 	private XslNetworkMapper xslNetworkMapper;
 	@Autowired
 	private XslHunterMapper xslHunterMapper;
+	@Autowired
+	private XslHunterTaskMapper xslHunterTaskMapper;
 
 	@Autowired
 	private HunterRecommend hunterRecommend;
@@ -191,14 +194,28 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public XslResult querySendTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
-		String masterid = sendAndRecTaskReqVo.getMasterid();
+		Integer page = sendAndRecTaskReqVo.getPage();
+		Integer rows = sendAndRecTaskReqVo.getRows();
 
-		return null;
+		PageHelper.startPage(page,rows);
+		List<XslTask> taskList = xslTaskMapper.selectBySendId(sendAndRecTaskReqVo);
+
+		return XslResult.ok(taskList);
 	}
 
 	@Override
 	public XslResult queryReceiveTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
-		return null;
+		Integer page = sendAndRecTaskReqVo.getPage();
+		Integer rows = sendAndRecTaskReqVo.getRows();
+
+		PageHelper.startPage(page,rows);
+		List<String> taskIds = xslHunterTaskMapper.selectByRecId(sendAndRecTaskReqVo);
+
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		xslTaskExample.createCriteria().andTaskidIn(taskIds);
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+
+		return XslResult.ok(taskList);
 	}
 
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {
@@ -286,7 +303,7 @@ public class TaskServiceImpl implements TaskService {
 
 	private XslResult hunterRecommendAndPush(XslTask xslTask){
 
-		List<String> recommend = new ArrayList<>();
+		List<String> recommend;
 		//猎人标签推优算法
 		recommend = hunterRecommend.recommend(xslTask.getTaskid(), 10);
 

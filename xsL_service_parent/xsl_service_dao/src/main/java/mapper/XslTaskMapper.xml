@@ -303,4 +303,17 @@
       deadline = #{deadline,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectBySendId" resultMap="BaseResultMap" parameterType="vo.SendAndRecTaskReqVo" >
+    select
+    <include refid="Base_Column_List" />
+    from xsl_task
+    WHERE
+      sendId = #{masterid,jdbcType=VARCHAR}
+    <if test="state != null" >
+      and state = #{state,jdbcType=TINYINT}
+    </if>
+      order by updateDate DESC
+  </select>
 </mapper>

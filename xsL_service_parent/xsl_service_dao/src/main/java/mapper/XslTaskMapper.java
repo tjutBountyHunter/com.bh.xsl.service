@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslTask;
 import pojo.XslTaskExample;
+import vo.SendAndRecTaskReqVo;
 
 public interface XslTaskMapper {
     int countByExample(XslTaskExample example);
@@ -27,4 +28,6 @@ public interface XslTaskMapper {
     int updateByPrimaryKeySelective(XslTask record);
 
     int updateByPrimaryKey(XslTask record);
+
+    List<XslTask> selectBySendId(SendAndRecTaskReqVo sendAndRecTaskReqVo);
 }

@@ -225,4 +225,18 @@
       taskState = #{taskstate,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByRecId"  parameterType="vo.SendAndRecTaskReqVo"
+          resultType="java.lang.String">
+    select
+          taskId
+    from
+          xsl_hunter_task
+    WHERE
+        hunterId = #{hunterid,jdbcType=VARCHAR}
+        <if test="state != null" >
+          and taskState = #{state,jdbcType=TINYINT}
+        </if>
+        order by updateDate DESC
+  </select>
 </mapper>

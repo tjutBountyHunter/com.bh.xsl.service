@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import service.*;
 import util.XslResult;
+import vo.SendAndRecTaskReqVo;
 import vo.TaskReqVo;
 
 import java.text.ParseException;
@@ -48,34 +49,26 @@ public class TaskController {
     }
 
     /**
-     * 查看已发任务
+     * 已发任务
      *
-     * @param usrId
-     * @param page
-     * @param rows
+     * @param sendAndRecTaskReqVo
      * @return
      */
     @RequestMapping("/allaread")
     @ResponseBody
-    public XslResult taskAllaread(Integer usrId, Integer page, Integer rows) {
-        XslResult xslResult = null;
-        xslResult = taskStatefind.sendTask(usrId, page, rows);
+    public XslResult taskAllaread(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
+        XslResult xslResult = taskService.querySendTask(sendAndRecTaskReqVo);
         return xslResult;
     }
 
     /**
      * 已接任务
-     *
-     * @param usrId
-     * @param page
-     * @param rows
      * @return
      */
     @RequestMapping("/accectAll")
     @ResponseBody
-    public XslResult taskaccectAll(Integer usrId, Integer page, Integer rows) {
-        XslResult xslResult = null;
-        xslResult = taskStatefind.accectTask(usrId, page, rows);
+    public XslResult taskaccectAll(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
+        XslResult xslResult = taskService.queryReceiveTask(sendAndRecTaskReqVo);
         return xslResult;
     }
     /**
