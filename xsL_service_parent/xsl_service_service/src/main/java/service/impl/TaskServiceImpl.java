@@ -351,6 +351,16 @@ public class TaskServiceImpl implements TaskService {
 			XslMaster masterInfo = userInfoService.getMasterInfo(masterId);
 			XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
 
+			//获取任务标签
+			String taskid = xslTask.getTaskid();
+			XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();
+			xslTaskExample.createCriteria().andTaskidEqualTo(taskid);
+			List<String> tagIds = xslTaskTagMapper.selectTagIdByExample(xslTaskTagExample);
+
+			XslTagExample xslTagExample = new XslTagExample();
+			xslTagExample.createCriteria().andTagidIn(tagIds);
+			List<XslTag> xslTags = xslTagMapper.selectByExample(xslTagExample);
+
 			BeanUtils.copyProperties(xslTask, taskInfoVo);
 			BeanUtils.copyProperties(masterInfo, taskInfoVo);
 			taskInfoVo.setMasterlevel(masterInfo.getLevel());
@@ -358,6 +368,8 @@ public class TaskServiceImpl implements TaskService {
 			taskInfoVo.setTxUrl("http://47.93.200.190/images/default.png");
 			taskInfoVo.setMasterlevel(masterInfo.getLevel());
 			taskInfoVo.setMasterid(xslTask.getSendid());
+			taskInfoVo.setDeadLineDate(xslTask.getDeadline());
+			taskInfoVo.setTags(xslTags);
 			taskInfoVos.add(taskInfoVo);
 		}
 

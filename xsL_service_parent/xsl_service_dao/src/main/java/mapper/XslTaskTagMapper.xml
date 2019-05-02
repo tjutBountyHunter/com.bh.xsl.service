@@ -235,4 +235,16 @@
     from xsl_task_tag
     where tagId = #{taskTag,jdbcType=INTEGER}
   </select>
+
+  <select id="selectTagIdByExample" resultType="string" parameterType="example.XslTaskTagExample" >
+    select
+      tagId
+    from xsl_task_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

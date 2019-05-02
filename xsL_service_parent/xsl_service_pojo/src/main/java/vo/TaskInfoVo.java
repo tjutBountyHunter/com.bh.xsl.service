@@ -1,7 +1,10 @@
 package vo;
 
+import pojo.XslTag;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class TaskInfoVo {
 	private Integer cid;
@@ -22,7 +25,7 @@ public class TaskInfoVo {
 
 	private Date updatedate;
 
-	private Date deadline;
+	private Date deadLineDate;
 
 	private String sourcetype;
 
@@ -33,6 +36,8 @@ public class TaskInfoVo {
 	private Short masterlevel;
 
 	private String txUrl;
+
+	private List<XslTag> tags;
 
 	public Integer getCid() {
 		return cid;
@@ -106,12 +111,12 @@ public class TaskInfoVo {
 		this.updatedate = updatedate;
 	}
 
-	public Date getDeadline() {
-		return deadline;
+	public Date getDeadLineDate() {
+		return deadLineDate;
 	}
 
-	public void setDeadline(Date deadline) {
-		this.deadline = deadline;
+	public void setDeadLineDate(Date deadLineDate) {
+		this.deadLineDate = deadLineDate;
 	}
 
 	public String getSourcetype() {
@@ -152,5 +157,13 @@ public class TaskInfoVo {
 
 	public void setTxUrl(String txUrl) {
 		this.txUrl = txUrl;
+	}
+
+	public List<XslTag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<XslTag> tags) {
+		this.tags = tags;
 	}
 }

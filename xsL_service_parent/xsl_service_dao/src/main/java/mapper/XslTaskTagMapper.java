@@ -35,4 +35,6 @@ public interface XslTaskTagMapper {
     List<XslTaskTag> getTagsByTaskId(String taskId);
 
     List<XslTaskTag> getTasksByTagId(String taskTag);
+
+    List<String> selectTagIdByExample(XslTaskTagExample example);
 }
