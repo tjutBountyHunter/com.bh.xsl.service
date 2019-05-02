@@ -3,7 +3,7 @@ package mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslTask;
-import pojo.XslTaskExample;
+import example.XslTaskExample;
 import vo.SendAndRecTaskReqVo;
 
 public interface XslTaskMapper {

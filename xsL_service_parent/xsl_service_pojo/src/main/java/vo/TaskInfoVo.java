@@ -9,19 +9,19 @@ import java.util.List;
 public class TaskInfoVo {
 	private Integer cid;
 
-	private String taskid;
+	private String taskId;
 
-	private String tasktitle;
+	private String taskTitle;
 
 	private String content;
 
 	private BigDecimal money;
 
-	private String masterid;
+	private String masterId;
 
 	private Byte state;
 
-	private Date createdate;
+	private Date createDate;
 
 	private Date updatedate;
 
@@ -47,20 +47,20 @@ public class TaskInfoVo {
 		this.cid = cid;
 	}
 
-	public String getTaskid() {
-		return taskid;
+	public String getTaskId() {
+		return taskId;
 	}
 
-	public void setTaskid(String taskid) {
-		this.taskid = taskid;
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 
-	public String getTasktitle() {
-		return tasktitle;
+	public String getTaskTitle() {
+		return taskTitle;
 	}
 
-	public void setTasktitle(String tasktitle) {
-		this.tasktitle = tasktitle;
+	public void setTaskTitle(String taskTitle) {
+		this.taskTitle = taskTitle;
 	}
 
 	public String getContent() {
@@ -79,12 +79,12 @@ public class TaskInfoVo {
 		this.money = money;
 	}
 
-	public String getMasterid() {
-		return masterid;
+	public String getMasterId() {
+		return masterId;
 	}
 
-	public void setMasterid(String masterid) {
-		this.masterid = masterid;
+	public void setMasterId(String masterId) {
+		this.masterId = masterId;
 	}
 
 	public Byte getState() {
@@ -95,12 +95,12 @@ public class TaskInfoVo {
 		this.state = state;
 	}
 
-	public Date getCreatedate() {
-		return createdate;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	public Date getUpdatedate() {

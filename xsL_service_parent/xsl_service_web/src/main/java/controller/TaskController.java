@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import service.*;
 import util.XslResult;
+import vo.RecTaskReqVo;
 import vo.SendAndRecTaskReqVo;
 import vo.TaskInfoListReqVo;
 import vo.TaskReqVo;
@@ -269,6 +270,17 @@ public class TaskController {
     @ResponseBody
     public XslResult reloadTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
         return taskService.reloadTaskInfo(taskInfoListReqVo);
+    }
+
+    /**
+     * 接收任务
+     *
+     * @return
+     */
+    @RequestMapping("/receiveTask")
+    @ResponseBody
+    public XslResult receiveTask(RecTaskReqVo recTaskReqVo){
+        return taskService.receiveTask(recTaskReqVo);
     }
 
 }

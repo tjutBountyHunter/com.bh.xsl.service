@@ -10,7 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.*;
-import pojo.XslTaskExample;
+import example.XslTaskExample;
 import service.*;
 import util.*;
 import vo.*;
@@ -336,6 +336,65 @@ public class TaskServiceImpl implements TaskService {
 		return XslResult.ok(taskInfoListResVo);
 	}
 
+	@Override
+	public XslResult receiveTask(RecTaskReqVo recTaskReqVo){
+		String hunterid = recTaskReqVo.getHunterid();
+		String taskid = recTaskReqVo.getTaskId();
+		//1.判断用户状态
+		XslUser userInfo = userInfoService.getUserInfo(hunterid);
+		if(userInfo == null){
+			return XslResult.build(403, "您无权操作");
+		}
+		if(1 != userInfo.getState()){
+			return XslResult.build(403, "您无权操作");
+		}
+
+		//2.获取任务信息
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		XslTaskExample.Criteria criteria = xslTaskExample.createCriteria();
+		criteria.andTaskidEqualTo(taskid);
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+		if(taskList == null || taskList.size() < 1){
+			return XslResult.build(500, "任务信息异常");
+		}
+
+		XslTask xslTask = taskList.get(0);
+
+		String masterid = userInfo.getMasterid();
+
+		if(masterid.equals(xslTask.getSendid())){
+			return XslResult.build(403, "请不要接自己发送的任务");
+		}
+		Byte state = xslTask.getState();
+		if(!(0 == state || 1 == state)){
+			return XslResult.build(403, "任务已经被抢走");
+		}
+
+		xslTask.setState((byte) 2);
+		if(state == 0){
+			criteria.andStateEqualTo((byte) 0);
+		}
+		if(state == 1){
+			criteria.andStateEqualTo((byte) 1);
+		}
+		int i = xslTaskMapper.updateByExampleSelective(xslTask, xslTaskExample);
+
+		if(i < 1){
+			return XslResult.build(403, "任务接收失败");
+		}
+
+		XslHunterTask xslHunterTask = new XslHunterTask();
+		xslHunterTask.setHunterid(hunterid);
+		xslHunterTask.setTaskid(recTaskReqVo.getTaskId());
+		xslHunterTask.setTaskstate((byte) 2);
+		int count = xslHunterTaskMapper.insertSelective(xslHunterTask);
+		if(count < 1){
+			return XslResult.build(403, "请不要接自己发送的任务");
+		}
+
+		return XslResult.ok();
+	}
+
 
 	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
 		//3.获取任务信息
@@ -365,9 +424,12 @@ public class TaskServiceImpl implements TaskService {
 			BeanUtils.copyProperties(masterInfo, taskInfoVo);
 			taskInfoVo.setMasterlevel(masterInfo.getLevel());
 			BeanUtils.copyProperties(userInfo, taskInfoVo);
+			taskInfoVo.setTaskId(xslTask.getTaskid());
+			taskInfoVo.setTaskTitle(xslTask.getTasktitle());
+			taskInfoVo.setCreateDate(xslTask.getCreatedate());
 			taskInfoVo.setTxUrl("http://47.93.200.190/images/default.png");
 			taskInfoVo.setMasterlevel(masterInfo.getLevel());
-			taskInfoVo.setMasterid(xslTask.getSendid());
+			taskInfoVo.setMasterId(xslTask.getSendid());
 			taskInfoVo.setDeadLineDate(xslTask.getDeadline());
 			taskInfoVo.setTags(xslTags);
 			taskInfoVos.add(taskInfoVo);

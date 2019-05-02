@@ -1,6 +1,7 @@
 package service;
 
 import util.XslResult;
+import vo.RecTaskReqVo;
 import vo.SendAndRecTaskReqVo;
 import vo.TaskInfoListReqVo;
 import vo.TaskReqVo;
@@ -60,6 +61,10 @@ public interface TaskService {
     XslResult reloadTaskInfo(TaskInfoListReqVo taskInfoListReqVo);
 
 
-
+	/**
+	 * 刷新任务大厅数据
+	 * @return
+	 */
+	XslResult receiveTask(RecTaskReqVo recTaskReqVo);
 
 }
