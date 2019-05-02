@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslSchoolTask;
 import example.XslSchoolTaskExample;
+import vo.TaskInfoListReqVo;
 
 public interface XslSchoolTaskMapper {
     int countByExample(XslSchoolTaskExample example);
@@ -28,5 +29,12 @@ public interface XslSchoolTaskMapper {
 
     int updateByPrimaryKey(XslSchoolTask record);
 
+    List<String> selectTaskIdBySchoolId(Integer schoolid);
+
+    List<Integer> selectIdBySchoolId(Integer schoolid);
+
+    List<String> selectTaskIdByGreaterThanId(Integer id);
+
+    List<String> selectTaskIdByLessThanSchoolId(Integer id);
 
 }

@@ -126,14 +126,14 @@ public class UserController {
 
 
 	/**
-	 * 获取猎人雇主信息
+	 * 用户认证
 	 *
 	 * @param userAccReqVo
 	 * @return
 	 */
 	@RequestMapping(value = "/userAcc")
 	@ResponseBody
-	public XslResult userAcc(UserAccReqVo userAccReqVo) {
+	public XslResult userAcc(@RequestBody UserAccReqVo userAccReqVo) {
 		try {
 			return userService.userAcc(userAccReqVo);
 		} catch (Exception e) {

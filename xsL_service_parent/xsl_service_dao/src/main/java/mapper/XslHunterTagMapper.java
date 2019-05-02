@@ -5,6 +5,7 @@ import java.util.List;
 import example.XslHunterTagExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHunterTag;
+import pojo.XslTaskTag;
 
 public interface XslHunterTagMapper {
     int countByExample(XslHunterTagExample example);

@@ -192,7 +192,7 @@ public class UserviceImpl implements UserService {
 			XslSchoolinfoExample.Criteria criteria4 = xslSchoolinfoExample.createCriteria();
 			criteria4.andSchoolIdEqualTo(user.getSchoolinfo());
 			List<XslSchoolinfo> xslSchoolinfos = xslSchoollinfoMapper.selectByExample(xslSchoolinfoExample);
-			BeanUtils.copyProperties(xslSchoolinfos.get(0), user);
+			BeanUtils.copyProperties(xslSchoolinfos.get(0), resVo);
 		}
 
 
@@ -263,8 +263,8 @@ public class UserviceImpl implements UserService {
 			return XslResult.build(403, "用户不存在");
 		}
 
-		XslMaster masterInfo = userInfoService.getMasterInfo(userid, masterid);
-		XslHunter hunterInfo = userInfoService.getHunterInfo(userid, hunterid);
+		XslMaster masterInfo = userInfoService.getMasterInfo(masterid);
+		XslHunter hunterInfo = userInfoService.getHunterInfo(hunterid);
 
 		UserHMResVo userHMResVo = new UserHMResVo();
 		userHMResVo.setHunterEmpirical(hunterInfo.getEmpirical());
@@ -309,7 +309,7 @@ public class UserviceImpl implements UserService {
 		//二次自动审核认证
 		List<tagVo> tagVos = userAccReqVo.getTagVos();
 		if(tagVos == null || tagVos.size() == 0){
-			return XslResult.build(200, "认证成功，待管理员审核");
+			return XslResult.ok(2);
 		}
 
 		XslUser userInfo = userInfoService.getUserInfo(userid);
@@ -328,7 +328,7 @@ public class UserviceImpl implements UserService {
 		int tagCount = xslHunterTagMapper.insertSelectiveBatch(xslHunterTags);
 
 		if(tagCount < 1){
-			return XslResult.build(200, "认证成功，待管理员审核");
+			return XslResult.ok(2);
 		}
 
 		xslUser.setState((byte) 1);
@@ -338,7 +338,7 @@ public class UserviceImpl implements UserService {
 			return XslResult.build(200, "认证成功，待管理员审核");
 		}
 
-		return XslResult.ok();
+		return XslResult.ok(1);
 	}
 
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {

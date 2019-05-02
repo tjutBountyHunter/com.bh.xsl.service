@@ -5,11 +5,15 @@ import pojo.*;
 public interface UserInfoService {
 	 XslUser getUserInfo(String useid);
 
+	 XslUser getUserInfoByHunterId(String hunterid);
+
+	 XslUser getUserInfoMasterId(String masterid);
+
 	 XslSchoolinfo getSchoolInfo(String schoolid);
 
-	 XslHunter getHunterInfo(String userid, String hunterid);
+	 XslHunter getHunterInfo(String hunterid);
 
-	 XslMaster getMasterInfo(String userid, String masterid);
+	 XslMaster getMasterInfo(String masterid);
 
 	 XslSchool getSchoolByName(String SchoolName);
 

@@ -260,4 +260,15 @@ public class TaskController {
         return taskService.initTaskInfo(taskInfoListReqVo);
     }
 
+    /**
+     * 刷新任务大厅
+     *
+     * @return
+     */
+    @RequestMapping("/reloadTaskInfo")
+    @ResponseBody
+    public XslResult reloadTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
+        return taskService.reloadTaskInfo(taskInfoListReqVo);
+    }
+
 }

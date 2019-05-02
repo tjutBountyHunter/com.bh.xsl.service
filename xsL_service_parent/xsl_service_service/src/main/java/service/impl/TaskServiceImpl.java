@@ -1,9 +1,9 @@
 package service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.google.gson.Gson;
 import example.*;
 import mapper.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -50,6 +50,8 @@ public class TaskServiceImpl implements TaskService {
 	private HunterRecommend hunterRecommend;
 	@Autowired
 	private jpushService jpushService;
+	@Autowired
+	private UserInfoService userInfoService;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -186,8 +188,9 @@ public class TaskServiceImpl implements TaskService {
 
 			XslResult xslResultTag = addTaskTag(taskReqVo, xslTask.getTaskid());
 			XslResult xslResultFile = addTaskFile(taskReqVo, xslTask.getTaskid());
+			XslResult xslResultSchool = addSchoolTask(taskReqVo, xslTask.getTaskid());
 
-			if(xslResultFile.isOK() && xslResultTag.isOK()){
+			if(xslResultFile.isOK() && xslResultTag.isOK() && xslResultSchool.isOK()){
 				//异步启动推荐
 				if(taskReqVo.getIsRecommend()){
 					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask));
@@ -201,6 +204,26 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(500, "服务器异常");
 		}
     }
+
+	private XslResult addSchoolTask(TaskReqVo taskReqVo, String taskid) {
+		XslUser user = userInfoService.getUserInfoMasterId(taskReqVo.getMasterId());
+		String schoolinfo = user.getSchoolinfo();
+		XslSchoolinfo schoolInfo = userInfoService.getSchoolInfo(schoolinfo);
+		String schoolName = schoolInfo.getSchool();
+		XslSchool school = userInfoService.getSchoolByName(schoolName);
+
+		XslSchoolTask xslSchoolTask = new XslSchoolTask();
+		xslSchoolTask.setSchoolid(school.getId());
+		xslSchoolTask.setTaskid(taskid);
+
+		int insert = xslSchoolTaskMapper.insertSelective(xslSchoolTask);
+
+		if(insert < 1){
+			throw new RuntimeException("任务学校信息关联异常");
+		}
+
+		return XslResult.ok();
+	}
 
 	@Override
 	public XslResult querySendTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
@@ -231,28 +254,115 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
 		//1.获取学校id
-    	String schoolName = taskInfoListReqVo.getSchoolName();
-		XslSchoolExample xslSchoolExample = new XslSchoolExample();
-		xslSchoolExample.createCriteria().andSchoolnameEqualTo(schoolName);
-		List<XslSchool> xslSchools = xslSchoolMapper.selectByExample(xslSchoolExample);
-
-		if(xslSchools == null || xslSchools.size() < 1){
+		String schoolName = taskInfoListReqVo.getSchoolName();
+		XslSchool school = userInfoService.getSchoolByName(schoolName);
+		if(school == null){
 			return XslResult.build(403, "请重新选择学校");
 		}
-		Integer schoolId = xslSchools.get(0).getId();
+		Integer schoolId = school.getId();
 
 		//2.获取学校id对应的任务
-		XslSchoolTaskExample xslSchoolTaskExample = new XslSchoolTaskExample();
-		xslSchoolTaskExample.createCriteria().andSchoolidEqualTo(schoolId);
 		Integer size = taskInfoListReqVo.getSize();
 		PageHelper.startPage(1, size);
-		List<XslSchoolTask> xslSchoolTasks = xslSchoolTaskMapper.selectByExample(xslSchoolTaskExample);
+		List<String> taskIds = xslSchoolTaskMapper.selectTaskIdBySchoolId(schoolId);
+		if(taskIds.size() == 0){
+			return XslResult.ok();
+		}
 
-		//获取任务信息
+		TaskInfoListResVo taskInfoListResVo = new TaskInfoListResVo();
+		PageHelper.startPage(1, size);
+		List<Integer> ids = xslSchoolTaskMapper.selectIdBySchoolId(schoolId);
+		Integer max = Collections.max(ids);
+		Integer min = Collections.min(ids);
+		taskInfoListResVo.setDownFlag(min);
+		taskInfoListResVo.setUpFlag(max);
 
-		return XslResult.ok();
+		//3.获取任务信息
+		List<TaskInfoVo> taskInfoList = getTaskInfoList(taskIds);
+		taskInfoListResVo.setTaskInfoVos(taskInfoList);
+
+		return XslResult.ok(taskInfoListResVo);
 	}
 
+	@Override
+	public XslResult reloadTaskInfo(TaskInfoListReqVo taskInfoListReqVo) {
+		TaskInfoListResVo taskInfoListResVo = new TaskInfoListResVo();
+		List<String> taskIds = null;
+
+		//1.获取学校id对应的任务
+		if("UP".equals(taskInfoListReqVo.getType())){
+			Integer id = taskInfoListReqVo.getUpFlag();
+			taskIds = xslSchoolTaskMapper.selectTaskIdByGreaterThanId(id);
+		}
+
+		if("DOWN".equals(taskInfoListReqVo.getType())){
+			Integer id = taskInfoListReqVo.getDownFlag();
+			taskIds = xslSchoolTaskMapper.selectTaskIdByLessThanSchoolId(id);
+		}
+
+
+		if(taskIds == null || taskIds.size() == 0){
+			return XslResult.ok(taskInfoListResVo);
+		}
+
+		//2.获取学校id
+		String schoolName = taskInfoListReqVo.getSchoolName();
+		XslSchool school = userInfoService.getSchoolByName(schoolName);
+		if(school == null){
+			return XslResult.build(403, "请重新选择学校");
+		}
+		Integer schoolId = school.getId();
+
+		//4.获取id列表
+		Integer size = taskInfoListReqVo.getSize();
+		PageHelper.startPage(1, size);
+		List<Integer> ids = xslSchoolTaskMapper.selectIdBySchoolId(schoolId);
+
+		if("UP".equals(taskInfoListReqVo.getType())){
+			Integer max = Collections.max(ids);
+			taskInfoListResVo.setUpFlag(max);
+		}
+
+		if("DOWN".equals(taskInfoListReqVo.getType())){
+			Integer min = Collections.min(ids);
+			taskInfoListResVo.setDownFlag(min);
+		}
+
+
+		//3.获取任务信息
+		List<TaskInfoVo> taskInfoList = getTaskInfoList(taskIds);
+		taskInfoListResVo.setTaskInfoVos(taskInfoList);
+
+		return XslResult.ok(taskInfoListResVo);
+	}
+
+
+	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
+		//3.获取任务信息
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		xslTaskExample.createCriteria().andTaskidIn(taskIds);
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+
+		//4.封装返回数据
+		List<TaskInfoVo> taskInfoVos = new ArrayList<>();
+		for (XslTask xslTask : taskList) {
+			TaskInfoVo taskInfoVo = new TaskInfoVo();
+			String masterId = xslTask.getSendid();
+			XslMaster masterInfo = userInfoService.getMasterInfo(masterId);
+			XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
+
+			BeanUtils.copyProperties(xslTask, taskInfoVo);
+			BeanUtils.copyProperties(masterInfo, taskInfoVo);
+			taskInfoVo.setMasterlevel(masterInfo.getLevel());
+			BeanUtils.copyProperties(userInfo, taskInfoVo);
+			taskInfoVo.setTxUrl("http://47.93.200.190/images/default.png");
+			taskInfoVo.setMasterlevel(masterInfo.getLevel());
+			taskInfoVo.setMasterid(xslTask.getSendid());
+			taskInfoVos.add(taskInfoVo);
+		}
+
+		return taskInfoVos;
+	}
 
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {
     	try {

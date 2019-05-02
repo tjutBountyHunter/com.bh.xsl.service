@@ -225,4 +225,56 @@
       state = #{state,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectTaskIdBySchoolId" resultType="string" parameterType="integer" >
+    select
+      taskId
+    from
+      xsl_school_task
+    WHERE
+       state = "1"
+    and
+      schoolId = #{schoolid,jdbcType=INTEGER}
+    order by updateDate
+  </select>
+
+  <select id="selectIdBySchoolId" resultType="integer" parameterType="integer" >
+    select
+      id
+    from
+      xsl_school_task
+    WHERE
+       state = "1"
+    and
+      schoolId = #{schoolid,jdbcType=INTEGER}
+    order by updateDate
+  </select>
+
+  <select id="selectTaskIdByGreaterThanId" resultType="java.lang.String" parameterType="integer" >
+    select
+      id
+    from
+      xsl_school_task
+    WHERE
+       state = "1"
+    and
+      id > #{id,jdbcType=INTEGER}
+    order by updateDate
+  </select>
+
+
+  <select id="selectTaskIdByLessThanSchoolId" resultType="java.lang.String" parameterType="integer" >
+    select
+      id
+    from
+      xsl_school_task
+    WHERE
+       state = "1"
+    and
+       id &lt; #{id,jdbcType=INTEGER}
+
+    order by updateDate
+  </select>
+
+
 </mapper>

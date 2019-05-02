@@ -74,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, cid, taskId, taskTitle, content, money, sendId, state, createDate, updateDate, 
-    deadline
+    deadline, sourceType
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="pojo.XslTaskExample" >
     select

@@ -42,24 +42,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public XslUser getUserInfo(String useid){
-		Gson gson = GsonSingle.getGson();
-		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
+		return getUserInfo(useid, "", "");
+	}
 
-		if(!StringUtils.isEmpty(userInfo)){
-			return gson.fromJson(userInfo, XslUser.class);
-		}
+	@Override
+	public XslUser getUserInfoByHunterId(String hunterid){
+		return getUserInfo("", hunterid, "");
+	}
 
-		XslUserExample xslUserExample = new XslUserExample();
-		xslUserExample.createCriteria().andUseridEqualTo(useid);
-		List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
-
-		if(xslUsers != null && xslUsers.size() > 0){
-			String info =  gson.toJson(xslUsers.get(0));
-			JedisClientUtil.setEx(USER_INFO + ":" + useid, info , 300);
-			return xslUsers.get(0);
-		}
-
-		return new XslUser();
+	@Override
+	public XslUser getUserInfoMasterId(String masterid){
+		return getUserInfo("", "", masterid);
 	}
 
 	@Override
@@ -85,9 +78,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public XslHunter getHunterInfo(String userid, String hunterid) {
+	public XslHunter getHunterInfo(String hunterid) {
 		Gson gson = GsonSingle.getGson();
-		String hunterInfo = JedisClientUtil.get(USER_HUNTER_INFO + ":" + userid);
+		String hunterInfo = JedisClientUtil.get(USER_HUNTER_INFO + ":" + hunterid);
 
 		if(!StringUtils.isEmpty(hunterInfo)){
 			return gson.fromJson(hunterInfo, XslHunter.class);
@@ -98,7 +91,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		List<XslHunter> xslHunters = xslHunterMapper.selectByExample(xslHunterExample);
 
 		if(xslHunters != null && xslHunters.size() > 0){
-			JedisClientUtil.setEx(USER_HUNTER_INFO + ":" + userid, gson.toJson(xslHunters.get(0)), 300);
+			JedisClientUtil.setEx(USER_HUNTER_INFO + ":" + hunterid, gson.toJson(xslHunters.get(0)), 300);
 			return xslHunters.get(0);
 		}
 
@@ -106,9 +99,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public XslMaster getMasterInfo(String userid, String masterid) {
+	public XslMaster getMasterInfo(String masterid) {
 		Gson gson = GsonSingle.getGson();
-		String userInfo = JedisClientUtil.get(USER_MASTER_INFO + ":" + userid);
+		String userInfo = JedisClientUtil.get(USER_MASTER_INFO + ":" + masterid);
 
 		if(!StringUtils.isEmpty(userInfo)){
 			return gson.fromJson(userInfo, XslMaster.class);
@@ -119,7 +112,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		List<XslMaster> xslMasters = xslMasterMapper.selectByExample(xslMasterExample);
 
 		if(xslMasters != null && xslMasters.size() > 0){
-			JedisClientUtil.setEx(USER_MASTER_INFO + ":" + userid, gson.toJson(xslMasters.get(0)), 300);
+			JedisClientUtil.setEx(USER_MASTER_INFO + ":" + masterid, gson.toJson(xslMasters.get(0)), 300);
 			return xslMasters.get(0);
 		}
 
@@ -145,6 +138,41 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 
 		return new XslSchool();
+	}
+
+
+	private XslUser getUserInfo(String useid, String hunterid, String masterid){
+		Gson gson = GsonSingle.getGson();
+		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
+
+		if(!StringUtils.isEmpty(userInfo)){
+			return gson.fromJson(userInfo, XslUser.class);
+		}
+
+		XslUserExample xslUserExample = new XslUserExample();
+		XslUserExample.Criteria criteria = xslUserExample.createCriteria();
+
+		if(!StringUtils.isEmpty(useid)){
+			criteria.andUseridEqualTo(useid);
+		}
+
+		if(!StringUtils.isEmpty(hunterid)){
+			criteria.andHunteridEqualTo(hunterid);
+		}
+
+		if(!StringUtils.isEmpty(masterid)){
+			criteria.andMasteridEqualTo(masterid);
+		}
+
+		List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
+
+		if(xslUsers != null && xslUsers.size() > 0){
+			String info =  gson.toJson(xslUsers.get(0));
+			JedisClientUtil.setEx(USER_INFO + ":" + useid, info , 300);
+			return xslUsers.get(0);
+		}
+
+		return new XslUser();
 	}
 
 }

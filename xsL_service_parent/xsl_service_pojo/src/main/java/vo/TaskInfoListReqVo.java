@@ -5,6 +5,9 @@ public class TaskInfoListReqVo {
 	private Integer size;
 	private String taskid;
 	private String schoolName;
+	private Integer upFlag;
+	private Integer downFlag;
+	private String type;
 
 	public String getUserid() {
 		return userid;
@@ -36,5 +39,29 @@ public class TaskInfoListReqVo {
 
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
+	}
+
+	public Integer getUpFlag() {
+		return upFlag;
+	}
+
+	public void setUpFlag(Integer upFlag) {
+		this.upFlag = upFlag;
+	}
+
+	public Integer getDownFlag() {
+		return downFlag;
+	}
+
+	public void setDownFlag(Integer downFlag) {
+		this.downFlag = downFlag;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

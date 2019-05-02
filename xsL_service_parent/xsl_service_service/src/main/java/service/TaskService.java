@@ -53,4 +53,13 @@ public interface TaskService {
     XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo);
 
 
+    /**
+     * 刷新任务大厅数据
+     * @return
+     */
+    XslResult reloadTaskInfo(TaskInfoListReqVo taskInfoListReqVo);
+
+
+
+
 }
