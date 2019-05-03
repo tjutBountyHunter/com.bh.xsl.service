@@ -56,9 +56,9 @@ public class TaskController {
      * @param sendAndRecTaskReqVo
      * @return
      */
-    @RequestMapping("/allaread")
+    @RequestMapping("/querySendTask")
     @ResponseBody
-    public XslResult taskAllaread(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
+    public XslResult querySendTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
         XslResult xslResult = taskService.querySendTask(sendAndRecTaskReqVo);
         return xslResult;
     }
@@ -67,9 +67,9 @@ public class TaskController {
      * 已接任务
      * @return
      */
-    @RequestMapping("/accectAll")
+    @RequestMapping("/queryReceiveTask")
     @ResponseBody
-    public XslResult taskaccectAll(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
+    public XslResult queryReceiveTask(SendAndRecTaskReqVo sendAndRecTaskReqVo) {
         XslResult xslResult = taskService.queryReceiveTask(sendAndRecTaskReqVo);
         return xslResult;
     }
@@ -281,6 +281,18 @@ public class TaskController {
     @ResponseBody
     public XslResult receiveTask(RecTaskReqVo recTaskReqVo){
         return taskService.receiveTask(recTaskReqVo);
+    }
+
+
+    /**
+     * 任务详情
+     *
+     * @return
+     */
+    @RequestMapping("/queryTaskInfo")
+    @ResponseBody
+    public XslResult queryTaskInfo(String taskId){
+        return taskService.taskInfo(taskId);
     }
 
 }

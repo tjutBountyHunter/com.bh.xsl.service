@@ -67,4 +67,10 @@ public interface TaskService {
 	 */
 	XslResult receiveTask(RecTaskReqVo recTaskReqVo);
 
+	/**
+	 * 任务详情
+	 * @return
+	 */
+	XslResult taskInfo(String taskId);
+
 }

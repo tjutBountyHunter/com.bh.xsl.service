@@ -396,6 +396,65 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 
+	public XslResult taskInfo(String taskId){
+		if(StringUtils.isEmpty(taskId)){
+			return XslResult.build(403, "任务不存在");
+		}
+
+		//获取任务信息
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		xslTaskExample.createCriteria().andTaskidEqualTo(taskId);
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+
+		if(taskList == null || taskList.size() == 0){
+			return XslResult.build(403, "任务不存在");
+		}
+
+		TaskInfoResVo taskInfoResVo = new TaskInfoResVo();
+		XslTask xslTask = taskList.get(0);
+		BeanUtils.copyProperties(xslTask, taskInfoResVo);
+		taskInfoResVo.setTaskId(xslTask.getTaskid());
+		taskInfoResVo.setTaskTitle(xslTask.getTasktitle());
+		taskInfoResVo.setCreateDate(xslTask.getCreatedate());
+		taskInfoResVo.setDeadLineDate(xslTask.getDeadline());
+
+		//获取任务标签
+		XslTagExample xslTagExample = new XslTagExample();
+		xslTagExample.createCriteria().andTagidEqualTo(taskId);
+		List<XslTag> xslTags = xslTagMapper.selectByExample(xslTagExample);
+		if(xslTags != null && xslTags.size() > 0){
+			XslTag xslTag = xslTags.get(0);
+			taskInfoResVo.setTag(xslTag);
+		}
+
+		//获取雇主信息
+		String masterId = xslTask.getSendid();
+		XslMaster master = userInfoService.getMasterInfo(masterId);
+		MasterInfo masterInfo = new MasterInfo();
+		BeanUtils.copyProperties(master, masterInfo);
+		masterInfo.setTxUrl("http://47.93.200.190/images/default.png");
+		taskInfoResVo.setMasterInfo(masterInfo);
+
+		//获取猎人信息
+		if(2 == xslTask.getState()){
+			//获取猎人id(在高并发环境下，这种代码肯定有问题)
+			XslHunterTaskExample xslHunterTaskExample = new XslHunterTaskExample();
+			xslHunterTaskExample.createCriteria().andTaskidEqualTo(taskId);
+			List<XslHunterTask> xslHunterTasks = xslHunterTaskMapper.selectByExample(xslHunterTaskExample);
+			String hunterId = xslHunterTasks.get(0).getHunterid();
+
+			//获取猎人信息
+			XslHunter hunter = userInfoService.getHunterInfo(hunterId);
+			HunterInfo hunterInfo = new HunterInfo();
+			BeanUtils.copyProperties(hunter, hunterInfo);
+			hunterInfo.setTxUrl("http://47.93.200.190/images/default.png");
+			taskInfoResVo.setHunterInfo(hunterInfo);
+		}
+
+		return XslResult.ok(taskInfoResVo);
+	}
+
+
 	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
 		//3.获取任务信息
 		XslTaskExample xslTaskExample = new XslTaskExample();
