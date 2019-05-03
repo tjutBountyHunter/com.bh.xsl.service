@@ -413,7 +413,7 @@ public class TaskServiceImpl implements TaskService {
 			//获取任务标签
 			String taskid = xslTask.getTaskid();
 			XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();
-			xslTaskExample.createCriteria().andTaskidEqualTo(taskid);
+			xslTaskTagExample.createCriteria().andTaskidEqualTo(taskid);
 			List<String> tagIds = xslTaskTagMapper.selectTagIdByExample(xslTaskTagExample);
 
 			XslTagExample xslTagExample = new XslTagExample();
