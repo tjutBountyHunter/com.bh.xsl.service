@@ -1,10 +1,7 @@
 package service;
 
 import util.XslResult;
-import vo.RecTaskReqVo;
-import vo.SendAndRecTaskReqVo;
-import vo.TaskInfoListReqVo;
-import vo.TaskReqVo;
+import vo.*;
 
 public interface TaskService {
 
@@ -73,4 +70,9 @@ public interface TaskService {
 	 */
 	XslResult taskInfo(String taskId);
 
+	/**
+	 * 确认任务完成
+	 * @return
+	 */
+	XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo);
 }

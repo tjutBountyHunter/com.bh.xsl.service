@@ -454,6 +454,54 @@ public class TaskServiceImpl implements TaskService {
 		return XslResult.ok(taskInfoResVo);
 	}
 
+	@Override
+	public XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo) {
+    	String taskId = confirmTaskReqVo.getTaskId();
+    	String hunterId = confirmTaskReqVo.getHunterid();
+		//检测任务状态
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		xslTaskExample.createCriteria().andTaskidEqualTo(taskId);
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+
+		if(taskList == null || taskList.size() == 0){
+			return XslResult.build(403, "任务不存在");
+		}
+		XslTask xslTask = taskList.get(0);
+		if(2 != xslTask.getState()){
+			return XslResult.build(403, "任务状态错误");
+		}
+
+		//检测连接状态
+		XslHunterTaskExample xslHunterTaskExample = new XslHunterTaskExample();
+		xslHunterTaskExample.createCriteria().andHunteridEqualTo(hunterId).andTaskidEqualTo(taskId);
+		List<XslHunterTask> xslHunterTasks = xslHunterTaskMapper.selectByExample(xslHunterTaskExample);
+
+		if(xslHunterTasks == null || xslHunterTasks.size() == 0){
+			return XslResult.build(403, "猎人信息有误");
+		}
+		XslHunterTask xslHunterTask = xslHunterTasks.get(0);
+		if(2 != xslHunterTask.getTaskstate()){
+			return XslResult.build(403, "任务状态有误");
+		}
+
+		//更新任务状态
+		xslTask.setState((byte) 3);
+		int i = xslTaskMapper.updateByExampleSelective(xslTask, xslTaskExample);
+		if(i < 1){
+			return XslResult.build(500, "服务器异常");
+		}
+
+		//更新连接状态
+		xslHunterTask.setTaskstate((byte) 2);
+		int i1 = xslHunterTaskMapper.updateByExampleSelective(xslHunterTask, xslHunterTaskExample);
+		if(i1 < 1){
+			return XslResult.build(500, "服务器异常");
+		}
+		//增加经验
+
+
+    	return XslResult.ok();
+	}
 
 	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
 		//3.获取任务信息

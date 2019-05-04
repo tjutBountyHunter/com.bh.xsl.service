@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import service.*;
 import util.XslResult;
-import vo.RecTaskReqVo;
-import vo.SendAndRecTaskReqVo;
-import vo.TaskInfoListReqVo;
-import vo.TaskReqVo;
+import vo.*;
 
 import java.text.ParseException;
 
@@ -293,6 +290,17 @@ public class TaskController {
     @ResponseBody
     public XslResult queryTaskInfo(String taskId){
         return taskService.taskInfo(taskId);
+    }
+
+    /**
+     * 确认任务完成
+     *
+     * @return
+     */
+    @RequestMapping("/confirmTask")
+    @ResponseBody
+    public XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo){
+        return taskService.confirmTask(confirmTaskReqVo);
     }
 
 }
