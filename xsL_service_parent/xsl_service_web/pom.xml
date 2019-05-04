@@ -125,6 +125,8 @@
     </dependencies>
 
     <build>
+        <finalName>xslService</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
