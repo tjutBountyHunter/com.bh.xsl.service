@@ -59,7 +59,7 @@ public interface TaskService {
 
 
 	/**
-	 * 刷新任务大厅数据
+	 * 接收任务
 	 * @return
 	 */
 	XslResult receiveTask(RecTaskReqVo recTaskReqVo);

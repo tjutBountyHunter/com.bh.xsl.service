@@ -195,6 +195,10 @@ public class TaskServiceImpl implements TaskService {
 				if(taskReqVo.getIsRecommend()){
 					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask));
 				}
+
+				//异步更新雇主信息
+
+
 				return XslResult.ok(xslTask.getTaskid());
 			}
 
@@ -341,7 +345,7 @@ public class TaskServiceImpl implements TaskService {
 		String hunterid = recTaskReqVo.getHunterid();
 		String taskid = recTaskReqVo.getTaskId();
 		//1.判断用户状态
-		XslUser userInfo = userInfoService.getUserInfo(hunterid);
+		XslUser userInfo = userInfoService.getUserInfoByHunterId(hunterid);
 		if(userInfo == null){
 			return XslResult.build(403, "您无权操作");
 		}
@@ -391,6 +395,11 @@ public class TaskServiceImpl implements TaskService {
 		if(count < 1){
 			return XslResult.build(403, "请不要接自己发送的任务");
 		}
+
+		//异步建立用户关联
+		//异步更新猎人信息
+		//异步生成订单
+		//异步给雇主发推送
 
 		return XslResult.ok();
 	}
@@ -485,7 +494,7 @@ public class TaskServiceImpl implements TaskService {
 		}
 
 		//更新任务状态
-		xslTask.setState((byte) 3);
+		xslTask.setState((byte) 4);
 		int i = xslTaskMapper.updateByExampleSelective(xslTask, xslTaskExample);
 		if(i < 1){
 			return XslResult.build(500, "服务器异常");

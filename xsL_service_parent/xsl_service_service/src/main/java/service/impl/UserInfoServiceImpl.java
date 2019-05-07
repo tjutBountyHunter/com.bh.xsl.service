@@ -42,16 +42,36 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public XslUser getUserInfo(String useid){
+		Gson gson = GsonSingle.getGson();
+		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
+
+		if(!StringUtils.isEmpty(userInfo)){
+			return gson.fromJson(userInfo, XslUser.class);
+		}
+
 		return getUserInfo(useid, "", "");
 	}
 
 	@Override
 	public XslUser getUserInfoByHunterId(String hunterid){
+		Gson gson = GsonSingle.getGson();
+		String userInfo = JedisClientUtil.get(USER_INFO + ":" + hunterid);
+
+		if(!StringUtils.isEmpty(userInfo)){
+			return gson.fromJson(userInfo, XslUser.class);
+		}
 		return getUserInfo("", hunterid, "");
 	}
 
 	@Override
 	public XslUser getUserInfoMasterId(String masterid){
+		Gson gson = GsonSingle.getGson();
+		String userInfo = JedisClientUtil.get(USER_INFO + ":" + masterid);
+
+		if(!StringUtils.isEmpty(userInfo)){
+			return gson.fromJson(userInfo, XslUser.class);
+		}
+
 		return getUserInfo("", "", masterid);
 	}
 
@@ -143,12 +163,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	private XslUser getUserInfo(String useid, String hunterid, String masterid){
 		Gson gson = GsonSingle.getGson();
-		String userInfo = JedisClientUtil.get(USER_INFO + ":" + useid);
-
-		if(!StringUtils.isEmpty(userInfo)){
-			return gson.fromJson(userInfo, XslUser.class);
-		}
-
 		XslUserExample xslUserExample = new XslUserExample();
 		XslUserExample.Criteria criteria = xslUserExample.createCriteria();
 
@@ -168,7 +182,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 		if(xslUsers != null && xslUsers.size() > 0){
 			String info =  gson.toJson(xslUsers.get(0));
-			JedisClientUtil.setEx(USER_INFO + ":" + useid, info , 300);
+			JedisClientUtil.setEx(USER_INFO + ":" + useid + hunterid + masterid, info , 300);
 			return xslUsers.get(0);
 		}
 
