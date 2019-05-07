@@ -21,6 +21,8 @@ public class MasterInfo {
 
 	private String txUrl;
 
+	private String phone;
+
 	public String getUserid() {
 		return userid;
 	}
@@ -91,5 +93,13 @@ public class MasterInfo {
 
 	public void setTxUrl(String txUrl) {
 		this.txUrl = txUrl;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }

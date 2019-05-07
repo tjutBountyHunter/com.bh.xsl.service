@@ -31,6 +31,8 @@ public interface XslTaskTagMapper {
 
     int insertSelectiveBatch(List<XslTaskTag> list);
 
+    List<String> selectTagidByExample(XslTaskTagExample example);
+
 //    重写
     List<XslTaskTag> getTagsByTaskId(String taskId);
 

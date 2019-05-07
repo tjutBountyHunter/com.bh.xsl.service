@@ -262,7 +262,7 @@ public class XslTaskTagExample {
             return (Criteria) this;
         }
 
-        public Criteria andTagidEqualTo(Integer value) {
+        public Criteria andTagidEqualTo(String value) {
             addCriterion("tagId =", value, "tagid");
             return (Criteria) this;
         }

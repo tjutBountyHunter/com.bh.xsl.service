@@ -4,6 +4,7 @@ import pojo.XslTag;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class TaskInfoResVo {
 	private Integer cid;
@@ -28,7 +29,7 @@ public class TaskInfoResVo {
 
 	private String sourcetype;
 
-	private XslTag tag;
+	private List<XslTag> tags;
 
 	private HunterInfo hunterInfo;
 
@@ -122,12 +123,12 @@ public class TaskInfoResVo {
 		this.sourcetype = sourcetype;
 	}
 
-	public XslTag getTag() {
-		return tag;
+	public List<XslTag> getTags() {
+		return tags;
 	}
 
-	public void setTag(XslTag tag) {
-		this.tag = tag;
+	public void setTags(List<XslTag> tags) {
+		this.tags = tags;
 	}
 
 	public HunterInfo getHunterInfo() {

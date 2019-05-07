@@ -222,6 +222,18 @@
       </foreach>
   </insert>
 
+  <select id="selectTagidByExample" resultType="String" parameterType="example.XslTaskTagExample" >
+    select
+      tagId
+    from xsl_task_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
   <select id="getTagsByTaskId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />

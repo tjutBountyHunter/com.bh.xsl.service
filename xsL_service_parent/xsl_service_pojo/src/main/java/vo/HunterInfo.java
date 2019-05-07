@@ -23,6 +23,8 @@ public class HunterInfo {
 
 	private String txUrl;
 
+	private String phone;
+
 	public String getHunterid() {
 		return hunterid;
 	}
@@ -101,5 +103,13 @@ public class HunterInfo {
 
 	public void setTxUrl(String txUrl) {
 		this.txUrl = txUrl;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }

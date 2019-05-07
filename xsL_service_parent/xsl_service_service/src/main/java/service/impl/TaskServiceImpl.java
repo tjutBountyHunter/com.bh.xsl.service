@@ -427,13 +427,18 @@ public class TaskServiceImpl implements TaskService {
 		taskInfoResVo.setCreateDate(xslTask.getCreatedate());
 		taskInfoResVo.setDeadLineDate(xslTask.getDeadline());
 
-		//获取任务标签
-		XslTagExample xslTagExample = new XslTagExample();
-		xslTagExample.createCriteria().andTagidEqualTo(taskId);
-		List<XslTag> xslTags = xslTagMapper.selectByExample(xslTagExample);
-		if(xslTags != null && xslTags.size() > 0){
-			XslTag xslTag = xslTags.get(0);
-			taskInfoResVo.setTag(xslTag);
+		//获取任务标签id
+		XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();
+		xslTaskTagExample.createCriteria().andTaskidEqualTo(taskId);
+		List<String> tagids = xslTaskTagMapper.selectTagidByExample(xslTaskTagExample);
+		if(tagids != null && tagids.size() > 0){
+			//获取任务标签
+			XslTagExample xslTagExample = new XslTagExample();
+			xslTagExample.createCriteria().andTagidIn(tagids);
+			List<XslTag> xslTags = xslTagMapper.selectByExample(xslTagExample);
+			if(xslTags != null && xslTags.size() > 0){
+				taskInfoResVo.setTags(xslTags);
+			}
 		}
 
 		//获取雇主信息
@@ -442,6 +447,10 @@ public class TaskServiceImpl implements TaskService {
 		MasterInfo masterInfo = new MasterInfo();
 		BeanUtils.copyProperties(master, masterInfo);
 		masterInfo.setTxUrl("http://47.93.200.190/images/default.png");
+
+		//获取手机号
+		XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
+		masterInfo.setPhone(userInfo.getPhone());
 		taskInfoResVo.setMasterInfo(masterInfo);
 
 		//获取猎人信息
@@ -456,6 +465,8 @@ public class TaskServiceImpl implements TaskService {
 			XslHunter hunter = userInfoService.getHunterInfo(hunterId);
 			HunterInfo hunterInfo = new HunterInfo();
 			BeanUtils.copyProperties(hunter, hunterInfo);
+			XslUser user = userInfoService.getUserInfoByHunterId(hunterId);
+			hunterInfo.setPhone(user.getPhone());
 			hunterInfo.setTxUrl("http://47.93.200.190/images/default.png");
 			taskInfoResVo.setHunterInfo(hunterInfo);
 		}
