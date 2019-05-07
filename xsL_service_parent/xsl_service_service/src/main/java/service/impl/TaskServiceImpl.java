@@ -450,6 +450,7 @@ public class TaskServiceImpl implements TaskService {
 
 		//获取手机号
 		XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
+		masterInfo.setName(userInfo.getName());
 		masterInfo.setPhone(userInfo.getPhone());
 		taskInfoResVo.setMasterInfo(masterInfo);
 
@@ -462,12 +463,7 @@ public class TaskServiceImpl implements TaskService {
 			String hunterId = xslHunterTasks.get(0).getHunterid();
 
 			//获取猎人信息
-			XslHunter hunter = userInfoService.getHunterInfo(hunterId);
-			HunterInfo hunterInfo = new HunterInfo();
-			BeanUtils.copyProperties(hunter, hunterInfo);
-			XslUser user = userInfoService.getUserInfoByHunterId(hunterId);
-			hunterInfo.setPhone(user.getPhone());
-			hunterInfo.setTxUrl("http://47.93.200.190/images/default.png");
+			HunterInfo hunterInfo = getHunterInfo(hunterId);
 			taskInfoResVo.setHunterInfo(hunterInfo);
 		}
 
@@ -476,7 +472,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo) {
-    	String taskId = confirmTaskReqVo.getTaskId();
+		Byte nowState = confirmTaskReqVo.getNowState();
+		Byte afterState = confirmTaskReqVo.getAfterState();
+		String taskId = confirmTaskReqVo.getTaskId();
     	String hunterId = confirmTaskReqVo.getHunterid();
 		//检测任务状态
 		XslTaskExample xslTaskExample = new XslTaskExample();
@@ -487,8 +485,8 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(403, "任务不存在");
 		}
 		XslTask xslTask = taskList.get(0);
-		if(2 != xslTask.getState()){
-			return XslResult.build(403, "任务状态错误");
+		if(nowState != xslTask.getState()){
+			return XslResult.build(403, "请勿重复操作");
 		}
 
 		//检测连接状态
@@ -500,33 +498,49 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(403, "猎人信息有误");
 		}
 		XslHunterTask xslHunterTask = xslHunterTasks.get(0);
-		if(2 != xslHunterTask.getTaskstate()){
-			return XslResult.build(403, "任务状态有误");
+		if(nowState != xslHunterTask.getTaskstate()){
+			return XslResult.build(403, "请勿重复操作");
 		}
 
 		//更新任务状态
-		xslTask.setState((byte) 4);
+		xslTask.setState(afterState);
 		int i = xslTaskMapper.updateByExampleSelective(xslTask, xslTaskExample);
 		if(i < 1){
 			return XslResult.build(500, "服务器异常");
 		}
 
 		//更新连接状态
-		xslHunterTask.setTaskstate((byte) 2);
+		xslHunterTask.setTaskstate(afterState);
 		int i1 = xslHunterTaskMapper.updateByExampleSelective(xslHunterTask, xslHunterTaskExample);
 		if(i1 < 1){
 			return XslResult.build(500, "服务器异常");
 		}
+
 		//增加经验
+		if(4 == afterState){
+			//任务终结处理订单
+		}
+		HunterInfo hunterInfo = getHunterInfo(hunterId);
 
+		return XslResult.ok(hunterInfo);
+	}
 
-    	return XslResult.ok();
+	private HunterInfo getHunterInfo(String hunterId) {
+		//获取猎人信息
+		XslHunter hunter = userInfoService.getHunterInfo(hunterId);
+		HunterInfo hunterInfo = new HunterInfo();
+		BeanUtils.copyProperties(hunter, hunterInfo);
+		XslUser user = userInfoService.getUserInfoByHunterId(hunterId);
+		hunterInfo.setPhone(user.getPhone());
+		hunterInfo.setName(user.getName());
+		hunterInfo.setTxUrl("http://47.93.200.190/images/default.png");
+		return hunterInfo;
 	}
 
 	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
 		//3.获取任务信息
 		XslTaskExample xslTaskExample = new XslTaskExample();
-		xslTaskExample.createCriteria().andTaskidIn(taskIds);
+		xslTaskExample.createCriteria().andTaskidIn(taskIds).andStateEqualTo((byte) 0).andStateEqualTo((byte) 1);
 		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
 
 		//4.封装返回数据

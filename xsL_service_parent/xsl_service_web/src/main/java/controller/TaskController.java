@@ -293,14 +293,29 @@ public class TaskController {
     }
 
     /**
-     * 确认任务完成
+     * 猎人确认任务完成
      *
      * @return
      */
     @RequestMapping("/confirmTask")
     @ResponseBody
     public XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo){
+		confirmTaskReqVo.setNowState((byte) 2);
+		confirmTaskReqVo.setAfterState((byte) 4);
         return taskService.confirmTask(confirmTaskReqVo);
     }
+
+	/**
+	 * 任务终结
+	 *
+	 * @return
+	 */
+	@RequestMapping("/okTask")
+	@ResponseBody
+	public XslResult okTask(ConfirmTaskReqVo confirmTaskReqVo){
+		confirmTaskReqVo.setNowState((byte) 4);
+		confirmTaskReqVo.setAfterState((byte) 3);
+		return taskService.confirmTask(confirmTaskReqVo);
+	}
 
 }

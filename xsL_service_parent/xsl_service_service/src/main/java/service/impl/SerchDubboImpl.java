@@ -10,6 +10,7 @@ import service.*;
 import util.JsonUtils;
 import util.XslResult;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,20 +19,8 @@ import java.util.List;
 @Service
 public class SerchDubboImpl implements SerchDubbo {
 
-
-    /**
-     * dubbo工具
-     *
-     * @return
-     */
-    public SearchService xslDubboTools() {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-                "spring/consumer.xml");
-        context.start();
-        // 获取远程服务代理
-        SearchService searchService = (SearchService) context.getBean("searchService");
-        return searchService;
-    }
+    @Resource
+    private SearchService searchService;
 
     /**
      * 任务大厅搜索框
@@ -46,7 +35,6 @@ public class SerchDubboImpl implements SerchDubbo {
     public XslResult searchDubbo_item(String keyword, int page, int rows, int sort_type) {
         try {
             keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
-            SearchService searchService = xslDubboTools();
             SearchResult searchResult = searchService.search_item(keyword, page, rows, sort_type);
             List<ItemTransfer> list = searchResult.getItemList();
             if (list.size() == 0 && list.isEmpty()) {
@@ -73,7 +61,6 @@ public class SerchDubboImpl implements SerchDubbo {
     public XslResult searchDubbo_hunter(String keyword, int page, int rows, int sort_type) {
         try {
             keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
-            SearchService searchService = xslDubboTools();
             SearchResult searchResult = searchService.search_hunter(keyword, page, rows, sort_type);
             List<HunterTransfer> list = searchResult.getHunterList();
             if (list.size() == 0 && list.isEmpty()) {
