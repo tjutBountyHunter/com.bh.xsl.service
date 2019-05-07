@@ -399,7 +399,16 @@ public class TaskServiceImpl implements TaskService {
 		//异步建立用户关联
 		//异步更新猎人信息
 		//异步生成订单
+
 		//异步给雇主发推送
+		String masterId = xslTask.getSendid();
+		XslUser userInfoMasterId = userInfoService.getUserInfoMasterId(masterId);
+		JPushVo jPushVo = new JPushVo();
+		jPushVo.setMsgTitle("任务状态提醒");
+		jPushVo.setMsgContent("你发布的任务《"+xslTask.getTasktitle()+"》已被接");
+		jPushVo.setNotificationTitle("你发布的任务《"+xslTask.getTasktitle()+"》已被接");
+		jPushVo.setExtrasparam("");
+		sendToMessage(jPushVo, userInfoMasterId.getPhone());
 
 		return XslResult.ok();
 	}
@@ -455,7 +464,7 @@ public class TaskServiceImpl implements TaskService {
 		taskInfoResVo.setMasterInfo(masterInfo);
 
 		//获取猎人信息
-		if(2 == xslTask.getState()){
+		if(2 == xslTask.getState() || 4 == xslTask.getState()){
 			//获取猎人id(在高并发环境下，这种代码肯定有问题)
 			XslHunterTaskExample xslHunterTaskExample = new XslHunterTaskExample();
 			xslHunterTaskExample.createCriteria().andTaskidEqualTo(taskId);
@@ -516,8 +525,31 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(500, "服务器异常");
 		}
 
-		//增加经验
+		//猎人确认完成
 		if(4 == afterState){
+			//异步给雇主发推送
+			String masterId = xslTask.getSendid();
+			XslUser userInfoMasterId = userInfoService.getUserInfoMasterId(masterId);
+			JPushVo jPushVo = new JPushVo();
+			jPushVo.setMsgTitle("任务完成提醒");
+			jPushVo.setMsgContent("你发布的任务《"+xslTask.getTasktitle()+"》已完成");
+			jPushVo.setNotificationTitle("你发布的任务《"+xslTask.getTasktitle()+"》已完成");
+			jPushVo.setExtrasparam("");
+			sendToMessage(jPushVo, userInfoMasterId.getPhone());
+		}
+
+		//雇主确认完成
+		if(3 == afterState){
+			//增加经验
+			//给猎人发推送
+			XslUser userInfoMasterId = userInfoService.getUserInfoByHunterId(hunterId);
+			JPushVo jPushVo = new JPushVo();
+			jPushVo.setMsgTitle("任务完成提醒");
+			jPushVo.setMsgContent("你接收的任务《"+xslTask.getTasktitle()+"》雇主已完成确认");
+			jPushVo.setNotificationTitle("你接收的任务《"+xslTask.getTasktitle()+"》雇主已完成确认");
+			jPushVo.setExtrasparam("");
+			sendToMessage(jPushVo, userInfoMasterId.getPhone());
+
 			//任务终结处理订单
 		}
 		HunterInfo hunterInfo = getHunterInfo(hunterId);
@@ -540,7 +572,10 @@ public class TaskServiceImpl implements TaskService {
 	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
 		//3.获取任务信息
 		XslTaskExample xslTaskExample = new XslTaskExample();
-		xslTaskExample.createCriteria().andTaskidIn(taskIds).andStateEqualTo((byte) 0).andStateEqualTo((byte) 1);
+		List<Byte> status = new ArrayList<>();
+		status.add((byte) 0);
+		status.add((byte) 1);
+		xslTaskExample.createCriteria().andTaskidIn(taskIds).andStateIn(status);
 		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
 
 		//4.封装返回数据
@@ -683,21 +718,23 @@ public class TaskServiceImpl implements TaskService {
 		JPushVo jPushVo = new JPushVo();
 		jPushVo.setMsgTitle("悬赏任务推荐");
 		jPushVo.setMsgContent("有一个适合你的悬赏任务");
-		jPushVo.setNotificationTitle("悬赏任务推荐");
+		jPushVo.setNotificationTitle("有一个适合你的悬赏任务");
 		jPushVo.setExtrasparam("");
 
+		String myHunterId = userInfoService.getUserInfoMasterId(xslTask.getSendid()).getHunterid();
+
 		for (String hunterId : recommend){
+			if(hunterId.equals(myHunterId)){
+				continue;
+			}
 			//查电话号码
 			XslUserExample xslUserExample = new XslUserExample();
-
 			xslUserExample.createCriteria().andHunteridEqualTo(hunterId);
 			List<XslUser> xslUsers = xslUserMapper.selectByExample(xslUserExample);
-			String phone = xslUsers.get(0).getPhone();
-			//获取设备码
-			String s = JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone);
-			jPushVo.setRegistrationId(s);
-			//发推送
-			jpushService.sendToRegistrationId(jPushVo);
+			if(xslTask != null && xslUsers.size() > 0){
+				String phone = xslUsers.get(0).getPhone();
+				sendToMessage(jPushVo, phone);
+			}
 		}
 
 		return XslResult.ok();
@@ -732,6 +769,17 @@ public class TaskServiceImpl implements TaskService {
 		}
 
 		return hunterIds;
+	}
+
+	private void sendToMessage(JPushVo jPushVo, String phone){
+		//获取设备码
+		String s = JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone);
+		jPushVo.setRegistrationId(s);
+		if(StringUtils.isEmpty(s)){
+			return;
+		}
+		//发推送
+		jpushService.sendToRegistrationId(jPushVo);
 	}
 
 }

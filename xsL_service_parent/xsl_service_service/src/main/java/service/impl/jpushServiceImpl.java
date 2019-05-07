@@ -77,7 +77,7 @@ public class jpushServiceImpl implements jpushService {
 					  	.setAlert(notification_title)
 					  	.addPlatformNotification(AndroidNotification.newBuilder()
 					  	.setAlert(notification_title)
-					  	.setTitle(notification_title)
+					  	.setTitle(msg_title)
 						//此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 						.addExtra("androidNotification extras key", extrasparam).build()).addPlatformNotification(IosNotification.newBuilder()
 						//传一个IosAlert对象，指定apns title、title、subtitle等
@@ -121,7 +121,7 @@ public class jpushServiceImpl implements jpushService {
 				.setNotification(Notification.newBuilder()
 				//指定当前推送的android通知
 				.addPlatformNotification(AndroidNotification.newBuilder()
-				.setAlert(notification_title).setTitle(notification_title)
+				.setAlert(notification_title).setTitle(msg_title)
 				//此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 				.addExtra("androidNotification extras key", extrasparam)
 				.build())

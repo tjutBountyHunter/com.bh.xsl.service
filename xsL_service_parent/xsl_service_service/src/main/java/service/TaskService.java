@@ -71,7 +71,7 @@ public interface TaskService {
 	XslResult taskInfo(String taskId);
 
 	/**
-	 * 猎人确认任务完成
+	 * 雇主猎人确认任务完成
 	 * @return
 	 */
 	XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo);
