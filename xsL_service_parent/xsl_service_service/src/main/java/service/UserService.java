@@ -51,4 +51,10 @@ public interface UserService {
 	 * @return
 	 */
 	XslResult userAcc(UserAccReqVo userAccReqVo);
+
+	/**
+	 * 上传用户头像
+	 * @return
+	 */
+	XslResult upLoadUserTx(MultipartFile uploadFile, String userid);
 }

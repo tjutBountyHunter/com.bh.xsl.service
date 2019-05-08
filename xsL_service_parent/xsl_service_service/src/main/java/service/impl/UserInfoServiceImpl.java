@@ -27,6 +27,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private XslSchoolinfoMapper xslSchoolinfoMapper;
 	@Autowired
 	private XslSchoolMapper xslSchoolMapper;
+	@Autowired
+	private XslUserFileMapper xslUserFileMapper;
+	@Autowired
+	private XslFileMapper xslFileMapper;
 
 
 	@Value("${USER_INFO}")
@@ -39,6 +43,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private String USER_SCHOOL_INFO_INFO;
 	@Value("${USER_SCHOOL_INFO}")
 	private String USER_SCHOOL_INFO;
+	@Value("${USER_TX_URL}")
+	private String USER_TX_URL;
 
 	@Override
 	public XslUser getUserInfo(String useid){
@@ -187,6 +193,36 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 
 		return new XslUser();
+	}
+
+	@Override
+	public String getUserTx(String userid){
+		Gson gson = GsonSingle.getGson();
+		String url = JedisClientUtil.get(USER_TX_URL + ":" + userid);
+
+		if(!StringUtils.isEmpty(url)){
+			return url;
+		}
+
+		XslUserFileExample xslUserFileExample = new XslUserFileExample();
+		xslUserFileExample.createCriteria().andUseridEqualTo(userid).andTypeEqualTo("TX");
+		List<XslUserFile> xslUserFiles = xslUserFileMapper.selectByExample(xslUserFileExample);
+
+		if(xslUserFiles != null && xslUserFiles.size() > 0){
+			XslFileExample xslFileExample = new XslFileExample();
+			xslFileExample.createCriteria().andFileidEqualTo(xslUserFiles.get(0).getFileid());
+			List<XslFile> xslFiles = xslFileMapper.selectByExample(xslFileExample);
+
+			if(xslFiles != null && xslFiles.size() > 0){
+				String txUrl = xslFiles.get(0).getUrl();
+				JedisClientUtil.setEx(USER_TX_URL + ":" + userid, txUrl , 300);
+
+				return txUrl;
+			}
+		}
+
+		return "";
+
 	}
 
 }

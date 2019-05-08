@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import pojo.*;
 import service.*;
 import util.*;
@@ -38,6 +39,12 @@ public class UserviceImpl implements UserService {
 	private XslUserFileMapper xslUserFileMapper;
 	@Autowired
 	private XslHunterTagMapper xslHunterTagMapper;
+
+	@Autowired
+	private FileOperateService fileOperateService;
+
+	@Value("${USER_TX_URL}")
+	private String USER_TX_URL;
 
 
     @Autowired
@@ -153,6 +160,10 @@ public class UserviceImpl implements UserService {
 
         //5.查询图片信息
 		String imgUrl = "http://47.93.200.190/images/default.png";
+		String userTx = userInfoService.getUserTx(userId);
+		if(!StringUtils.isEmpty(userTx)){
+			imgUrl = userTx;
+		}
 		XslUserFileExample xslUserFileExample = new XslUserFileExample();
 		XslUserFileExample.Criteria criteria2 = xslUserFileExample.createCriteria();
 		criteria2.andUseridEqualTo(userId);
@@ -339,6 +350,46 @@ public class UserviceImpl implements UserService {
 		}
 
 		return XslResult.ok(1);
+	}
+
+
+	@Override
+	public XslResult upLoadUserTx(MultipartFile uploadFile, String userid){
+		//1.获取用户信息
+		XslUser userInfo = userInfoService.getUserInfo(userid);
+		if (userInfo.getUserid() == null) {
+			return XslResult.build(403, "用户不存在");
+		}
+
+		try {
+			String userTx = userInfoService.getUserTx(userid);
+			if(!StringUtils.isEmpty(userTx)){
+				XslUserFileExample xslUserFileExample = new XslUserFileExample();
+				xslUserFileExample.createCriteria().andUseridEqualTo(userid).andTypeEqualTo("TX");
+				xslUserFileMapper.deleteByExample(xslUserFileExample);
+				JedisClientUtil.delete(USER_TX_URL + ":" + userid);
+			}
+
+			XslResult xslResult = fileOperateService.fileUpload(uploadFile);
+			XslFile xslFile = (XslFile)xslResult.getData();
+
+			//2.获取用户信息
+			//建立用户与文件关联
+			XslUserFile xslUserFile = new XslUserFile();
+			xslUserFile.setUserid(userInfo.getUserid());
+			xslUserFile.setFileid(xslFile.getFileid());
+			xslUserFile.setType("TX");
+
+			int insert = xslUserFileMapper.insert(xslUserFile);
+			if(insert < 1){
+				return XslResult.build(500, "服务器异常");
+			}
+			return XslResult.ok(xslFile.getUrl());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器异常");
+		}
+
 	}
 
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {

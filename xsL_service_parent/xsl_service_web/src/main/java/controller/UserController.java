@@ -42,13 +42,13 @@ public class UserController {
      * 图片
      *
      * @param uploadFile
-     * @param phone
+     * @param userid
      * @return
      */
-    @RequestMapping(value = "/file", method = RequestMethod.POST)
+    @RequestMapping(value = "/userTx", method = RequestMethod.POST)
     @ResponseBody
-    public XslResult fileUp(@Param("uploadFile") MultipartFile uploadFile, @Param("phone") String phone, @Param("type") String type) {
-        XslResult xslResult = fileOperateService.fileUpload(uploadFile);
+    public XslResult fileUp(@Param("uploadFile") MultipartFile uploadFile, @Param("userid") String userid) {
+        XslResult xslResult = userService.upLoadUserTx(uploadFile, userid);
         return xslResult;
     }
 

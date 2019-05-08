@@ -17,5 +17,7 @@ public interface UserInfoService {
 
 	 XslSchool getSchoolByName(String SchoolName);
 
+	 String getUserTx(String useid);
+
 
 }

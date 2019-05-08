@@ -65,37 +65,4 @@ public class FileOperateServiceImpl implements FileOperateService {
 
 	}
 
-	private XslResult createUserFile(XslFile xslFile, String phone, String type){
-		//1.判断用户是否存在
-		XslUserExample xslUserExample = new XslUserExample();
-		XslUserExample.Criteria criteria = xslUserExample.createCriteria();
-		criteria.andPhoneEqualTo(phone);
-		List<XslUser> list = xslUserMapper.selectByExample(xslUserExample);
-		if (list == null || list.size() < 1) {
-			return XslResult.build(403, "用户不存在");
-		}
-
-		//2.获取用户信息
-		XslUser xslUser = list.get(0);
-		//建立用户与文件关联
-		XslUserFile xslUserFile = new XslUserFile();
-		xslUserFile.setUserid(xslUser.getUserid());
-		xslUserFile.setFileid(xslFile.getFileid());
-		xslUserFile.setType(type);
-		xslUserFile.setCreatedate(new Date());
-		xslUserFile.setUpdatedate(new Date());
-
-		try {
-			int insert = xslUserFileMapper.insert(xslUserFile);
-			if(insert < 1){
-				return XslResult.build(500, "服务器异常");
-			}
-			return XslResult.ok();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return XslResult.build(500, "服务器异常");
-		}
-
-	}
-
 }

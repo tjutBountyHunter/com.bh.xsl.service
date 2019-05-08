@@ -52,6 +52,8 @@ public class TaskServiceImpl implements TaskService {
 	private jpushService jpushService;
 	@Autowired
 	private UserInfoService userInfoService;
+	@Autowired
+	private TaskInfoService taskInfoService;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -274,8 +276,10 @@ public class TaskServiceImpl implements TaskService {
 		}
 
 		TaskInfoListResVo taskInfoListResVo = new TaskInfoListResVo();
+
 		PageHelper.startPage(1, size);
 		List<Integer> ids = xslSchoolTaskMapper.selectIdBySchoolId(schoolId);
+
 		Integer max = Collections.max(ids);
 		Integer min = Collections.min(ids);
 		taskInfoListResVo.setDownFlag(min);
@@ -456,7 +460,10 @@ public class TaskServiceImpl implements TaskService {
 		MasterInfo masterInfo = new MasterInfo();
 		BeanUtils.copyProperties(master, masterInfo);
 		masterInfo.setTxUrl("http://47.93.200.190/images/default.png");
-
+		String userTx = userInfoService.getUserTx(masterInfo.getUserid());
+		if(!StringUtils.isEmpty(userTx)){
+			masterInfo.setTxUrl(userTx);
+		}
 		//获取手机号
 		XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
 		masterInfo.setName(userInfo.getName());
@@ -566,6 +573,12 @@ public class TaskServiceImpl implements TaskService {
 		hunterInfo.setPhone(user.getPhone());
 		hunterInfo.setName(user.getName());
 		hunterInfo.setTxUrl("http://47.93.200.190/images/default.png");
+
+		String userTx = userInfoService.getUserTx(hunter.getUserid());
+		if(!StringUtils.isEmpty(userTx)){
+			hunterInfo.setTxUrl(userTx);
+		}
+
 		return hunterInfo;
 	}
 
@@ -588,13 +601,7 @@ public class TaskServiceImpl implements TaskService {
 
 			//获取任务标签
 			String taskid = xslTask.getTaskid();
-			XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();
-			xslTaskTagExample.createCriteria().andTaskidEqualTo(taskid);
-			List<String> tagIds = xslTaskTagMapper.selectTagIdByExample(xslTaskTagExample);
-
-			XslTagExample xslTagExample = new XslTagExample();
-			xslTagExample.createCriteria().andTagidIn(tagIds);
-			List<XslTag> xslTags = xslTagMapper.selectByExample(xslTagExample);
+			List taskTags = taskInfoService.getTaskTags(taskid);
 
 			BeanUtils.copyProperties(xslTask, taskInfoVo);
 			BeanUtils.copyProperties(masterInfo, taskInfoVo);
@@ -604,10 +611,14 @@ public class TaskServiceImpl implements TaskService {
 			taskInfoVo.setTaskTitle(xslTask.getTasktitle());
 			taskInfoVo.setCreateDate(xslTask.getCreatedate());
 			taskInfoVo.setTxUrl("http://47.93.200.190/images/default.png");
+			String userTx = userInfoService.getUserTx(masterInfo.getUserid());
+			if(!StringUtils.isEmpty(userTx)){
+				taskInfoVo.setTxUrl(userTx);
+			}
 			taskInfoVo.setMasterlevel(masterInfo.getLevel());
 			taskInfoVo.setMasterId(xslTask.getSendid());
 			taskInfoVo.setDeadLineDate(xslTask.getDeadline());
-			taskInfoVo.setTags(xslTags);
+			taskInfoVo.setTags(taskTags);
 			taskInfoVos.add(taskInfoVo);
 		}
 
