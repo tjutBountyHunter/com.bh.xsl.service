@@ -11,8 +11,8 @@
     <!-- 消费者 应用信息 -->
     <dubbo:application name="xsl"/>
     <!-- 注册中心服务地址 -->
-    <dubbo:registry protocol="zookeeper" address="47.93.19.164:2181"/>
-    <dubbo:reference id="searchService" interface="com.xsl.search.export.SearchService" />
+    <dubbo:registry protocol="zookeeper" address="47.93.230.61:2181"/>
+    <!--<dubbo:reference id="searchService" interface="com.xsl.search.export.SearchService" />-->
 
     <!--<bean id="taskInfoResource" class="resourceImpl.TaskInfoResourceImpl"/>-->
     <!--<dubbo:reference interface="resource.TaskInfoResource" ref="taskInfoResource" timeout="600000"/>-->

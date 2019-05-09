@@ -19,8 +19,19 @@ import java.util.List;
 @Service
 public class SerchDubboImpl implements SerchDubbo {
 
-    @Resource
-    private SearchService searchService;
+    /**
+     * dubbo工具
+     *
+     * @return
+     */
+    public SearchService xslDubboTools() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "spring/consumer.xml");
+        context.start();
+        // 获取远程服务代理
+        SearchService searchService = (SearchService) context.getBean("searchService");
+        return searchService;
+    }
 
     /**
      * 任务大厅搜索框
@@ -33,20 +44,21 @@ public class SerchDubboImpl implements SerchDubbo {
      */
     @Override
     public XslResult searchDubbo_item(String keyword, int page, int rows, int sort_type) {
-        try {
-            keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
-            SearchResult searchResult = searchService.search_item(keyword, page, rows, sort_type);
-            List<ItemTransfer> list = searchResult.getItemList();
-            if (list.size() == 0 && list.isEmpty()) {
-                return XslResult.ok("没有此任务类型");
-            } else {
-                String json = JsonUtils.objectToJson(list);
-                return XslResult.ok(searchResult);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
+//        try {
+//            keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
+//            SearchResult searchResult = searchService.search_item(keyword, page, rows, sort_type);
+//            List<ItemTransfer> list = searchResult.getItemList();
+//            if (list.size() == 0 && list.isEmpty()) {
+//                return XslResult.ok("没有此任务类型");
+//            } else {
+//                String json = JsonUtils.objectToJson(list);
+//                return XslResult.ok(searchResult);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return XslResult.build(500, "服务器异常");
+//        }
+        return null;
     }
 
     /**
@@ -59,19 +71,20 @@ public class SerchDubboImpl implements SerchDubbo {
      */
     @Override
     public XslResult searchDubbo_hunter(String keyword, int page, int rows, int sort_type) {
-        try {
-            keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
-            SearchResult searchResult = searchService.search_hunter(keyword, page, rows, sort_type);
-            List<HunterTransfer> list = searchResult.getHunterList();
-            if (list.size() == 0 && list.isEmpty()) {
-                return XslResult.ok("没有达到您要求的猎人");
-            } else {
-                String json = JsonUtils.objectToJson(list);
-                return XslResult.ok(searchResult);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
+//        try {
+//            keyword = new String(keyword.getBytes("iso-8859-1"), "utf-8");
+//            SearchResult searchResult = searchService.search_hunter(keyword, page, rows, sort_type);
+//            List<HunterTransfer> list = searchResult.getHunterList();
+//            if (list.size() == 0 && list.isEmpty()) {
+//                return XslResult.ok("没有达到您要求的猎人");
+//            } else {
+//                String json = JsonUtils.objectToJson(list);
+//                return XslResult.ok(searchResult);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return XslResult.build(500, "服务器异常");
+//        }
+        return null;
     }
 }
