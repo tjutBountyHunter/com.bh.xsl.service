@@ -1,5 +1,6 @@
 package controller;
 
+import com.xsl.search.export.vo.TaskSearchReqVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -317,5 +318,16 @@ public class TaskController {
 		confirmTaskReqVo.setAfterState((byte) 3);
 		return taskService.confirmTask(confirmTaskReqVo);
 	}
+
+    /**
+     * 任务搜索
+     *
+     * @return
+     */
+    @RequestMapping("/searchTask")
+    @ResponseBody
+    public XslResult searchTask(TaskSearchVo taskSearchVo){
+        return taskService.searchTask(taskSearchVo);
+    }
 
 }

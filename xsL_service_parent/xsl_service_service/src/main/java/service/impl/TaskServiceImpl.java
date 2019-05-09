@@ -1,6 +1,8 @@
 package service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.xsl.search.export.SearchResource;
+import com.xsl.search.export.vo.TaskSearchReqVo;
 import example.*;
 import mapper.*;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +17,7 @@ import service.*;
 import util.*;
 import vo.*;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Service
@@ -57,6 +60,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
+
+	@Resource
+	private SearchResource searchResource;
 
 	@Value("${REDIS_USER_SESSION_KEY}")
 	private String REDIS_USER_SESSION_KEY;
@@ -145,12 +151,12 @@ public class TaskServiceImpl implements TaskService {
 			//文字扫描屏蔽
 			Map<String, String> map = new HashMap<>(1);
 			map.put("sentence", taskReqVo.getContent());
-			String result = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
-			XslResultOk fcResult = XslResultOk.format(result);
-			List<String> data = (List<String>) fcResult.getData();
-			if (data != null && data.size() > 0) {
-				return XslResult.build(400, "悬赏任务不合法");
-			}
+//			String result = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
+//			XslResultOk fcResult = XslResultOk.format(result);
+//			List<String> data = (List<String>) fcResult.getData();
+//			if (data != null && data.size() > 0) {
+//				return XslResult.build(400, "悬赏任务不合法");
+//			}
 
 
 			//设置任务分类--默认全种类
@@ -417,7 +423,6 @@ public class TaskServiceImpl implements TaskService {
 		return XslResult.ok();
 	}
 
-
 	public XslResult taskInfo(String taskId){
 		if(StringUtils.isEmpty(taskId)){
 			return XslResult.build(403, "任务不存在");
@@ -564,6 +569,16 @@ public class TaskServiceImpl implements TaskService {
 		return XslResult.ok(hunterInfo);
 	}
 
+	@Override
+	public XslResult searchTask(TaskSearchVo taskSearchVo){
+		TaskSearchReqVo taskSearchReqVo = new TaskSearchReqVo();
+    	BeanUtils.copyProperties(taskSearchVo, taskSearchReqVo);
+		List<com.xsl.search.export.vo.TaskInfoVo> taskInfoVos = searchResource.searchTask(taskSearchReqVo);
+
+		return XslResult.ok(taskInfoVos);
+	}
+
+
 	private HunterInfo getHunterInfo(String hunterId) {
 		//获取猎人信息
 		XslHunter hunter = userInfoService.getHunterInfo(hunterId);
@@ -628,7 +643,6 @@ public class TaskServiceImpl implements TaskService {
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {
     	try {
 			List<ImageVo> images = taskReqVo.getImages();
-
 			if(images.size() < 1){
 				return XslResult.ok();
 			}

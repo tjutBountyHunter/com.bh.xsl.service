@@ -67,6 +67,12 @@
                 <!--<artifactId>xsl_task_export</artifactId>-->
                 <!--<version>1.0</version>-->
             <!--</dependency>-->
+            <dependency>
+                <groupId>com.bh.xsl.search</groupId>
+                <artifactId>xsl-search-export</artifactId>
+                <version>1.0</version>
+            </dependency>
+
 
             <!-- 时间操作组件 -->
             <dependency>

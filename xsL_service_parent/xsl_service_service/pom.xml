@@ -42,6 +42,11 @@
             <!--<artifactId>xsl_task_export</artifactId>-->
         <!--</dependency>-->
 
+        <dependency>
+            <groupId>com.bh.xsl.search</groupId>
+            <artifactId>xsl-search-export</artifactId>
+        </dependency>
+
         <!--python-->
         <dependency>
             <groupId>org.python</groupId>

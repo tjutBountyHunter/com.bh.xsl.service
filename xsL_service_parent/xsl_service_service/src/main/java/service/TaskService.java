@@ -75,4 +75,10 @@ public interface TaskService {
 	 * @return
 	 */
 	XslResult confirmTask(ConfirmTaskReqVo confirmTaskReqVo);
+
+	/**
+	 * 任务搜索
+	 * @return
+	 */
+	XslResult searchTask(TaskSearchVo taskSearchVo);
 }
