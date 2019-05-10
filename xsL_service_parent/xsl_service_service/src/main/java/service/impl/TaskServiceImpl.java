@@ -1,13 +1,16 @@
 package service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.google.gson.Gson;
 import com.xsl.search.export.SearchResource;
+import com.xsl.search.export.vo.TaskInfoVo;
 import com.xsl.search.export.vo.TaskSearchReqVo;
 import example.*;
 import mapper.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,6 +21,8 @@ import util.*;
 import vo.*;
 
 import javax.annotation.Resource;
+import javax.jms.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -63,6 +68,12 @@ public class TaskServiceImpl implements TaskService {
 
 	@Resource
 	private SearchResource searchResource;
+
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@Resource
+	private Destination addTaskInfo;
 
 	@Value("${REDIS_USER_SESSION_KEY}")
 	private String REDIS_USER_SESSION_KEY;
@@ -191,8 +202,8 @@ public class TaskServiceImpl implements TaskService {
 			}
 
 			//发送mq到搜索系统
-			searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
-			searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
+//			searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
+//			searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
 
 			XslResult xslResultTag = addTaskTag(taskReqVo, xslTask.getTaskid());
 			XslResult xslResultFile = addTaskFile(taskReqVo, xslTask.getTaskid());
@@ -206,6 +217,8 @@ public class TaskServiceImpl implements TaskService {
 
 				//异步更新雇主信息
 
+				//异步封装数据发送mq到搜索系统
+				taskExecutor.execute(() -> sendTaskInfoToSearch(xslTask));
 
 				return XslResult.ok(xslTask.getTaskid());
 			}
@@ -216,6 +229,12 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(500, "服务器异常");
 		}
     }
+
+	private void sendTaskInfoToSearch(XslTask xslTask) {
+    	TaskInfo taskInfoVo = initTaskInfo(xslTask);
+		Gson gson = GsonSingle.getGson();
+		jmsTemplate.send(addTaskInfo, (session)-> session.createTextMessage(gson.toJson(taskInfoVo)));
+	}
 
 	private XslResult addSchoolTask(TaskReqVo taskReqVo, String taskid) {
 		XslUser user = userInfoService.getUserInfoMasterId(taskReqVo.getMasterId());
@@ -267,17 +286,13 @@ public class TaskServiceImpl implements TaskService {
 	public XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
 		//1.获取学校id
 		String schoolName = taskInfoListReqVo.getSchoolName();
-		XslSchool school = userInfoService.getSchoolByName(schoolName);
-		if(school == null){
-			return XslResult.build(403, "请重新选择学校");
-		}
-		Integer schoolId = school.getId();
-
-		//2.获取学校id对应的任务
 		Integer size = taskInfoListReqVo.getSize();
-		PageHelper.startPage(1, size);
-		List<String> taskIds = xslSchoolTaskMapper.selectTaskIdBySchoolId(schoolId);
-		if(taskIds.size() == 0){
+		SchoolTaskVo schoolTask = getSchoolTaskIds(schoolName, size);
+
+		Integer schoolId = schoolTask.getSchoolId();
+		List<String> taskIds = schoolTask.getTaskIds();
+
+		if(!ListUtil.isNotEmpty(taskIds)){
 			return XslResult.ok();
 		}
 
@@ -292,10 +307,30 @@ public class TaskServiceImpl implements TaskService {
 		taskInfoListResVo.setUpFlag(max);
 
 		//3.获取任务信息
-		List<TaskInfoVo> taskInfoList = getTaskInfoList(taskIds);
+		List<TaskInfo> taskInfoList = getTaskInfoList(taskIds);
 		taskInfoListResVo.setTaskInfoVos(taskInfoList);
 
 		return XslResult.ok(taskInfoListResVo);
+	}
+
+	private SchoolTaskVo getSchoolTaskIds(String schoolName, Integer size){
+		SchoolTaskVo schoolTaskVo = new SchoolTaskVo();
+
+    	XslSchool school = userInfoService.getSchoolByName(schoolName);
+		if(school == null){
+			return schoolTaskVo;
+		}
+		Integer schoolId = school.getId();
+		schoolTaskVo.setSchoolId(schoolId);
+		//2.获取学校id对应的任务
+		PageHelper.startPage(1, size);
+		List<String> taskIds = xslSchoolTaskMapper.selectTaskIdBySchoolId(schoolId);
+		if(taskIds.size() == 0){
+			return schoolTaskVo;
+		}
+		schoolTaskVo.setTaskIds(taskIds);
+
+		return schoolTaskVo;
 	}
 
 	@Override
@@ -344,7 +379,7 @@ public class TaskServiceImpl implements TaskService {
 
 
 		//3.获取任务信息
-		List<TaskInfoVo> taskInfoList = getTaskInfoList(taskIds);
+		List<TaskInfo> taskInfoList = getTaskInfoList(taskIds);
 		taskInfoListResVo.setTaskInfoVos(taskInfoList);
 
 		return XslResult.ok(taskInfoListResVo);
@@ -570,12 +605,33 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public XslResult searchTask(TaskSearchVo taskSearchVo){
-		TaskSearchReqVo taskSearchReqVo = new TaskSearchReqVo();
-    	BeanUtils.copyProperties(taskSearchVo, taskSearchReqVo);
-		List<com.xsl.search.export.vo.TaskInfoVo> taskInfoVos = searchResource.searchTask(taskSearchReqVo);
+	public XslResult searchTask(SearchTaskReqVo taskSearchVo){
+    	String schoolName = taskSearchVo.getSchoolName();
+		int size = taskSearchVo.getSize();
 
-		return XslResult.ok(taskInfoVos);
+		SchoolTaskVo schoolTaskIds = getSchoolTaskIds(schoolName, size);
+
+		TaskSearchReqVo taskSearchReqVo = new TaskSearchReqVo();
+		taskSearchReqVo.setKeyword(taskSearchVo.getKeyword());
+		taskSearchReqVo.setSize(size);
+		taskSearchReqVo.setTaskIds(schoolTaskIds.getTaskIds());
+		List<TaskInfoVo> taskInfoVos = searchResource.searchTask(taskSearchReqVo);
+
+		if(!ListUtil.isNotEmpty(taskInfoVos)){
+			return XslResult.ok();
+		}
+
+		List<TaskInfo> taskInfos = new ArrayList<>();
+		for (TaskInfoVo taskInfoVo : taskInfoVos){
+			TaskInfo taskInfo = new TaskInfo();
+			BeanUtils.copyProperties(taskInfoVo, taskInfo);
+			String taskid = taskInfoVo.getTaskId();
+			List taskTags = taskInfoService.getTaskTags(taskid);
+			taskInfo.setTags(taskTags);
+			taskInfos.add(taskInfo);
+		}
+
+		return XslResult.ok(taskInfos);
 	}
 
 
@@ -597,7 +653,7 @@ public class TaskServiceImpl implements TaskService {
 		return hunterInfo;
 	}
 
-	private List<TaskInfoVo> getTaskInfoList(List<String> taskIds) {
+	private List<TaskInfo> getTaskInfoList(List<String> taskIds) {
 		//3.获取任务信息
 		XslTaskExample xslTaskExample = new XslTaskExample();
 		List<Byte> status = new ArrayList<>();
@@ -607,37 +663,44 @@ public class TaskServiceImpl implements TaskService {
 		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
 
 		//4.封装返回数据
-		List<TaskInfoVo> taskInfoVos = new ArrayList<>();
+		List<TaskInfo> taskInfoVos = new ArrayList<>();
 		for (XslTask xslTask : taskList) {
-			TaskInfoVo taskInfoVo = new TaskInfoVo();
-			String masterId = xslTask.getSendid();
-			XslMaster masterInfo = userInfoService.getMasterInfo(masterId);
-			XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
-
-			//获取任务标签
-			String taskid = xslTask.getTaskid();
-			List taskTags = taskInfoService.getTaskTags(taskid);
-
-			BeanUtils.copyProperties(xslTask, taskInfoVo);
-			BeanUtils.copyProperties(masterInfo, taskInfoVo);
-			taskInfoVo.setMasterlevel(masterInfo.getLevel());
-			BeanUtils.copyProperties(userInfo, taskInfoVo);
-			taskInfoVo.setTaskId(xslTask.getTaskid());
-			taskInfoVo.setTaskTitle(xslTask.getTasktitle());
-			taskInfoVo.setCreateDate(xslTask.getCreatedate());
-			taskInfoVo.setTxUrl("http://47.93.200.190/images/default.png");
-			String userTx = userInfoService.getUserTx(masterInfo.getUserid());
-			if(!StringUtils.isEmpty(userTx)){
-				taskInfoVo.setTxUrl(userTx);
-			}
-			taskInfoVo.setMasterlevel(masterInfo.getLevel());
-			taskInfoVo.setMasterId(xslTask.getSendid());
-			taskInfoVo.setDeadLineDate(xslTask.getDeadline());
-			taskInfoVo.setTags(taskTags);
+			TaskInfo taskInfoVo = initTaskInfo(xslTask);
 			taskInfoVos.add(taskInfoVo);
 		}
 
 		return taskInfoVos;
+	}
+
+	private TaskInfo initTaskInfo(XslTask xslTask) {
+		TaskInfo taskInfoVo = new TaskInfo();
+		String masterId = xslTask.getSendid();
+		XslMaster masterInfo = userInfoService.getMasterInfo(masterId);
+		XslUser userInfo = userInfoService.getUserInfoMasterId(masterId);
+
+		//获取任务标签
+		String taskid = xslTask.getTaskid();
+		List taskTags = taskInfoService.getTaskTags(taskid);
+
+		BeanUtils.copyProperties(xslTask, taskInfoVo);
+		BeanUtils.copyProperties(masterInfo, taskInfoVo);
+		taskInfoVo.setMasterlevel(masterInfo.getLevel());
+		BeanUtils.copyProperties(userInfo, taskInfoVo);
+		taskInfoVo.setTaskId(xslTask.getTaskid());
+		taskInfoVo.setTaskTitle(xslTask.getTasktitle());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		taskInfoVo.setCreateDate(sdf.format(xslTask.getCreatedate()));
+		taskInfoVo.setTxUrl("http://47.93.200.190/images/default.png");
+		String userTx = userInfoService.getUserTx(masterInfo.getUserid());
+		if(!StringUtils.isEmpty(userTx)){
+			taskInfoVo.setTxUrl(userTx);
+		}
+		taskInfoVo.setMasterlevel(masterInfo.getLevel());
+		taskInfoVo.setMasterId(xslTask.getSendid());
+		taskInfoVo.setDeadLineDate(sdf.format(xslTask.getDeadline()));
+		taskInfoVo.setUpdatedate(sdf.format(xslTask.getUpdatedate()));
+		taskInfoVo.setTags(taskTags);
+		return taskInfoVo;
 	}
 
 	private XslResult addTaskFile(TaskReqVo taskReqVo, String taskId) {

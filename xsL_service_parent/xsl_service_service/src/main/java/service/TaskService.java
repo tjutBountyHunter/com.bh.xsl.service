@@ -80,5 +80,5 @@ public interface TaskService {
 	 * 任务搜索
 	 * @return
 	 */
-	XslResult searchTask(TaskSearchVo taskSearchVo);
+	XslResult searchTask(SearchTaskReqVo taskSearchVo);
 }

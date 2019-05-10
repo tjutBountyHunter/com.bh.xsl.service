@@ -5,47 +5,32 @@
 
     <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
     <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://47.93.230.61:61616"/>
+        <property name="brokerURL" value="tcp://47.93.230.61:61616" />
     </bean>
     <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
     <bean id="connectionFactory"
           class="org.springframework.jms.connection.SingleConnectionFactory">
         <!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
-        <property name="targetConnectionFactory" ref="targetConnectionFactory"/>
+        <property name="targetConnectionFactory" ref="targetConnectionFactory" />
     </bean>
     <!-- 配置生产者 -->
     <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
-        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="connectionFactory" ref="connectionFactory" />
     </bean>
-    <!--这个是队列目的地，点对点的 增加任务-->
-    <bean id="addQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg>
-            <value>addTaskMQ</value>
-        </constructor-arg>
+
+
+    <!--**************生产者队列配置********************-->
+
+    <!--向搜索系统中增加一条数据 -->
+    <bean id="addTaskInfo" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="addTaskInfo"/>
     </bean>
-    <!--这个是队列目的地，点对点的 删除任务-->
-    <bean id="deleteQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg>
-            <value>deleteTaskMQ</value>
-        </constructor-arg>
-    </bean>
-    <!--这个是队列目的地，点对点的 修改任务-->
-    <bean id="alterQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg>
-            <value>alterTaskMQ</value>
-        </constructor-arg>
-    </bean>
-    <!--这个是队列目的地，点对点的 点击次数-->
-    <bean id="numberQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg>
-            <value>numberTaskMQ</value>
-        </constructor-arg>
-    </bean>
-    <!--这个是主题目的地，一对多的 -->
-    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
-        <constructor-arg value="Authoritytopic"/>
+
+    <!--测试 -->
+    <bean id="mqTest" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="mqTest"/>
     </bean>
 
     <!--这个是队列目的地，点对点的 提供订单金额-->

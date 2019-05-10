@@ -235,7 +235,7 @@
        state = "1"
     and
       schoolId = #{schoolid,jdbcType=INTEGER}
-    order by updateDate
+    order by createDate DESC
   </select>
 
   <select id="selectIdBySchoolId" resultType="integer" parameterType="integer" >

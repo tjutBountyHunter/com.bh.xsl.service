@@ -6,6 +6,7 @@ import example.XslTaskTagExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,7 +16,10 @@ import service.*;
 import util.GsonSingle;
 import util.JedisClientUtil;
 import util.ListUtil;
+import util.XslResult;
 
+import javax.annotation.Resource;
+import javax.jms.Destination;
 import java.util.List;
 
 @Service
@@ -27,6 +31,13 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 
 	@Value("${TASK_TAG_INFO}")
 	private String TASK_TAG_INFO;
+
+
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@Resource
+	private Destination mqTest;
 
 
 	@Override
@@ -50,5 +61,12 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		}
 
 		return xslTags;
+	}
+
+	@Override
+	public XslResult sendMq(String msg) {
+		XslResult build = XslResult.build(500, "000");
+		jmsTemplate.send(mqTest, (session)->session.createObjectMessage(build));
+		return XslResult.ok();
 	}
 }

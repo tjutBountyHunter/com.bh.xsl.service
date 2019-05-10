@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import service.TaskInfoService;
 import service.jpushService;
 import util.JedisClientUtil;
+import util.XslResult;
 import vo.JPushVo;
 
 import java.util.List;
@@ -49,6 +50,12 @@ public class testController {
 	public List getTaskTag(String taskId) {
 		List taskTags = taskInfoService.getTaskTags(taskId);
 		return taskTags;
+	}
+
+	@RequestMapping("/sendMq")
+	@ResponseBody
+	public XslResult sendMq(String msg) {
+		return taskInfoService.sendMq(msg);
 	}
 
 }

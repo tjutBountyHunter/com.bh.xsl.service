@@ -3,17 +3,17 @@ package vo;
 import java.util.List;
 
 public class TaskInfoListResVo {
-	private List<TaskInfoVo> taskInfoVos;
+	private List<TaskInfo> taskInfoVos;
 
 	private Integer upFlag;
 
 	private Integer downFlag;
 
-	public List<TaskInfoVo> getTaskInfoVos() {
+	public List<TaskInfo> getTaskInfoVos() {
 		return taskInfoVos;
 	}
 
-	public void setTaskInfoVos(List<TaskInfoVo> taskInfoVos) {
+	public void setTaskInfoVos(List<TaskInfo> taskInfoVos) {
 		this.taskInfoVos = taskInfoVos;
 	}
 
