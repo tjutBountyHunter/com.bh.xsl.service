@@ -309,4 +309,12 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>xsl_repos</id>
+            <name>xsl_interface_repository</name>
+            <url>http://39.96.195.196:8081/repository/maven-public/</url>
+        </repository>
+    </repositories>
 </project>
