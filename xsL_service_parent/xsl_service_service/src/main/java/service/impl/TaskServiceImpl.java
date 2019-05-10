@@ -62,6 +62,8 @@ public class TaskServiceImpl implements TaskService {
 	private UserInfoService userInfoService;
 	@Autowired
 	private TaskInfoService taskInfoService;
+	@Autowired
+	private TaskMqService taskMqService;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -69,11 +71,7 @@ public class TaskServiceImpl implements TaskService {
 	@Resource
 	private SearchResource searchResource;
 
-	@Autowired
-	private JmsTemplate jmsTemplate;
 
-	@Resource
-	private Destination addTaskInfo;
 
 	@Value("${REDIS_USER_SESSION_KEY}")
 	private String REDIS_USER_SESSION_KEY;
@@ -110,43 +108,6 @@ public class TaskServiceImpl implements TaskService {
                 oneHunterList = xslHuntershowMapper.getXslHunterNew(map);
                 return XslResult.ok(oneHunterList);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
-
-//    /**
-//     * 猎人推优
-//     *
-//     * @param task_id
-//     * @return
-//     */
-//    @Override
-//    public XslResult hunterDire(int task_id) {
-//        try {
-//            int[] hunterid = hunterRecommend.recommend(task_id);
-//            List<XslOneHunter> list = new ArrayList<>();
-//            for (int i = 0; i < hunterid.length; i++) {
-//                XslOneHunter xslOneHunter = new XslOneHunter();
-//                Integer hunterId = hunterid[i];
-//                xslOneHunter = xslHunterShopMapper.selectByhunterId(hunterId);
-//                list.add(xslOneHunter);
-//            }
-//            return XslResult.ok(list);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return XslResult.build(500, "服务器异常");
-//        }
-//    }
-
-    @Override
-    public XslResult UpuseTask(String json) {
-        try {
-            System.out.println(json);
-            XslResult xslResult = null;
-            xslResult = supplementDataService.SupplementTaskData(json);
-            return xslResult;
         } catch (Exception e) {
             e.printStackTrace();
             return XslResult.build(500, "服务器异常");
@@ -201,10 +162,6 @@ public class TaskServiceImpl implements TaskService {
 				return XslResult.build(500, "服务器异常");
 			}
 
-			//发送mq到搜索系统
-//			searchTaskMQ searchTaskMQ = new searchTaskMQImpl();
-//			searchTaskMQ.addTaskJson(JsonUtils.objectToJson(xslTask));
-
 			XslResult xslResultTag = addTaskTag(taskReqVo, xslTask.getTaskid());
 			XslResult xslResultFile = addTaskFile(taskReqVo, xslTask.getTaskid());
 			XslResult xslResultSchool = addSchoolTask(taskReqVo, xslTask.getTaskid());
@@ -232,8 +189,7 @@ public class TaskServiceImpl implements TaskService {
 
 	private void sendTaskInfoToSearch(XslTask xslTask) {
     	TaskInfo taskInfoVo = initTaskInfo(xslTask);
-		Gson gson = GsonSingle.getGson();
-		jmsTemplate.send(addTaskInfo, (session)-> session.createTextMessage(gson.toJson(taskInfoVo)));
+		taskMqService.addEsTask(taskInfoVo);
 	}
 
 	private XslResult addSchoolTask(TaskReqVo taskReqVo, String taskid) {
@@ -287,14 +243,11 @@ public class TaskServiceImpl implements TaskService {
 		//1.获取学校id
 		String schoolName = taskInfoListReqVo.getSchoolName();
 		Integer size = taskInfoListReqVo.getSize();
-		SchoolTaskVo schoolTask = getSchoolTaskIds(schoolName, size);
-
-		Integer schoolId = schoolTask.getSchoolId();
-		List<String> taskIds = schoolTask.getTaskIds();
-
-		if(!ListUtil.isNotEmpty(taskIds)){
-			return XslResult.ok();
+		XslSchool school = userInfoService.getSchoolByName(schoolName);
+		if(school == null){
+			return XslResult.build(403, "请重新选择学校");
 		}
+		Integer schoolId = school.getId();
 
 		TaskInfoListResVo taskInfoListResVo = new TaskInfoListResVo();
 
@@ -307,30 +260,33 @@ public class TaskServiceImpl implements TaskService {
 		taskInfoListResVo.setUpFlag(max);
 
 		//3.获取任务信息
-		List<TaskInfo> taskInfoList = getTaskInfoList(taskIds);
-		taskInfoListResVo.setTaskInfoVos(taskInfoList);
+
+		SearchTaskReqVo taskSearchVo = new SearchTaskReqVo();
+		taskSearchVo.setSize(size);
+		taskSearchVo.setKeyword("");
+		taskSearchVo.setSchoolName(schoolName);
+		XslResult xslResult = searchTask(taskSearchVo);
+
+		taskInfoListResVo.setTaskInfoVos((List<TaskInfo>) xslResult.getData());
 
 		return XslResult.ok(taskInfoListResVo);
 	}
 
-	private SchoolTaskVo getSchoolTaskIds(String schoolName, Integer size){
-		SchoolTaskVo schoolTaskVo = new SchoolTaskVo();
-
+	private List<String> getSchoolTaskIds(String schoolName, Integer size){
     	XslSchool school = userInfoService.getSchoolByName(schoolName);
 		if(school == null){
-			return schoolTaskVo;
+			return new ArrayList<>();
 		}
 		Integer schoolId = school.getId();
-		schoolTaskVo.setSchoolId(schoolId);
+
 		//2.获取学校id对应的任务
 		PageHelper.startPage(1, size);
 		List<String> taskIds = xslSchoolTaskMapper.selectTaskIdBySchoolId(schoolId);
 		if(taskIds.size() == 0){
-			return schoolTaskVo;
+			return new ArrayList<>();
 		}
-		schoolTaskVo.setTaskIds(taskIds);
 
-		return schoolTaskVo;
+		return taskIds;
 	}
 
 	@Override
@@ -452,8 +408,15 @@ public class TaskServiceImpl implements TaskService {
 		jPushVo.setMsgTitle("任务状态提醒");
 		jPushVo.setMsgContent("你发布的任务《"+xslTask.getTasktitle()+"》已被接");
 		jPushVo.setNotificationTitle("你发布的任务《"+xslTask.getTasktitle()+"》已被接");
-		jPushVo.setExtrasparam("");
+		jPushVo.setExtrasparam(xslTask.getTaskid());
 		sendToMessage(jPushVo, userInfoMasterId.getPhone());
+
+		UpdateTaskVo updateTaskVo = new UpdateTaskVo();
+		updateTaskVo.setState((byte) 2);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		updateTaskVo.setUpdatedate(sdf.format(new Date()));
+		updateTaskVo.setTaskId(xslTask.getTaskid());
+		taskExecutor.execute(()-> taskMqService.updateEsTask(updateTaskVo));
 
 		return XslResult.ok();
 	}
@@ -581,7 +544,7 @@ public class TaskServiceImpl implements TaskService {
 			jPushVo.setMsgTitle("任务完成提醒");
 			jPushVo.setMsgContent("你发布的任务《"+xslTask.getTasktitle()+"》已完成");
 			jPushVo.setNotificationTitle("你发布的任务《"+xslTask.getTasktitle()+"》已完成");
-			jPushVo.setExtrasparam("");
+			jPushVo.setExtrasparam(taskId);
 			sendToMessage(jPushVo, userInfoMasterId.getPhone());
 		}
 
@@ -594,12 +557,20 @@ public class TaskServiceImpl implements TaskService {
 			jPushVo.setMsgTitle("任务完成提醒");
 			jPushVo.setMsgContent("你接收的任务《"+xslTask.getTasktitle()+"》雇主已完成确认");
 			jPushVo.setNotificationTitle("你接收的任务《"+xslTask.getTasktitle()+"》雇主已完成确认");
-			jPushVo.setExtrasparam("");
+			jPushVo.setExtrasparam(taskId);
 			sendToMessage(jPushVo, userInfoMasterId.getPhone());
 
 			//任务终结处理订单
 		}
 		HunterInfo hunterInfo = getHunterInfo(hunterId);
+
+		//异步更新搜索库状态
+		UpdateTaskVo updateTaskVo = new UpdateTaskVo();
+		updateTaskVo.setState(nowState);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		updateTaskVo.setUpdatedate(sdf.format(new Date()));
+		updateTaskVo.setTaskId(xslTask.getTaskid());
+		taskExecutor.execute(()-> taskMqService.updateEsTask(updateTaskVo));
 
 		return XslResult.ok(hunterInfo);
 	}
@@ -609,12 +580,12 @@ public class TaskServiceImpl implements TaskService {
     	String schoolName = taskSearchVo.getSchoolName();
 		int size = taskSearchVo.getSize();
 
-		SchoolTaskVo schoolTaskIds = getSchoolTaskIds(schoolName, size);
+		List<String> schoolTaskIds = getSchoolTaskIds(schoolName, size);
 
 		TaskSearchReqVo taskSearchReqVo = new TaskSearchReqVo();
 		taskSearchReqVo.setKeyword(taskSearchVo.getKeyword());
 		taskSearchReqVo.setSize(size);
-		taskSearchReqVo.setTaskIds(schoolTaskIds.getTaskIds());
+		taskSearchReqVo.setTaskIds(schoolTaskIds);
 		List<TaskInfoVo> taskInfoVos = searchResource.searchTask(taskSearchReqVo);
 
 		if(!ListUtil.isNotEmpty(taskInfoVos)){
@@ -807,7 +778,7 @@ public class TaskServiceImpl implements TaskService {
 		jPushVo.setMsgTitle("悬赏任务推荐");
 		jPushVo.setMsgContent("有一个适合你的悬赏任务");
 		jPushVo.setNotificationTitle("有一个适合你的悬赏任务");
-		jPushVo.setExtrasparam("");
+		jPushVo.setExtrasparam(xslTask.getTaskid());
 
 		String myHunterId = userInfoService.getUserInfoMasterId(xslTask.getSendid()).getHunterid();
 

@@ -218,6 +218,40 @@ public class UserviceImpl implements UserService {
         return XslResult.ok(JsonUtils.objectToJson(resVo));
     }
 
+	@Override
+	public XslResult userLogout(UserReqVo userReqVo){
+    	if(StringUtils.isEmpty(userReqVo.getPhone())){
+    		return XslResult.build(403, "登陆状态异常");
+		}
+
+		long delete = jedisClient.delete(REDIS_USER_SESSION_KEY + ":" + userReqVo.getPhone());
+
+		if(delete == 0){
+			return XslResult.build(403, "登陆状态异常");
+		}
+
+		return XslResult.ok();
+	}
+
+	@Override
+	public XslResult saveUserInfo(UserReqVo userReqVo){
+    	XslUser xslUser = new XslUser();
+    	BeanUtils.copyProperties(userReqVo, xslUser);
+    	if(!StringUtils.isEmpty(userReqVo.getPassword())){
+			xslUser.setPassword(Md5Utils.digestMds(userReqVo.getPassword()));
+		}
+
+		XslUserExample xslUserExample = new XslUserExample();
+    	xslUserExample.createCriteria().andPhoneEqualTo(userReqVo.getPhone());
+    	xslUserMapper.updateByExampleSelective(xslUser, xslUserExample);
+
+		jedisClient.delete(USER_INFO + ":" + userReqVo.getUserid());
+
+		//es中数据同步待修复
+
+    	return XslResult.ok();
+	}
+
 
 
     /**

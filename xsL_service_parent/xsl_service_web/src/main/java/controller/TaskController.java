@@ -28,22 +28,7 @@ public class TaskController {
     private TaskService taskService;
     @Autowired
     private SupplementDataService supplementDataService;
-    /**
-     * 任务分类
-     *
-     * @return
-     */
-    @RequestMapping("/class")
-    @ResponseBody
-    public XslResult taskClassied() {
-        try {
-            String json = taskTopush.taskClassied();
-            return XslResult.ok(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
+
 
     /**
      * 已发任务
@@ -68,38 +53,7 @@ public class TaskController {
         XslResult xslResult = taskService.queryReceiveTask(sendAndRecTaskReqVo);
         return xslResult;
     }
-    /**
-     * 标签分类
-     *
-     * @return
-     */
-    @RequestMapping("/tag")
-    @ResponseBody
-    public XslResult tagClassied() {
-        try {
-            String json = taskTopush.tagClassied();
-            return XslResult.ok(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器错误");
-        }
-    }
 
-    /**
-     * 任务推送
-     * @return
-     */
-    @RequestMapping("/push")
-    @ResponseBody
-    public XslResult accertdata(@Param("json") String json) {
-        try {
-            XslResult xslResult = supplementDataService.SupplementTaskData(json);
-            return xslResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
 
     /**
      * 任务接收
@@ -120,59 +74,6 @@ public class TaskController {
         }
     }
 
-    /**
-     * 任务接收成功
-     * @param hunterId
-     * @param taskId
-     * @return
-     */
-    @RequestMapping(value = "/decidedaccept", method = RequestMethod.GET)
-    @ResponseBody
-    public XslResult decidedTask(@RequestParam("hunterId") int hunterId, @Param("taskId") String taskId) {
-        XslResult xslResult = null;
-        try {
-            xslResult = taskAccept.decidedTask(hunterId, taskId);
-            return xslResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
-
-    /**
-     * 随时传送时间
-     *
-     * @return
-     */
-    @RequestMapping("/nowdatetime")
-    @ResponseBody
-    public XslResult nowDatetime() {
-        try {
-            String json = taskAccept.timeDate();
-            return XslResult.ok(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
-
-    /**
-     * 获取猎人在接任务的时候的时间
-     * @param hunterId
-     * @param taskId
-     * @return
-     */
-    @RequestMapping("/olddatetime")
-    @ResponseBody
-    public XslResult oldDatetime(Integer hunterId, String taskId) {
-        try {
-            String jsonTime = taskAccept.oldTime(hunterId, taskId);
-            return XslResult.ok(jsonTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-    }
 
     /**
      * 收藏任务
@@ -223,27 +124,6 @@ public class TaskController {
         return xslResult;
     }
 
-
-    /**
-     * 任务大厅
-     *
-     * @param flagid
-     * @param type
-     * @param rows
-     * @return
-     */
-    @RequestMapping("/pageQueryC")
-    @ResponseBody
-    public XslResult findTask(Integer flagid, Integer type, int rows) {
-        XslResult xslResult = null;
-        try {
-            xslResult = taskTopush.searchPage(flagid, type, rows);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return XslResult.build(500, "服务器异常");
-        }
-        return xslResult;
-    }
 
     /**
      * 初始化任务大厅

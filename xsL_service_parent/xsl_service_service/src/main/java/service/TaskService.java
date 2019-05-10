@@ -4,9 +4,6 @@ import util.XslResult;
 import vo.*;
 
 public interface TaskService {
-
-    XslResult UpuseTask(String json);
-
     /**
      * 分页展示猎人种类
      *
@@ -16,14 +13,6 @@ public interface TaskService {
      * @return
      */
     XslResult UpCategoryHunter(String tagName, Integer type, Integer rows);
-
-//    /**
-//     * 猎人推优
-//     *
-//     * @param task_id
-//     * @return
-//     */
-//    XslResult hunterDire(int task_id);
 
     /**
      * 发送任务

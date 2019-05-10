@@ -28,6 +28,13 @@
         <constructor-arg value="addTaskInfo"/>
     </bean>
 
+    <!--更新任务信息 -->
+    <bean id="updateTaskInfo" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="updateTaskInfo"/>
+    </bean>
+
+
+
     <!--测试 -->
     <bean id="mqTest" class="org.apache.activemq.command.ActiveMQTopic">
         <constructor-arg value="mqTest"/>

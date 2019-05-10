@@ -69,6 +69,25 @@ public class UserController {
         }
     }
 
+
+
+	/**
+	 * 用户注销
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	@ResponseBody
+	public XslResult userLogout(UserReqVo userReqVo) {
+		try {
+			XslResult result = userService.userLogout(userReqVo);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器错误");
+		}
+	}
+
     /**
      * 通过token检查登录
      *
@@ -118,6 +137,23 @@ public class UserController {
 	public XslResult gethminfo(UserReqVo userReqVo) {
 		try {
 			return userService.getHMinfo(userReqVo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return XslResult.build(500, "服务器异常");
+		}
+	}
+
+	/**
+	 * 获取猎人雇主信息
+	 *
+	 * @param userReqVo
+	 * @return
+	 */
+	@RequestMapping(value = "/saveUserInfo")
+	@ResponseBody
+	public XslResult saveUserInfo(UserReqVo userReqVo) {
+		try {
+			return userService.saveUserInfo(userReqVo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return XslResult.build(500, "服务器异常");

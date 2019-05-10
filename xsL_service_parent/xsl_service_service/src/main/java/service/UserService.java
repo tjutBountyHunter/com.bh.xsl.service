@@ -26,6 +26,22 @@ public interface UserService {
      */
     XslResult userLogin(UserReqVo userReqVo);
 
+	/**
+	 * 注销
+	 *
+	 * @param userReqVo
+	 * @return
+	 */
+    XslResult userLogout(UserReqVo userReqVo);
+
+	/**
+	 * 保存用户信息
+	 *
+	 * @param userReqVo
+	 * @return
+	 */
+	XslResult saveUserInfo(UserReqVo userReqVo);
+
     /**
      * 检查Token被更换
      *

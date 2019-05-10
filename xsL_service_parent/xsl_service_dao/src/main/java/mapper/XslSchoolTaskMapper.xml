@@ -247,7 +247,7 @@
        state = "1"
     and
       schoolId = #{schoolid,jdbcType=INTEGER}
-    order by updateDate
+    order by createDate DESC
   </select>
 
   <select id="selectTaskIdByGreaterThanId" resultType="java.lang.String" parameterType="integer" >
