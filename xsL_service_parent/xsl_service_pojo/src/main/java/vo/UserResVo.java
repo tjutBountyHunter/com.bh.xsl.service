@@ -31,6 +31,8 @@ public class UserResVo {
 
 	private String txUrl;
 
+	private String sno;
+
 	public String getUserid() {
 		return userid;
 	}
@@ -149,5 +151,13 @@ public class UserResVo {
 
 	public void setTxUrl(String txUrl) {
 		this.txUrl = txUrl;
+	}
+
+	public String getSno() {
+		return sno;
+	}
+
+	public void setSno(String sno) {
+		this.sno = sno;
 	}
 }
