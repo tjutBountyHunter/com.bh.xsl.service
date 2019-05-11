@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslNetwork;
 import example.XslNetworkExample;
+import vo.NetworkReqVo;
 
 public interface XslNetworkMapper {
     int countByExample(XslNetworkExample example);
@@ -27,4 +28,8 @@ public interface XslNetworkMapper {
     int updateByPrimaryKeySelective(XslNetwork record);
 
     int updateByPrimaryKey(XslNetwork record);
+
+
+    int updateNum(XslNetwork xslNetwork);
+
 }

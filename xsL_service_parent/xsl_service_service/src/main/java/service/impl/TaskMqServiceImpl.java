@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
+import pojo.XslNetwork;
 import pojo.XslTask;
 import service.TaskMqService;
 import util.GsonSingle;
 import vo.CreateOrderReqVo;
+import vo.RecTaskReqVo;
 import vo.TaskInfo;
 import vo.UpdateTaskVo;
 
@@ -28,24 +30,34 @@ public class TaskMqServiceImpl implements TaskMqService {
 	@Resource
 	private Destination createOrder;
 
+	@Resource
+	private  Destination updateNetwork;
+
+	public void sendMq(Destination destination,Object object){
+		String s = GsonSingle.getGson().toJson(object);
+		jmsTemplate.send(destination, (session -> session.createTextMessage(s)));
+	}
 
 
 	@Override
 	public void updateEsTask(UpdateTaskVo updateTaskVo) {
-		String s = GsonSingle.getGson().toJson(updateTaskVo);
-		jmsTemplate.send(updateTaskInfo, (session -> session.createTextMessage(s)));
+		sendMq(updateTaskInfo,updateTaskVo);
 	}
 
 	@Override
 	public void addEsTask(TaskInfo taskInfoVo) {
-		Gson gson = GsonSingle.getGson();
-		jmsTemplate.send(addTaskInfo, (session)-> session.createTextMessage(gson.toJson(taskInfoVo)));
+		sendMq(addTaskInfo,taskInfoVo);
+
 	}
 
 	@Override
 	public void createOrder(CreateOrderReqVo createOrderReqVo) {
-		String s= GsonSingle.getGson().toJson(createOrderReqVo);
-		jmsTemplate.send(createOrder,(session -> session.createTextMessage(s)));
+		sendMq(createOrder,createOrderReqVo);
+	}
+
+	@Override
+	public void updateNetWork(XslNetwork xslNetwork) {
+		sendMq(updateNetwork,xslNetwork);
 
 	}
 }

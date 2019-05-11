@@ -223,4 +223,13 @@
       lastDate = #{lastdate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+<!--  //重写方法-->
+
+
+
+  <update id="updateNum">
+    update xsl_network
+    set num=num+1
+    where AId=#{aid} and BId=#{bid}
+  </update>
 </mapper>
