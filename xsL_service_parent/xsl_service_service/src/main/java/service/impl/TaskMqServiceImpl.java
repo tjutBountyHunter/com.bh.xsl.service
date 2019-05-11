@@ -28,7 +28,7 @@ public class TaskMqServiceImpl implements TaskMqService {
 	private Destination addTaskInfo;
 
 	@Resource
-	private Destination createOrder;
+	private Destination creatOrder;
 
 	@Resource
 	private  Destination updateNetwork;
@@ -52,7 +52,7 @@ public class TaskMqServiceImpl implements TaskMqService {
 
 	@Override
 	public void createOrder(CreateOrderReqVo createOrderReqVo) {
-		sendMq(createOrder,createOrderReqVo);
+		sendMq(creatOrder,createOrderReqVo);
 	}
 
 	@Override

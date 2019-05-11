@@ -34,8 +34,8 @@
     </bean>
 
 <!--创建订单-->
-    <bean id="creatOrder" class="org.apache.activemq.command.ActiveMQTopic">
-        <constructor-arg value="creatOrder" />
+    <bean id="createOrder" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="createOrder" />
     </bean>
 <!--更新关系网-->
     <bean id="updateNetwork" class="org.apache.activemq.command.ActiveMQTopic">

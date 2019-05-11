@@ -421,6 +421,7 @@ public class TaskServiceImpl implements TaskService {
 		XslNetwork xslNetwork=new XslNetwork();
 		xslNetwork.setBid(hunterid);
 		xslNetwork.setAid(masterId);
+
         taskExecutor.execute(()->taskMqService.updateNetWork(xslNetwork));
 		return XslResult.ok();
 	}
