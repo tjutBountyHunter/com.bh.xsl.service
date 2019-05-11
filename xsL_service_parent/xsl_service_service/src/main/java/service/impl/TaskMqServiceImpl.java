@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import pojo.XslTask;
 import service.TaskMqService;
 import util.GsonSingle;
+import vo.CreateOrderReqVo;
 import vo.TaskInfo;
 import vo.UpdateTaskVo;
 
@@ -24,6 +25,11 @@ public class TaskMqServiceImpl implements TaskMqService {
 	@Resource
 	private Destination addTaskInfo;
 
+	@Resource
+	private Destination createOrderInfo;
+
+
+
 	@Override
 	public void updateEsTask(UpdateTaskVo updateTaskVo) {
 		String s = GsonSingle.getGson().toJson(updateTaskVo);
@@ -34,5 +40,12 @@ public class TaskMqServiceImpl implements TaskMqService {
 	public void addEsTask(TaskInfo taskInfoVo) {
 		Gson gson = GsonSingle.getGson();
 		jmsTemplate.send(addTaskInfo, (session)-> session.createTextMessage(gson.toJson(taskInfoVo)));
+	}
+
+	@Override
+	public void createOrder(CreateOrderReqVo createOrderReqVo) {
+		String s= GsonSingle.getGson().toJson(createOrderReqVo);
+		jmsTemplate.send(createOrderInfo,(session -> session.createTextMessage(s)));
+
 	}
 }

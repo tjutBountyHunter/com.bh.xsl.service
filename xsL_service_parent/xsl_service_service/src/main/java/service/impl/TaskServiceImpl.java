@@ -176,6 +176,10 @@ public class TaskServiceImpl implements TaskService {
 
 				//异步封装数据发送mq到搜索系统
 				taskExecutor.execute(() -> sendTaskInfoToSearch(xslTask));
+				//异步生成订单;
+				taskExecutor.execute(() ->createOrder(xslTask));
+
+
 
 				return XslResult.ok(xslTask.getTaskid());
 			}
@@ -186,7 +190,12 @@ public class TaskServiceImpl implements TaskService {
 			return XslResult.build(500, "服务器异常");
 		}
     }
-
+    private  void createOrder(XslTask xslTask){
+    	CreateOrderReqVo createOrderReqVo=new CreateOrderReqVo();
+    	createOrderReqVo.setHunterId(xslTask.getSendid());
+		createOrderReqVo.setTaskId(xslTask.getTaskid());
+		taskMqService.createOrder(createOrderReqVo);
+	}
 	private void sendTaskInfoToSearch(XslTask xslTask) {
     	TaskInfo taskInfoVo = initTaskInfo(xslTask);
 		taskMqService.addEsTask(taskInfoVo);
@@ -400,6 +409,7 @@ public class TaskServiceImpl implements TaskService {
 		//异步建立用户关联
 		//异步更新猎人信息
 		//异步生成订单
+
 
 		//异步给雇主发推送
 		String masterId = xslTask.getSendid();

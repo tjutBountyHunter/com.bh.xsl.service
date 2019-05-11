@@ -33,6 +33,12 @@
         <constructor-arg value="updateTaskInfo"/>
     </bean>
 
+<!--    创建订单-->
+    <bean id="creatOrder" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="creatOrder" />
+    </bean>
+
+
 
 
     <!--测试 -->
