@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import pojo.XslTask;
 import service.TaskMqService;
 import util.GsonSingle;
@@ -14,7 +15,7 @@ import vo.UpdateTaskVo;
 import javax.annotation.Resource;
 import javax.jms.Destination;
 
-@Controller
+@Service
 public class TaskMqServiceImpl implements TaskMqService {
 	@Autowired
 	private JmsTemplate jmsTemplate;
