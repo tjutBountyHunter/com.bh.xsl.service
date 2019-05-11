@@ -26,7 +26,7 @@ public class TaskMqServiceImpl implements TaskMqService {
 	private Destination addTaskInfo;
 
 	@Resource
-	private Destination createOrderInfo;
+	private Destination createOrder;
 
 
 
@@ -45,7 +45,7 @@ public class TaskMqServiceImpl implements TaskMqService {
 	@Override
 	public void createOrder(CreateOrderReqVo createOrderReqVo) {
 		String s= GsonSingle.getGson().toJson(createOrderReqVo);
-		jmsTemplate.send(createOrderInfo,(session -> session.createTextMessage(s)));
+		jmsTemplate.send(createOrder,(session -> session.createTextMessage(s)));
 
 	}
 }
