@@ -9,7 +9,11 @@ import pojo.XslTag;
 import service.TagService;
 import util.XslResult;
 import vo.TagReqVo;
+import vo.TagVo;
+import vo.tagVo;
 
+import javax.enterprise.inject.New;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -62,12 +66,15 @@ public class TagServiceImpl implements TagService {
 		}
 
 		List<XslTag> list = xslTagMapper.selectByExampleLimit(xslTagExample, tagNum);
-
-		if(list != null){
-			return XslResult.ok(list);
+		List<tagVo> tagVos = new ArrayList<>();
+		for (XslTag xslTag : list){
+			tagVo tagVo = new tagVo();
+			tagVo.setTagid(xslTag.getTagid());
+			tagVo.setTagName(xslTag.getName());
+			tagVos.add(tagVo);
 		}
 
-		return XslResult.build(500, "查询标签失败");
 
+		return XslResult.ok(list);
 	}
 }

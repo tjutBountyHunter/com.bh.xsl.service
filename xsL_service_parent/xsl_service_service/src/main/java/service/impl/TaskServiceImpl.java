@@ -628,7 +628,19 @@ public class TaskServiceImpl implements TaskService {
 			TaskInfo taskInfo = new TaskInfo();
 			BeanUtils.copyProperties(taskInfoVo, taskInfo);
 			String taskid = taskInfoVo.getTaskId();
-			List taskTags = taskInfoService.getTaskTags(taskid);
+			List<XslTag> taskTags = taskInfoService.getTaskTags(taskid);
+
+			List<tagVo> tagVos = new ArrayList<>();
+			if(ListUtil.isNotEmpty(taskTags)){
+				for (XslTag xslTag : taskTags){
+					tagVo tagVo = new tagVo();
+					tagVo.setTagName(xslTag.getName());
+					tagVo.setTagid(xslTag.getTagid());
+					tagVos.add(tagVo);
+				}
+
+			}
+
 			taskInfo.setTags(taskTags);
 			taskInfos.add(taskInfo);
 		}
