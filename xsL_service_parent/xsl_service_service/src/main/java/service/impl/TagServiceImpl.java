@@ -2,11 +2,14 @@ package service.impl;
 
 import example.XslTagExample;
 import mapper.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.XslTag;
 import service.TagService;
+import util.GsonSingle;
 import util.XslResult;
 import vo.TagReqVo;
 import vo.TagVo;
@@ -22,6 +25,8 @@ import java.util.UUID;
 public class TagServiceImpl implements TagService {
 	@Autowired
 	private XslTagMapper xslTagMapper;
+
+	private static final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
 
 	@Override
@@ -74,7 +79,7 @@ public class TagServiceImpl implements TagService {
 			tagVos.add(tagVo);
 		}
 
-
-		return XslResult.ok(list);
+		logger.info("queryTag.list msg:" + GsonSingle.getGson().toJson(tagVos));
+		return XslResult.ok(tagVos);
 	}
 }

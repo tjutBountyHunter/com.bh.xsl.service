@@ -7,6 +7,8 @@ import com.xsl.search.export.vo.TaskInfoVo;
 import com.xsl.search.export.vo.TaskSearchReqVo;
 import example.*;
 import mapper.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +35,7 @@ import java.util.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
+	private static final Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     @Autowired
     private SupplementDataService supplementDataService;
@@ -197,6 +200,7 @@ public class TaskServiceImpl implements TaskService {
     	TaskInfo taskInfoVo = initTaskInfo(xslTask);
     	TaskEsInfo taskEsInfo = new TaskEsInfo();
     	BeanUtils.copyProperties(taskInfoVo, taskEsInfo);
+    	logger.info("sendTaskInfoToSearch:"+ GsonSingle.getGson().toJson(taskEsInfo));
 		taskMqService.addEsTask(taskEsInfo);
 	}
 
@@ -253,6 +257,9 @@ public class TaskServiceImpl implements TaskService {
 	public XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
 		//1.获取学校id
 		String schoolName = taskInfoListReqVo.getSchoolName();
+		if(StringUtils.isEmpty(schoolName)){
+			return XslResult.build(403, "请登记学校信息");
+		}
 		Integer size = taskInfoListReqVo.getSize();
 		XslSchool school = userInfoService.getSchoolByName(schoolName);
 		if(school == null){
@@ -279,6 +286,8 @@ public class TaskServiceImpl implements TaskService {
 		XslResult xslResult = searchTask(taskSearchVo);
 
 		taskInfoListResVo.setTaskInfoVos((List<TaskInfo>) xslResult.getData());
+
+		logger.info("initTaskInfo.taskInfoListResVo msg:" + GsonSingle.getGson().toJson(taskInfoListResVo));
 
 		return XslResult.ok(taskInfoListResVo);
 	}
@@ -641,7 +650,7 @@ public class TaskServiceImpl implements TaskService {
 
 			}
 
-			taskInfo.setTags(taskTags);
+			taskInfo.setTags(tagVos);
 			taskInfos.add(taskInfo);
 		}
 

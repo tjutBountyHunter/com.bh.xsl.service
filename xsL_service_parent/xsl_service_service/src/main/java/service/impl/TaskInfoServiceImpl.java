@@ -20,6 +20,8 @@ import util.XslResult;
 
 import javax.annotation.Resource;
 import javax.jms.Destination;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -43,11 +45,16 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 	@Override
 	public List<XslTag> getTaskTags(String taskId) {
 		Gson gson = GsonSingle.getGson();
+		if(StringUtils.isEmpty(taskId)){
+			return new ArrayList<>();
+		}
+
 		String schoolInfo = JedisClientUtil.get(TASK_TAG_INFO + ":" + taskId);
 
 		if(!StringUtils.isEmpty(schoolInfo)){
-			List list = gson.fromJson(schoolInfo, List.class);
-			return list;
+			XslTag[] xslArray = gson.fromJson(schoolInfo, XslTag[].class);
+			List<XslTag> xslTags = Arrays.asList(xslArray);
+			return xslTags;
 		}
 
 		XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();

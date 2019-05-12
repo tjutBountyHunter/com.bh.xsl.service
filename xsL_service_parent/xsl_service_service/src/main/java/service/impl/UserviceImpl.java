@@ -94,6 +94,8 @@ public class UserviceImpl implements UserService {
 		userResVo.setHunterlevel(xslHunter.getLevel());
 		userResVo.setTxUrl("http://47.93.200.190/images/default.png");
 
+		jedisClient.set(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken());
+
 		return XslResult.ok(userResVo);
 
 	}
@@ -225,11 +227,7 @@ public class UserviceImpl implements UserService {
     		return XslResult.build(403, "登陆状态异常");
 		}
 
-		long delete = jedisClient.delete(REDIS_USER_SESSION_KEY + ":" + userReqVo.getPhone());
-
-		if(delete == 0){
-			return XslResult.build(403, "登陆状态异常");
-		}
+		jedisClient.delete(REDIS_USER_SESSION_KEY + ":" + userReqVo.getPhone());
 
 		return XslResult.ok();
 	}

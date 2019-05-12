@@ -38,7 +38,7 @@ public class TaskInfo implements Serializable {
 
 	private String txUrl;
 
-	private List<XslTag> tags;
+	private List<tagVo> tags;
 
 	public Integer getCid() {
 		return cid;
@@ -160,11 +160,11 @@ public class TaskInfo implements Serializable {
 		this.txUrl = txUrl;
 	}
 
-	public List<XslTag> getTags() {
+	public List<tagVo> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<XslTag> tags) {
+	public void setTags(List<tagVo> tags) {
 		this.tags = tags;
 	}
 }
