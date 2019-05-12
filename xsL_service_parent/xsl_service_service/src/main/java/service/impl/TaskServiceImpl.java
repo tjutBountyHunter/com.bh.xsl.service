@@ -16,8 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.*;
 import example.XslTaskExample;
+import pojo.XslHunter;
+import pojo.XslMaster;
+import pojo.XslSchool;
+import pojo.XslSchoolinfo;
+import pojo.XslUser;
 import service.*;
 import util.*;
+import util.XslResult;
 import vo.*;
 
 import javax.annotation.Resource;
@@ -410,12 +416,8 @@ public class TaskServiceImpl implements TaskService {
 		jPushVo.setExtrasparam(xslTask.getTaskid());
 		sendToMessage(jPushVo, userInfoMasterId.getPhone());
 
-		UpdateTaskVo updateTaskVo = new UpdateTaskVo();
-		updateTaskVo.setState((byte) 2);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		updateTaskVo.setUpdatedate(sdf.format(new Date()));
-		updateTaskVo.setTaskId(xslTask.getTaskid());
-		taskExecutor.execute(()-> taskMqService.updateEsTask(updateTaskVo));
+		taskExecutor.execute(()-> updateEsTaskInfo(xslTask));
+		taskExecutor.execute(() -> updateNetwork(hunterid, masterId));
 
 		return XslResult.ok();
 	}
@@ -425,6 +427,24 @@ public class TaskServiceImpl implements TaskService {
 		createOrderReqVo.setHunterId(hunterId);
 		createOrderReqVo.setTaskId(taskId);
 		taskMqService.createOrder(createOrderReqVo);
+	}
+
+	private void updateEsTaskInfo(XslTask xslTask){
+		UpdateTaskVo updateTaskVo = new UpdateTaskVo();
+		updateTaskVo.setState((byte) 2);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		updateTaskVo.setUpdatedate(sdf.format(new Date()));
+		updateTaskVo.setTaskId(xslTask.getTaskid());
+		taskMqService.updateEsTask(updateTaskVo);
+	}
+
+	private void updateNetwork(String hunterId, String masterId){
+		NetworkReqVo networkReqVo = new NetworkReqVo();
+		networkReqVo.setHunterId(hunterId);
+		networkReqVo.setMasterId(masterId);
+
+		String s = GsonSingle.getGson().toJson(networkReqVo);
+		taskMqService.updateNetwork(s);
 	}
 
 	public XslResult taskInfo(String taskId){
@@ -611,6 +631,30 @@ public class TaskServiceImpl implements TaskService {
 		return XslResult.ok(taskInfos);
 	}
 
+	@Override
+	public XslResult cancelTask(String taskId) {
+		//检测任务状态
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		xslTaskExample.createCriteria().andTaskidEqualTo(taskId);
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+
+		if(taskList == null || taskList.size() == 0){
+			return XslResult.build(403, "任务不存在");
+		}
+		XslTask xslTask = taskList.get(0);
+		if(0 != xslTask.getState() && 1 != xslTask.getState()){
+			return XslResult.build(403, "任务已被接，无法取消");
+		}
+
+		//更新任务状态
+		xslTask.setState((byte) -2);
+		int i = xslTaskMapper.updateByExampleSelective(xslTask, xslTaskExample);
+		if(i < 1){
+			return XslResult.build(500, "服务器异常");
+		}
+
+		return XslResult.ok();
+	}
 
 	private HunterInfo getHunterInfo(String hunterId) {
 		//获取猎人信息

@@ -47,6 +47,11 @@
             <artifactId>xsl-search-export</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.bh.xsl.user</groupId>
+            <artifactId>xsl-user-export</artifactId>
+        </dependency>
+
         <!--python-->
         <dependency>
             <groupId>org.python</groupId>

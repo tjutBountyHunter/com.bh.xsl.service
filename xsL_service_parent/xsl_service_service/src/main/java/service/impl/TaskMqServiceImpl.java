@@ -29,6 +29,9 @@ public class TaskMqServiceImpl implements TaskMqService {
 	@Resource
 	private Destination createOrder;
 
+	@Resource
+	private Destination updateNetwork;
+
 
 
 	@Override
@@ -48,5 +51,10 @@ public class TaskMqServiceImpl implements TaskMqService {
 		String s= GsonSingle.getGson().toJson(createOrderReqVo);
 		jmsTemplate.send(createOrder,(session -> session.createTextMessage(s)));
 
+	}
+
+	@Override
+	public void updateNetwork(String msg) {
+		jmsTemplate.send(updateNetwork,(session -> session.createTextMessage(msg)));
 	}
 }

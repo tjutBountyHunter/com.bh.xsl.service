@@ -207,4 +207,16 @@ public class TaskController {
         return taskService.searchTask(taskSearchVo);
     }
 
+
+    /**
+     * 任务撤回
+     *
+     * @return
+     */
+    @RequestMapping("/cancelTask")
+    @ResponseBody
+    public XslResult cancelTask(String taskId){
+        return taskService.cancelTask(taskId);
+    }
+
 }

@@ -13,5 +13,7 @@ public interface TaskMqService {
 
 	void createOrder(CreateOrderReqVo createOrderReqVo);
 
+	void updateNetwork(String msg);
+
 
 }

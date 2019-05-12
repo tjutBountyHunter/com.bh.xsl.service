@@ -70,4 +70,11 @@ public interface TaskService {
 	 * @return
 	 */
 	XslResult searchTask(SearchTaskReqVo taskSearchVo);
+
+
+	/**
+	 * 任务取消
+	 * @return
+	 */
+	XslResult cancelTask(String taskId);
 }

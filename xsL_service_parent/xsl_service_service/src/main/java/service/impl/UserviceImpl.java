@@ -15,6 +15,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.*;
+import pojo.XslUserRegister;
 import service.*;
 import util.*;
 import vo.*;

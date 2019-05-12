@@ -12,6 +12,7 @@
     <dubbo:application name="xsl"/>
     <!-- 注册中心服务地址 -->
     <dubbo:registry protocol="zookeeper" address="47.93.230.61:2181"/>
+
     <dubbo:reference id="searchService" interface="com.xsl.search.export.SearchResource" />
 
     <!--<bean id="taskInfoResource" class="resourceImpl.TaskInfoResourceImpl"/>-->
