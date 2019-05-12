@@ -237,11 +237,14 @@ public class TaskServiceImpl implements TaskService {
 		PageHelper.startPage(page,rows);
 		List<String> taskIds = xslHunterTaskMapper.selectByRecId(sendAndRecTaskReqVo);
 
-		XslTaskExample xslTaskExample = new XslTaskExample();
-		xslTaskExample.createCriteria().andTaskidIn(taskIds);
-		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+		if(ListUtil.isNotEmpty(taskIds)){
+			XslTaskExample xslTaskExample = new XslTaskExample();
+			xslTaskExample.createCriteria().andTaskidIn(taskIds);
+			List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+			return XslResult.ok(taskList);
+		}
 
-		return XslResult.ok(taskList);
+		return XslResult.ok();
 	}
 
 	@Override
