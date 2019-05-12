@@ -9,6 +9,7 @@ import pojo.XslTask;
 import service.TaskMqService;
 import util.GsonSingle;
 import vo.CreateOrderReqVo;
+import vo.TaskEsInfo;
 import vo.TaskInfo;
 import vo.UpdateTaskVo;
 
@@ -41,9 +42,9 @@ public class TaskMqServiceImpl implements TaskMqService {
 	}
 
 	@Override
-	public void addEsTask(TaskInfo taskInfoVo) {
+	public void addEsTask(TaskEsInfo taskEsInfo) {
 		Gson gson = GsonSingle.getGson();
-		jmsTemplate.send(addTaskInfo, (session)-> session.createTextMessage(gson.toJson(taskInfoVo)));
+		jmsTemplate.send(addTaskInfo, (session)-> session.createTextMessage(gson.toJson(taskEsInfo)));
 	}
 
 	@Override

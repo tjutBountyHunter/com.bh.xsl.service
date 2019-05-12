@@ -195,7 +195,9 @@ public class TaskServiceImpl implements TaskService {
 
 	private void sendTaskInfoToSearch(XslTask xslTask) {
     	TaskInfo taskInfoVo = initTaskInfo(xslTask);
-		taskMqService.addEsTask(taskInfoVo);
+    	TaskEsInfo taskEsInfo = new TaskEsInfo();
+    	BeanUtils.copyProperties(taskInfoVo, taskEsInfo);
+		taskMqService.addEsTask(taskEsInfo);
 	}
 
 	private XslResult addSchoolTask(TaskReqVo taskReqVo, String taskid) {
