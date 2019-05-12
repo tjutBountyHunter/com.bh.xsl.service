@@ -431,7 +431,7 @@ public class TaskServiceImpl implements TaskService {
 
 	private void updateEsTaskInfo(XslTask xslTask){
 		UpdateTaskVo updateTaskVo = new UpdateTaskVo();
-		updateTaskVo.setState((byte) 2);
+		updateTaskVo.setState(xslTask.getState());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		updateTaskVo.setUpdatedate(sdf.format(new Date()));
 		updateTaskVo.setTaskId(xslTask.getTaskid());
@@ -605,8 +605,8 @@ public class TaskServiceImpl implements TaskService {
 	public XslResult searchTask(SearchTaskReqVo taskSearchVo){
     	String schoolName = taskSearchVo.getSchoolName();
 		int size = taskSearchVo.getSize();
-
-		List<String> schoolTaskIds = getSchoolTaskIds(schoolName, size);
+		int idSize = 1000;
+		List<String> schoolTaskIds = getSchoolTaskIds(schoolName, idSize);
 
 		TaskSearchReqVo taskSearchReqVo = new TaskSearchReqVo();
 		taskSearchReqVo.setKeyword(taskSearchVo.getKeyword());
@@ -652,6 +652,8 @@ public class TaskServiceImpl implements TaskService {
 		if(i < 1){
 			return XslResult.build(500, "服务器异常");
 		}
+
+		taskExecutor.execute(()-> updateEsTaskInfo(xslTask));
 
 		return XslResult.ok();
 	}
