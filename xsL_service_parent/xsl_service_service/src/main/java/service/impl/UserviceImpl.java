@@ -428,7 +428,7 @@ public class UserviceImpl implements UserService {
 			}
 
 			//3.异步更新状态
-			userExecutor.execute(() -> esUserTxurl(userid, xslFile.getFileid()));
+			userExecutor.execute(() -> esUserTxurl(userid, xslFile.getUrl()));
 
 
 			return XslResult.ok(xslFile.getUrl());
@@ -444,7 +444,7 @@ public class UserviceImpl implements UserService {
 	}
 
 	private void esUserTxurl(String userid, String txUrl) {
-		esUserInfo(userid, "", "");
+		esUserInfo(userid, "", txUrl);
 	}
 
 	private void esUserInfo(String userid, String name, String txUrl) {
