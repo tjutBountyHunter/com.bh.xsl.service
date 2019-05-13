@@ -256,6 +256,7 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public XslResult initTaskInfo(TaskInfoListReqVo taskInfoListReqVo){
 		//1.获取学校id
+		logger.info("initTaskInfo:"+GsonSingle.getGson().toJson(taskInfoListReqVo));
 		String schoolName = taskInfoListReqVo.getSchoolName();
 		if(StringUtils.isEmpty(schoolName)){
 			return XslResult.build(403, "请登记学校信息");
@@ -271,9 +272,14 @@ public class TaskServiceImpl implements TaskService {
 
 		PageHelper.startPage(1, size);
 		List<Integer> ids = xslSchoolTaskMapper.selectIdBySchoolId(schoolId);
+		Integer max = 0;
+		Integer min = 0;
 
-		Integer max = Collections.max(ids);
-		Integer min = Collections.min(ids);
+		if(ListUtil.isNotEmpty(ids)){
+			 max = Collections.max(ids);
+			 min = Collections.min(ids);
+		}
+
 		taskInfoListResVo.setDownFlag(min);
 		taskInfoListResVo.setUpFlag(max);
 
