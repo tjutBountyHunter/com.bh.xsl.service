@@ -183,6 +183,7 @@ public class TaskServiceImpl implements TaskService {
 
 				UserLevelReqVo userLevelReqVo = new UserLevelReqVo();
 				userLevelReqVo.setMasterId(taskReqVo.getMasterId());
+				logger.info("UserLevelReqVo:"+GsonSingle.getGson().toJson(userLevelReqVo));
 				//异步更新雇主信息
 				taskExecutor.execute(() -> levelResource.AddEmpirical(userLevelReqVo));
 
