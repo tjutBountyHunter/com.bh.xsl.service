@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.xsl.search.export.SearchResource;
 import com.xsl.search.export.vo.TaskInfoVo;
 import com.xsl.search.export.vo.TaskSearchReqVo;
+import com.xsl.user.LevelResource;
 import example.*;
 import mapper.*;
 import org.slf4j.Logger;
@@ -38,8 +39,6 @@ public class TaskServiceImpl implements TaskService {
 	private static final Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     @Autowired
-    private SupplementDataService supplementDataService;
-    @Autowired
     private XslHuntershowMapper xslHuntershowMapper;
 
 	@Autowired
@@ -60,8 +59,9 @@ public class TaskServiceImpl implements TaskService {
 	private XslHunterTaskMapper xslHunterTaskMapper;
 	@Autowired
 	private XslSchoolTaskMapper xslSchoolTaskMapper;
-	@Autowired
-	private XslSchoolMapper xslSchoolMapper;
+
+	@Resource
+	private LevelResource levelResource;
 
 	@Autowired
 	private HunterRecommend hunterRecommend;
@@ -181,7 +181,10 @@ public class TaskServiceImpl implements TaskService {
 					taskExecutor.execute(() -> hunterRecommendAndPush(xslTask));
 				}
 
+				UserLevelReqVo userLevelReqVo = new UserLevelReqVo();
+				userLevelReqVo.setMasterId(taskReqVo.getMasterId());
 				//异步更新雇主信息
+				taskExecutor.execute(() -> levelResource.AddEmpirical(userLevelReqVo));
 
 				//异步封装数据发送mq到搜索系统
 				taskExecutor.execute(() -> sendTaskInfoToSearch(xslTask));
@@ -597,7 +600,11 @@ public class TaskServiceImpl implements TaskService {
 
 		//雇主确认完成
 		if(3 == afterState){
-			//增加经验
+			UserLevelReqVo userLevelReqVo = new UserLevelReqVo();
+			userLevelReqVo.setMasterId(confirmTaskReqVo.getHunterid());
+			//异步增加经验
+			taskExecutor.execute(() -> levelResource.AddEmpirical(userLevelReqVo));
+
 			//给猎人发推送
 			XslUser userInfoMasterId = userInfoService.getUserInfoByHunterId(hunterId);
 			JPushVo jPushVo = new JPushVo();

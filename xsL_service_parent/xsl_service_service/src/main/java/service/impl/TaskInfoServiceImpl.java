@@ -2,6 +2,7 @@ package service.impl;
 
 import com.google.gson.Gson;
 import example.XslTagExample;
+import example.XslTaskExample;
 import example.XslTaskTagExample;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.XslSchool;
 import pojo.XslTag;
+import pojo.XslTask;
 import service.*;
 import util.GsonSingle;
 import util.JedisClientUtil;
@@ -28,6 +30,8 @@ import java.util.List;
 public class TaskInfoServiceImpl implements TaskInfoService {
 	@Autowired
 	private XslTaskTagMapper xslTaskTagMapper;
+	@Autowired
+	private XslTaskMapper xslTaskMapper;
 	@Autowired
 	private XslTagMapper xslTagMapper;
 
@@ -75,5 +79,15 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		XslResult build = XslResult.build(500, "000");
 		jmsTemplate.send(mqTest, (session)->session.createObjectMessage(build));
 		return XslResult.ok();
+	}
+
+	@Override
+	public List<XslTask> getTaskByMasterId(String masterId) {
+		XslTaskExample xslTaskExample = new XslTaskExample();
+		xslTaskExample.createCriteria().andSendidEqualTo(masterId).andStateGreaterThan((byte) -1).andStateLessThan((byte) 2);
+
+		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+
+		return taskList;
 	}
 }

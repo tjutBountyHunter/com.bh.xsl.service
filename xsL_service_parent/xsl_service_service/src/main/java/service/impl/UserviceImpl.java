@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -20,7 +21,7 @@ import service.*;
 import util.*;
 import vo.*;
 
-import java.text.SimpleDateFormat;
+import javax.annotation.Resource;
 import java.util.*;
 
 
@@ -44,12 +45,15 @@ public class UserviceImpl implements UserService {
 	@Autowired
 	private FileOperateService fileOperateService;
 
-	@Value("${USER_TX_URL}")
-	private String USER_TX_URL;
+	@Resource
+	private ThreadPoolTaskExecutor userExecutor;
+	@Autowired
+	private TaskMqService taskMqService;
+
+	@Resource
+	private TaskInfoService taskInfoService;
 
 
-    @Autowired
-    private JedisClient jedisClient;
     @Autowired
 	private UserInfoService userInfoService;
 
@@ -57,6 +61,10 @@ public class UserviceImpl implements UserService {
     private String REDIS_USER_SESSION_KEY;
 	@Value("${USER_INFO}")
 	private String USER_INFO;
+	@Value("${USER_TX_URL}")
+	private String USER_TX_URL;
+
+
 
     private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
 
@@ -94,7 +102,7 @@ public class UserviceImpl implements UserService {
 		userResVo.setHunterlevel(xslHunter.getLevel());
 		userResVo.setTxUrl("http://47.93.200.190/images/default.png");
 
-		jedisClient.set(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken());
+		JedisClientUtil.set(REDIS_USER_SESSION_KEY + ":" + xslUserRegister.getPhone(), xslUserRegister.getToken());
 
 		return XslResult.ok(userResVo);
 
@@ -210,7 +218,7 @@ public class UserviceImpl implements UserService {
 		}
 
 
-        jedisClient.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
+		JedisClientUtil.set(REDIS_USER_SESSION_KEY + ":" + user.getPhone(), token);
 
 		Gson gson = GsonSingle.getGson();
 		String userInfo = gson.toJson(user);
@@ -227,7 +235,7 @@ public class UserviceImpl implements UserService {
     		return XslResult.build(403, "登陆状态异常");
 		}
 
-		jedisClient.delete(REDIS_USER_SESSION_KEY + ":" + userReqVo.getPhone());
+		JedisClientUtil.delete(REDIS_USER_SESSION_KEY + ":" + userReqVo.getPhone());
 
 		return XslResult.ok();
 	}
@@ -244,30 +252,31 @@ public class UserviceImpl implements UserService {
     	xslUserExample.createCriteria().andPhoneEqualTo(userReqVo.getPhone());
     	xslUserMapper.updateByExampleSelective(xslUser, xslUserExample);
 
-		jedisClient.delete(USER_INFO + ":" + userReqVo.getUserid());
+		JedisClientUtil.delete(USER_INFO + ":" + userReqVo.getUserid());
 
 		//es中数据同步待修复
+		userExecutor.execute(() -> esUserName(userReqVo.getUserid(), userReqVo.getName()));
 
     	return XslResult.ok();
 	}
 
 
 
-    /**
+	/**
      * 检验用户登录状态
      * @param token
      * @return
      */
     @Override
     public XslResult getUserByToken(String token, String phone) {
-        String result = jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone);
+        String result = JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone);
 
         //判断是否为空
         if (!token.equals(result)) {
             return XslResult.build(400, "登陆时间已经过期。请重新登录");
         }
 
-        return XslResult.ok(jedisClient.get(REDIS_USER_SESSION_KEY + ":" + phone));
+        return XslResult.ok(JedisClientUtil.get(REDIS_USER_SESSION_KEY + ":" + phone));
     }
 
     /**
@@ -417,12 +426,45 @@ public class UserviceImpl implements UserService {
 			if(insert < 1){
 				return XslResult.build(500, "服务器异常");
 			}
+
+			//3.异步更新状态
+			userExecutor.execute(() -> esUserTxurl(userid, xslFile.getFileid()));
+
+
 			return XslResult.ok(xslFile.getUrl());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return XslResult.build(500, "服务器异常");
 		}
 
+	}
+
+	private void esUserName(String userid, String name) {
+		esUserInfo(userid, name, "");
+	}
+
+	private void esUserTxurl(String userid, String txUrl) {
+		esUserInfo(userid, "", "");
+	}
+
+	private void esUserInfo(String userid, String name, String txUrl) {
+		XslUser userInfo = userInfoService.getUserInfo(userid);
+		String masterId = userInfo.getMasterid();
+		List<XslTask> tasks = taskInfoService.getTaskByMasterId(masterId);
+
+		if(ListUtil.isNotEmpty(tasks)){
+			for(XslTask xslTask : tasks){
+				UpdateTaskVo updateTaskVo = new UpdateTaskVo();
+				if(!StringUtils.isEmpty(name)){
+					updateTaskVo.setName(name);
+				}
+				if(!StringUtils.isEmpty(txUrl)){
+					updateTaskVo.setTxUrl(txUrl);
+				}
+				updateTaskVo.setTaskId(xslTask.getTaskid());
+				taskMqService.updateEsTask(updateTaskVo);
+			}
+		}
 	}
 
 	private void initUserInfo(XslUserRegister xslUserRegister, XslUser xslUser, XslHunter xslHunter, XslMaster xslMaster) {
