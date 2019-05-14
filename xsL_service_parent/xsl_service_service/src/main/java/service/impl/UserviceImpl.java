@@ -147,8 +147,12 @@ public class UserviceImpl implements UserService {
 		UserResVo resVo = new UserResVo();
 		BeanUtils.copyProperties(user, resVo);
 		logger.info("login user is {}", JsonUtils.objectToJson(user));
-		resVo.setState(user.getState());
-		logger.info("login resVo is {}", resVo.getState());
+		try {
+			resVo.setState(user.getState());
+			logger.info("login resVo is {}", resVo.getState());
+		}catch (Exception e){
+			throw new RuntimeException(e);
+		}
 		logger.info("login resVo is {}", JsonUtils.objectToJson(resVo));
 		resVo.setUserid(user.getUserid());
 

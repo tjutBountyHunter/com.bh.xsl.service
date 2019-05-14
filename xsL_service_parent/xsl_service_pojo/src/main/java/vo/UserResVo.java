@@ -1,6 +1,8 @@
 package vo;
 
-public class UserResVo {
+import java.io.Serializable;
+
+public class UserResVo implements Serializable {
 	private String userid;
 
 	private String hunterid;
