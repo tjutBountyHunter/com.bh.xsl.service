@@ -146,6 +146,8 @@ public class UserviceImpl implements UserService {
 
 		UserResVo resVo = new UserResVo();
 		BeanUtils.copyProperties(user, resVo);
+		logger.info("login user is {}", JsonUtils.objectToJson(resVo));
+		logger.info("login resVo is {}", JsonUtils.objectToJson(resVo));
 		resVo.setUserid(user.getUserid());
 
         //3.校验密码
@@ -440,6 +442,7 @@ public class UserviceImpl implements UserService {
 	}
 
 	private void esUserName(String userid, String name) {
+		logger.info("esUserName userid"+userid+"name:"+name);
 		esUserInfo(userid, name, "");
 	}
 
