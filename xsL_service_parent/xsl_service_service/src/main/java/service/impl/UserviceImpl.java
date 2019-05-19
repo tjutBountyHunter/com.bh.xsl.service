@@ -234,7 +234,7 @@ public class UserviceImpl implements UserService {
 
 		logger.info("login return message is {}", JsonUtils.objectToJson(resVo));
 
-        return XslResult.ok(JsonUtils.objectToJson(resVo));
+        return XslResult.ok(resVo);
     }
 
 	@Override
