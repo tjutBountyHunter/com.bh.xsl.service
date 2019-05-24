@@ -9,7 +9,7 @@
 
 
     <!-- 消费者 应用信息 -->
-    <dubbo:application name="xsl"/>
+    <dubbo:application name="app_service"/>
     <!-- 注册中心服务地址 -->
     <dubbo:registry protocol="zookeeper" address="47.93.230.61:2181"/>
 

@@ -296,7 +296,11 @@ public class TaskServiceImpl implements TaskService {
 		taskSearchVo.setSchoolName(schoolName);
 		XslResult xslResult = searchTask(taskSearchVo);
 
-		taskInfoListResVo.setTaskInfoVos((List<TaskInfo>) xslResult.getData());
+		taskInfoListResVo.setTaskInfoVos(new ArrayList<>());
+		List<TaskInfo> data = (List<TaskInfo>) xslResult.getData();
+		if(ListUtil.isNotEmpty(data)){
+			taskInfoListResVo.setTaskInfoVos(data);
+		}
 
 		logger.info("initTaskInfo.taskInfoListResVo msg:" + GsonSingle.getGson().toJson(taskInfoListResVo));
 
