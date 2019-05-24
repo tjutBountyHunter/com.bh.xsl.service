@@ -2,7 +2,7 @@ package vo;
 
 import java.io.Serializable;
 
-public class UserResVo implements Serializable {
+public class XslUserResVo implements Serializable {
 	private String userid;
 
 	private String hunterid;

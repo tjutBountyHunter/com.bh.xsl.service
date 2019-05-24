@@ -1,6 +1,6 @@
 package vo;
 
-public class UserReqVo {
+public class XslUserReqVo {
 	private String userid;
 	private String phone;
 	private String name;
