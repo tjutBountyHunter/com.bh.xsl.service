@@ -1,7 +1,9 @@
 package service.impl;
 
 import com.xsl.user.SupplementUserInfoResource;
+import com.xsl.user.UserInfoResouce;
 import com.xsl.user.vo.ResBaseVo;
+import com.xsl.user.vo.UserHMResVo;
 import com.xsl.user.vo.UserReqVo;
 import enums.UserStateEnum;
 import example.*;
@@ -49,6 +51,8 @@ public class UserviceImpl implements UserService {
 
 	@Resource
 	private SupplementUserInfoResource supplementUserInfoResource;
+	@Resource
+	private UserInfoResouce userInfoResouce;
 
 
     @Autowired
@@ -72,40 +76,33 @@ public class UserviceImpl implements UserService {
 
 		ResBaseVo resBaseVo = supplementUserInfoResource.saveUserInfo(userReqVo);
 
-		if(resBaseVo.getStatus() == 200){
-			return XslResult.ok();
+		if(resBaseVo.getStatus() != 200){
+			return XslResult.build(resBaseVo.getStatus(), resBaseVo.getMsg());
 		}
 
-		return XslResult.build(resBaseVo.getStatus(), resBaseVo.getMsg());
+		return XslResult.ok();
 	}
 
 
 
 	public XslResult getHMinfo(XslUserReqVo xslUserReqVo){
-		String userid = xslUserReqVo.getUserid();
-		if(StringUtils.isEmpty(userid)){
-			return XslResult.build(403, "参数错误");
+		UserReqVo userReqVo = new UserReqVo();
+		BeanUtils.copyProperties(xslUserReqVo, userReqVo);
+
+		try {
+			UserHMResVo hMinfo = userInfoResouce.getHMinfo(userReqVo);
+			if(hMinfo.getStatus() != 200){
+				return XslResult.build(hMinfo.getStatus(), hMinfo.getMsg());
+			}
+
+			XslUserHMResVo xslUserHMResVo = new XslUserHMResVo();
+			BeanUtils.copyProperties(hMinfo, xslUserHMResVo);
+
+			return XslResult.ok(xslUserHMResVo);
+
+		}catch (Exception e){
+			throw new RuntimeException(e);
 		}
-
-		XslUser userInfo = userInfoService.getUserInfo(userid);
-
-		String hunterid = userInfo.getHunterid();
-		String masterid = userInfo.getMasterid();
-
-		if(StringUtils.isEmpty(hunterid) || StringUtils.isEmpty(masterid)){
-			return XslResult.build(403, "用户不存在");
-		}
-
-		XslMaster masterInfo = userInfoService.getMasterInfo(masterid);
-		XslHunter hunterInfo = userInfoService.getHunterInfo(hunterid);
-
-		UserHMResVo userHMResVo = new UserHMResVo();
-		userHMResVo.setHunterEmpirical(hunterInfo.getEmpirical());
-		userHMResVo.setHunterlevel(hunterInfo.getLevel());
-		userHMResVo.setMasterEmpirical(masterInfo.getEmpirical());
-		userHMResVo.setMasterlevel(masterInfo.getLevel());
-
-		return XslResult.ok(userHMResVo);
 	}
 
 
@@ -151,11 +148,6 @@ public class UserviceImpl implements UserService {
 			return XslResult.build(500, "服务器异常");
 		}
 
-	}
-
-	private void esUserName(String userid, String name) {
-		logger.info("esUserName userid"+userid+"name:"+name);
-		esUserInfo(userid, name, "");
 	}
 
 	private void esUserTxurl(String userid, String txUrl) {

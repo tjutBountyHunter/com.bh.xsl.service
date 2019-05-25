@@ -1,6 +1,6 @@
 package vo;
 
-public class UserHMResVo {
+public class XslUserHMResVo {
 	private Short hunterlevel;
 	private Short masterlevel;
 	private Integer hunterEmpirical;
