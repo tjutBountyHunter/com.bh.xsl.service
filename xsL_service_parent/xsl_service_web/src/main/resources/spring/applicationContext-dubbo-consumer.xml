@@ -19,9 +19,15 @@
 
     <dubbo:reference id="hunterListResource" check="false" interface="com.xsl.user.HunterListResource" />
 
+    <dubbo:reference id="userInfoResouce" check="false" interface="com.xsl.user.UserInfoResouce" />
+
     <dubbo:reference id="userOperateResource" check="false" interface="com.xsl.user.UserOperateResource" />
 
     <dubbo:reference id="supplementUserInfoResource" check="false" interface="com.xsl.user.SupplementUserInfoResource" />
+
+    <dubbo:reference id="jpushResource" check="false" interface="com.xsl.user.JpushResource" />
+
+    <dubbo:reference id="verifyCodeResource" check="false" interface="com.xsl.user.VerifyCodeResource" />
 
     <!--<bean id="taskInfoResource" class="resourceImpl.TaskInfoResourceImpl"/>-->
     <!--<dubbo:reference interface="resource.TaskInfoResource" ref="taskInfoResource" timeout="600000"/>-->

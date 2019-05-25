@@ -75,7 +75,7 @@
             <dependency>
                 <groupId>com.bh.xsl.user</groupId>
                 <artifactId>xsl-user-export</artifactId>
-                <version>1.2.7</version>
+                <version>1.3</version>
             </dependency>
 
 

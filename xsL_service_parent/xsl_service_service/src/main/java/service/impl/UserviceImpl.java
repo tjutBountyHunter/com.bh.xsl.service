@@ -1,6 +1,8 @@
 package service.impl;
 
-import com.google.gson.Gson;
+import com.xsl.user.SupplementUserInfoResource;
+import com.xsl.user.vo.ResBaseVo;
+import com.xsl.user.vo.UserReqVo;
 import enums.UserStateEnum;
 import example.*;
 import mapper.*;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.*;
@@ -26,20 +27,14 @@ import java.util.*;
 
 @Service
 public class UserviceImpl implements UserService {
-    @Autowired
-    private XslFileMapper xslFileMapper;
 	@Autowired
 	private XslHunterMapper xslHunterMapper;
 	@Autowired
 	private XslMasterMapper xslMasterMapper;
     @Autowired
     private XslUserMapper xslUserMapper;
-    @Autowired
-    private XslSchoolinfoMapper xslSchoollinfoMapper;
 	@Autowired
 	private XslUserFileMapper xslUserFileMapper;
-	@Autowired
-	private XslHunterTagMapper xslHunterTagMapper;
 
 	@Autowired
 	private FileOperateService fileOperateService;
@@ -51,6 +46,9 @@ public class UserviceImpl implements UserService {
 
 	@Resource
 	private TaskInfoService taskInfoService;
+
+	@Resource
+	private SupplementUserInfoResource supplementUserInfoResource;
 
 
     @Autowired
@@ -69,22 +67,16 @@ public class UserviceImpl implements UserService {
 
 	@Override
 	public XslResult saveUserInfo(XslUserReqVo xslUserReqVo){
-    	XslUser xslUser = new XslUser();
-    	BeanUtils.copyProperties(xslUserReqVo, xslUser);
-    	if(!StringUtils.isEmpty(xslUserReqVo.getPassword())){
-			xslUser.setPassword(Md5Utils.digestMds(xslUserReqVo.getPassword()));
+		UserReqVo userReqVo = new UserReqVo();
+		BeanUtils.copyProperties(xslUserReqVo, userReqVo);
+
+		ResBaseVo resBaseVo = supplementUserInfoResource.saveUserInfo(userReqVo);
+
+		if(resBaseVo.getStatus() == 200){
+			return XslResult.ok();
 		}
 
-		XslUserExample xslUserExample = new XslUserExample();
-    	xslUserExample.createCriteria().andPhoneEqualTo(xslUserReqVo.getPhone());
-    	xslUserMapper.updateByExampleSelective(xslUser, xslUserExample);
-
-		JedisClientUtil.delete(USER_INFO + ":" + xslUserReqVo.getUserid());
-
-		//es中数据同步待修复
-		userExecutor.execute(() -> esUserName(xslUserReqVo.getUserid(), xslUserReqVo.getName()));
-
-    	return XslResult.ok();
+		return XslResult.build(resBaseVo.getStatus(), resBaseVo.getMsg());
 	}
 
 

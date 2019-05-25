@@ -2,6 +2,7 @@ package service.impl;
 
 import com.xsl.user.SupplementUserInfoResource;
 import com.xsl.user.UserOperateResource;
+import com.xsl.user.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class UserOperateServiceImpl implements UserOperateService {
 
 	@Override
 	public XslResult quickCreateUser(XslUserRegister xslUserRegister) {
-		XslUserRegisterReqVo xslUserRegisterReqVo = new XslUserRegisterReqVo();
+		UserRegisterReqVo xslUserRegisterReqVo = new UserRegisterReqVo();
 		BeanUtils.copyProperties(xslUserRegister, xslUserRegisterReqVo);
 		xslUserRegisterReqVo.setSource("app_service");
 		try {
@@ -38,7 +39,7 @@ public class UserOperateServiceImpl implements UserOperateService {
 				return XslResult.ok(xslUserResVo);
 			}
 
-			return XslResult.build(500, "服务器错误");
+			return XslResult.build(userResVo.getStatus(), userResVo.getMsg());
 		}catch (Exception e){
 			throw new RuntimeException(e);
 		}
@@ -58,7 +59,7 @@ public class UserOperateServiceImpl implements UserOperateService {
 				return XslResult.ok(xslUserResVo);
 			}
 
-			return XslResult.build(500, "服务器错误");
+			return XslResult.build(userResVo.getStatus(), userResVo.getMsg());
 		}catch (Exception e){
 			throw new RuntimeException(e);
 		}
@@ -76,7 +77,7 @@ public class UserOperateServiceImpl implements UserOperateService {
 				return XslResult.ok();
 			}
 
-			return XslResult.build(500, "服务器错误");
+			return XslResult.build(resBaseVo.getStatus(), resBaseVo.getMsg());
 		}catch (Exception e){
 			throw new RuntimeException(e);
 		}
@@ -107,7 +108,7 @@ public class UserOperateServiceImpl implements UserOperateService {
 				return XslResult.ok(state);
 			}
 
-			return XslResult.build(500, "服务器错误");
+			return XslResult.build(resBaseVo.getStatus(), resBaseVo.getMsg());
 		}catch (Exception e){
 			throw new RuntimeException(e);
 		}
