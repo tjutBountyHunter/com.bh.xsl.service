@@ -92,7 +92,7 @@ public class UserOperateController {
 	@RequestMapping(value = "/token", method = RequestMethod.GET)
 	@ResponseBody
 	public Object getUserByToken(@Param("token") String token, @Param("phone") String phone) {
-		XslResult result = null;
+		XslResult result;
 		try {
 			result = userOperateService.getUserByToken(token,phone);
 		} catch (Exception e) {

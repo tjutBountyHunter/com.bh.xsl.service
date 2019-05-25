@@ -103,7 +103,8 @@ public class UserOperateServiceImpl implements UserOperateService {
 			ResBaseVo resBaseVo = supplementUserInfoResource.userAcc(userAccReqVo);
 
 			if(resBaseVo.getStatus() == 200){
-				return XslResult.ok();
+				Integer state = (Integer) resBaseVo.getExParam();
+				return XslResult.ok(state);
 			}
 
 			return XslResult.build(500, "服务器错误");
