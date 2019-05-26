@@ -239,7 +239,14 @@ public class TaskServiceImpl implements TaskService {
 		PageHelper.startPage(page,rows);
 		List<XslTask> taskList = xslTaskMapper.selectBySendId(sendAndRecTaskReqVo);
 
-		return XslResult.ok(taskList);
+		if(ListUtil.isNotEmpty(taskList)){
+			return XslResult.ok();
+		}
+
+		ArrayList<SendRecTask> sendRecTasks = taskList.stream().collect(ArrayList::new, (res, item) -> res.add(initSendRecVo(item)), ArrayList::addAll);
+
+
+		return XslResult.ok(sendRecTasks);
 	}
 
 	@Override
@@ -254,10 +261,20 @@ public class TaskServiceImpl implements TaskService {
 			XslTaskExample xslTaskExample = new XslTaskExample();
 			xslTaskExample.createCriteria().andTaskidIn(taskIds);
 			List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
-			return XslResult.ok(taskList);
+			ArrayList<SendRecTask> sendRecTasks = taskList.stream().collect(ArrayList::new, (res, item) -> res.add(initSendRecVo(item)), ArrayList::addAll);
+			return XslResult.ok(sendRecTasks);
 		}
 
 		return XslResult.ok();
+	}
+
+	private SendRecTask initSendRecVo(XslTask xslTask){
+		SendRecTask sendRecTask = new SendRecTask();
+    	BeanUtils.copyProperties(xslTask, sendRecTask);
+		sendRecTask.setCreatedate(DateUtil.dateToString(xslTask.getCreatedate()));
+		sendRecTask.setUpdatedate(DateUtil.dateToString(xslTask.getUpdatedate()));
+		sendRecTask.setDeadline(DateUtil.dateToString(xslTask.getDeadline()));
+    	return sendRecTask;
 	}
 
 	@Override
