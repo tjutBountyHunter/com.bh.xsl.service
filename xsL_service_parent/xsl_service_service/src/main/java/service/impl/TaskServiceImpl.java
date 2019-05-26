@@ -32,7 +32,6 @@ import util.XslResult;
 import vo.*;
 
 import javax.annotation.Resource;
-import javax.jms.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
