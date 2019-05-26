@@ -6,6 +6,8 @@ import com.xsl.search.export.SearchResource;
 import com.xsl.search.export.vo.TaskInfoVo;
 import com.xsl.search.export.vo.TaskSearchReqVo;
 import com.xsl.user.LevelResource;
+import com.xsl.user.vo.NetworkReqVo;
+import com.xsl.user.vo.UserLevelReqVo;
 import example.*;
 import mapper.*;
 import org.slf4j.Logger;

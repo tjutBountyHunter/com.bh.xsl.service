@@ -1,11 +1,11 @@
 package service.impl;
 
 import com.xsl.user.HunterListResource;
+import com.xsl.user.vo.HunterInfoVo;
+import com.xsl.user.vo.HunterListReq;
 import org.springframework.stereotype.Service;
 import service.HunterListService;
 import util.XslResult;
-import vo.HunterInfoVo;
-import vo.HunterListReq;
 
 import javax.annotation.Resource;
 import java.util.List;

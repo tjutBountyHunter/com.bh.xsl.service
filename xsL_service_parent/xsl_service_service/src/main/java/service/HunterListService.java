@@ -1,7 +1,7 @@
 package service;
 
+import com.xsl.user.vo.HunterListReq;
 import util.XslResult;
-import vo.HunterListReq;
 
 
 public interface HunterListService {
