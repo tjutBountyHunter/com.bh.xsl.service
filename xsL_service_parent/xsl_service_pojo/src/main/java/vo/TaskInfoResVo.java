@@ -21,11 +21,11 @@ public class TaskInfoResVo {
 
 	private Byte state;
 
-	private Date createDate;
+	private String createDate;
 
-	private Date updatedate;
+	private String updatedate;
 
-	private Date deadLineDate;
+	private String deadLineDate;
 
 	private String sourcetype;
 
@@ -91,27 +91,27 @@ public class TaskInfoResVo {
 		this.state = state;
 	}
 
-	public Date getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
 
-	public Date getUpdatedate() {
+	public String getUpdatedate() {
 		return updatedate;
 	}
 
-	public void setUpdatedate(Date updatedate) {
+	public void setUpdatedate(String updatedate) {
 		this.updatedate = updatedate;
 	}
 
-	public Date getDeadLineDate() {
+	public String getDeadLineDate() {
 		return deadLineDate;
 	}
 
-	public void setDeadLineDate(Date deadLineDate) {
+	public void setDeadLineDate(String deadLineDate) {
 		this.deadLineDate = deadLineDate;
 	}
 

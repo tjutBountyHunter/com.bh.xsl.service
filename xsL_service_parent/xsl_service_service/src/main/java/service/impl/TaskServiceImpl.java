@@ -239,7 +239,7 @@ public class TaskServiceImpl implements TaskService {
 		PageHelper.startPage(page,rows);
 		List<XslTask> taskList = xslTaskMapper.selectBySendId(sendAndRecTaskReqVo);
 
-		if(ListUtil.isNotEmpty(taskList)){
+		if(!ListUtil.isNotEmpty(taskList)){
 			return XslResult.ok();
 		}
 
@@ -515,8 +515,8 @@ public class TaskServiceImpl implements TaskService {
 		BeanUtils.copyProperties(xslTask, taskInfoResVo);
 		taskInfoResVo.setTaskId(xslTask.getTaskid());
 		taskInfoResVo.setTaskTitle(xslTask.getTasktitle());
-		taskInfoResVo.setCreateDate(xslTask.getCreatedate());
-		taskInfoResVo.setDeadLineDate(xslTask.getDeadline());
+		taskInfoResVo.setCreateDate(DateUtil.dateToString(xslTask.getCreatedate()));
+		taskInfoResVo.setDeadLineDate(DateUtil.dateToString(xslTask.getDeadline()));
 
 		//获取任务标签id
 		XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();
