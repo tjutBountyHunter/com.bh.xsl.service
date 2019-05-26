@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     /**
      * 将string类型的时间转化为Date类型的
@@ -31,5 +31,11 @@ public class DateUtil {
     public static synchronized String dateToString(Date date){
         String dateString = dateFormat.format(date);
         return dateString;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(stringToDate("2019-5-26 17:9"));
+        System.out.println(dateToString(new Date()));
     }
 }
