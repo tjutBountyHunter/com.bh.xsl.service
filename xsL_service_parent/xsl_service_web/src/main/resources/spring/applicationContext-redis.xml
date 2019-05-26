@@ -41,8 +41,8 @@
 
     <!--极光推送客户端-->
     <bean id="jedjpushClient" class="cn.jpush.api.JPushClient">
-        <constructor-arg name="masterSecret" value="82f57646236b6d99d9e52280"></constructor-arg>
-        <constructor-arg name="appKey" value="58bb0db196bb64bdd5ccd70c"></constructor-arg>
+        <constructor-arg name="masterSecret" value="dcc8973eca90c1bfa5c82f83"></constructor-arg>
+        <constructor-arg name="appKey" value="52aa3d2a39eda5f388578c00"></constructor-arg>
     </bean>
 
 </beans>
