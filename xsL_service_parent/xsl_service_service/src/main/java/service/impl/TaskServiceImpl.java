@@ -148,9 +148,8 @@ public class TaskServiceImpl implements TaskService {
 			xslTask.setContent(taskReqVo.getContent());
 			xslTask.setMoney(taskReqVo.getMoney());
 			xslTask.setTasktitle(taskReqVo.getTaskTitle());
-			xslTask.setCreatedate(taskReqVo.getCreateDate());
-			xslTask.setUpdatedate(taskReqVo.getCreateDate());
-			xslTask.setDeadline(taskReqVo.getDeadLineDate());
+			xslTask.setCreatedate(DateUtil.stringToDate(taskReqVo.getCreateDate()));
+			xslTask.setDeadline(DateUtil.stringToDate(taskReqVo.getDeadLineDate()));
 			xslTask.setSourcetype(taskReqVo.getSourceType());
 			//未启动推荐
 			xslTask.setState((byte) 0);

@@ -13,8 +13,8 @@ public class TaskReqVo {
 	private Boolean isRecommend;
 	private String masterId;
 	private BigDecimal money;
-	private Date createDate;
-	private Date deadLineDate;
+	private String createDate;
+	private String deadLineDate;
 
 	public String getSourceType() {
 		return sourceType;
@@ -88,19 +88,19 @@ public class TaskReqVo {
 		this.money = money;
 	}
 
-	public Date getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
 
-	public Date getDeadLineDate() {
+	public String getDeadLineDate() {
 		return deadLineDate;
 	}
 
-	public void setDeadLineDate(Date deadLineDate) {
+	public void setDeadLineDate(String deadLineDate) {
 		this.deadLineDate = deadLineDate;
 	}
 }
