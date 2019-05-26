@@ -127,6 +127,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public XslResult sendTask(TaskReqVo taskReqVo) {
+		logger.info("sendTask param:{}", GsonSingle.getGson().toJson(taskReqVo));
 		try {
 			if(StringUtils.isEmpty(taskReqVo.getContent())){
 				return XslResult.build(400, "参数错误");
