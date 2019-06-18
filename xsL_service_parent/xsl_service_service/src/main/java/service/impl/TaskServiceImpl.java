@@ -1,7 +1,6 @@
 package service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.google.gson.Gson;
 import com.xsl.search.export.SearchResource;
 import com.xsl.search.export.vo.TaskInfoVo;
 import com.xsl.search.export.vo.TaskSearchReqVo;
@@ -15,24 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.*;
-import example.XslTaskExample;
-import pojo.XslHunter;
-import pojo.XslMaster;
-import pojo.XslSchool;
-import pojo.XslSchoolinfo;
-import pojo.XslUser;
 import service.*;
 import util.*;
-import util.XslResult;
 import vo.*;
 
 import javax.annotation.Resource;
-import javax.jms.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -135,6 +125,10 @@ public class TaskServiceImpl implements TaskService {
 			//文字扫描屏蔽
 			Map<String, String> map = new HashMap<>(1);
 			map.put("sentence", taskReqVo.getContent());
+			if(taskReqVo.getContent().contains("代课")||taskReqVo.getContent().contains("车队")){
+				return XslResult.build(403, "悬赏任务不合法");
+			}
+
 //			String result = HttpClientUtil.doGet("http://47.93.19.164:8080/xsl-search-service/search/wordcheck", map);
 //			XslResultOk fcResult = XslResultOk.format(result);
 //			List<String> data = (List<String>) fcResult.getData();
@@ -217,7 +211,6 @@ public class TaskServiceImpl implements TaskService {
 		XslSchoolinfo schoolInfo = userInfoService.getSchoolInfo(schoolinfo);
 		String schoolName = schoolInfo.getSchool();
 		XslSchool school = userInfoService.getSchoolByName(schoolName);
-
 		XslSchoolTask xslSchoolTask = new XslSchoolTask();
 		xslSchoolTask.setSchoolid(school.getId());
 		xslSchoolTask.setTaskid(taskid);
@@ -496,6 +489,7 @@ public class TaskServiceImpl implements TaskService {
 		taskMqService.updateNetwork(s);
 	}
 
+	@Override
 	public XslResult taskInfo(String taskId){
 		if(StringUtils.isEmpty(taskId)){
 			return XslResult.build(403, "任务不存在");

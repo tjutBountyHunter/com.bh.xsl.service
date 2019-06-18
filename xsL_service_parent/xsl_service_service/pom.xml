@@ -37,10 +37,6 @@
         </dependency>
 
         <!--&lt;!&ndash;外部依赖&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.bh.xsl.task</groupId>-->
-            <!--<artifactId>xsl_task_export</artifactId>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>com.bh.xsl.search</groupId>
@@ -50,6 +46,11 @@
         <dependency>
             <groupId>com.bh.xsl.user</groupId>
             <artifactId>xsl-user-export</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bh.xsl.task</groupId>
+            <artifactId>xsl-task-export</artifactId>
         </dependency>
 
         <!--python-->

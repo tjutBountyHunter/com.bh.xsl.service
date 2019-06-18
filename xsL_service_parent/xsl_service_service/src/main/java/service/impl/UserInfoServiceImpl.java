@@ -216,7 +216,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			if(xslFiles != null && xslFiles.size() > 0){
 				String txUrl = xslFiles.get(0).getUrl();
 				JedisClientUtil.setEx(USER_TX_URL + ":" + userid, txUrl , 300);
-
 				return txUrl;
 			}
 		}

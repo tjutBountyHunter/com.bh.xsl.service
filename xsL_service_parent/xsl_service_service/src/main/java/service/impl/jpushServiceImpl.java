@@ -21,6 +21,7 @@ import vo.JPushVo;
 
 @Service
 public class jpushServiceImpl implements jpushService {
+
 	@Autowired
 	private JPushClient jPushClient;
 
@@ -33,6 +34,7 @@ public class jpushServiceImpl implements jpushService {
 	 * @return 0推送失败，1推送成功
 	 */
 
+	@Override
 	public int sendToRegistrationId(JPushVo jPushVo) {
 		int result = 0;
 		try {
@@ -56,6 +58,7 @@ public class jpushServiceImpl implements jpushService {
 	 * 发送给所有用户
 	 * @return 0推送失败，1推送成功
 	 */
+	@Override
 	public int sendToAll(JPushVo jPushVo) {
 		int result = 0;
 		try {
@@ -72,7 +75,6 @@ public class jpushServiceImpl implements jpushService {
 	private  PushPayload buildPushObject_android_and_ios(String notification_title, String msg_title, String msg_content, String extrasparam) {
 		return PushPayload.newBuilder()
 						.setPlatform(Platform.android_ios())
-						.setAudience(Audience.all())
 				  		.setNotification(Notification.newBuilder()
 					  	.setAlert(notification_title)
 					  	.addPlatformNotification(AndroidNotification.newBuilder()

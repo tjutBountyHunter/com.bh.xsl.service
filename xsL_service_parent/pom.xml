@@ -62,11 +62,11 @@
         <dependencies>
 
             <!--&lt;!&ndash; 外部系统依赖 &ndash;&gt;-->
-            <!--<dependency>-->
-                <!--<groupId>com.bh.xsl.task</groupId>-->
-                <!--<artifactId>xsl_task_export</artifactId>-->
-                <!--<version>1.0</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>com.bh.xsl.task</groupId>
+                <artifactId>xsl-task-export</artifactId>
+                <version>1.8.1</version>
+            </dependency>
             <dependency>
                 <groupId>com.bh.xsl.search</groupId>
                 <artifactId>xsl-search-export</artifactId>

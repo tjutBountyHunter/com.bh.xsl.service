@@ -46,6 +46,7 @@ public class HunterRecommendImpl implements HunterRecommend {
 
 
     //    调用
+    @Override
     public  List<String> recommend(String taskId, Integer recommendNum){
         this.taskId = taskId;
 

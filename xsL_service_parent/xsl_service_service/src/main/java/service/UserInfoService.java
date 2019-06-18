@@ -19,5 +19,4 @@ public interface UserInfoService {
 
 	 String getUserTx(String useid);
 
-
 }

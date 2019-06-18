@@ -9,5 +9,4 @@ public interface TagService {
 
 	XslResult queryTag(TagReqVo tagReqVo);
 
-
 }

@@ -73,4 +73,5 @@ public interface UserService {
 	 * @return
 	 */
 	XslResult upLoadUserTx(MultipartFile uploadFile, String userid);
+
 }

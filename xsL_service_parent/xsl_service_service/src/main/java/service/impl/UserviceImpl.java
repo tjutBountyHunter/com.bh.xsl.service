@@ -1,7 +1,6 @@
 package service.impl;
 
 import com.google.gson.Gson;
-import dao.JedisClient;
 import enums.UserStateEnum;
 import example.*;
 import mapper.*;
@@ -16,13 +15,13 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pojo.*;
-import pojo.XslUserRegister;
 import service.*;
 import util.*;
 import vo.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -66,7 +65,7 @@ public class UserviceImpl implements UserService {
 
 
 
-    private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserviceImpl.class);
 
 
 	/**
