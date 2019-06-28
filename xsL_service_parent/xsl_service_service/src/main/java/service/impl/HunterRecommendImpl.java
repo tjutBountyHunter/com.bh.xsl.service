@@ -169,15 +169,19 @@ public class HunterRecommendImpl implements HunterRecommend {
             double mole2 = 0;
 
             for (String tagId : all) {
+                //判断猎人1是否包含该标签
                 double hun1 = hun1Set.contains(tagId)?1:0;
+                //判断猎人2是否包含该标签
                 double hun2 = hun2Set.contains(tagId)?1:0;
 
+                //计算猎人1和猎人2的相似度
                 deno += (hun1-hun1Avg)*(hun2-hun2Avg);
                 mole1 += (hun1-hun1Avg)*(hun1-hun1Avg);
                 mole2 += (hun2-hun2Avg)*(hun2-hun2Avg);
+                deno = deno/Math.sqrt(mole1*mole2);
             }
-
-            sim += deno/Math.sqrt(mole1*mole2);
+            //累加相似度
+            sim += deno;
         }
         return sim;
     }
@@ -196,9 +200,13 @@ public class HunterRecommendImpl implements HunterRecommend {
 
     //    选出topN的猎人
     private void getTopN(){
+        //推荐指数 = 0.4*猎人频率/总频率 + 0.6*猎人相似度/总相似度 + 特征值/总特征值
         for (String hunterId : hunters) {
+            //0.4*猎人频率/总频率
             double res = 0.4*frequencyMap.get(hunterId)/frequencyCount;
+            //0.6*猎人相似度/总相似度
             res += 0.6*similarityMap.get(hunterId)/similarityCount;
+            //特征值/总特征值
             res += attributeMap.get(hunterId)/attributeCount;
             topMap.put(res,hunterId);
         }
