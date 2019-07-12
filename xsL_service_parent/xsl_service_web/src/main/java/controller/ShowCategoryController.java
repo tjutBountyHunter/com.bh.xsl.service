@@ -3,7 +3,7 @@ package controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import service.TaskService;
+import service.TaskInfoService;
 import util.XslResult;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public class ShowCategoryController {
 
     @Resource
-    private TaskService upTaskService;
+    private TaskInfoService taskInfoService;
 
     @RequestMapping("/kindhunter")
     @ResponseBody
@@ -24,7 +24,7 @@ public class ShowCategoryController {
 
         try {
 
-            XslResult xslResult = upTaskService.UpCategoryHunter(tagName, type, rows);
+            XslResult xslResult = taskInfoService.UpCategoryHunter(tagName, type, rows);
             return xslResult;
         } catch (Exception e) {
             e.printStackTrace();

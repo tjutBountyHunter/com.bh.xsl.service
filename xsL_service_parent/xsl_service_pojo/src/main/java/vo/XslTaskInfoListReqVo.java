@@ -1,6 +1,6 @@
 package vo;
 
-public class TaskInfoListReqVo {
+public class XslTaskInfoListReqVo{
 	private String userid;
 	private Integer size;
 	private String taskid;

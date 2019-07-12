@@ -1,12 +1,12 @@
 package service;
 
 import util.XslResult;
-import vo.TagReqVo;
+import vo.XslTagReqVo;
 
 public interface TagService {
 
-	XslResult createTags(TagReqVo tagReqVo);
+	XslResult createTags(XslTagReqVo xslTagReqVo);
 
-	XslResult queryTag(TagReqVo tagReqVo);
+	XslResult queryTag(XslTagReqVo xslTagReqVo);
 
 }

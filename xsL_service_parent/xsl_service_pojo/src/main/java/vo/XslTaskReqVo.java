@@ -1,10 +1,9 @@
 package vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
-public class TaskReqVo {
+public class XslTaskReqVo {
 	private String sourceType;
 	private String taskTitle;
 	private String content;

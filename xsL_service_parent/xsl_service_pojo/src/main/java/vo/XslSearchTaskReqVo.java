@@ -1,8 +1,6 @@
 package vo;
 
-import java.util.List;
-
-public class SearchTaskReqVo {
+public class XslSearchTaskReqVo {
 	private String schoolName;
 	private String keyword;
 	private int size;

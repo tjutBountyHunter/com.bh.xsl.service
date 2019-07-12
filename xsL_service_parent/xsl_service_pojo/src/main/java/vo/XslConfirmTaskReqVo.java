@@ -1,6 +1,6 @@
 package vo;
 
-public class ConfirmTaskReqVo {
+public class XslConfirmTaskReqVo {
 	private String taskId;
 	private String hunterid;
 	private Byte nowState;

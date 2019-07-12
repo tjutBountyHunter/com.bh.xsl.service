@@ -2,7 +2,7 @@ package vo;
 
 import java.util.List;
 
-public class TagReqVo {
+public class XslTagReqVo {
 	private Integer tagNum;
 	private List<String> obtainedTags;
 	private String tagName;

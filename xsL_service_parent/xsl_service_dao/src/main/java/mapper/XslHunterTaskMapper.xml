@@ -226,7 +226,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectByRecId"  parameterType="vo.SendAndRecTaskReqVo"
+  <select id="selectByRecId"  parameterType="vo.XslSendAndRecTaskReqVo"
           resultType="java.lang.String">
     select
           taskId

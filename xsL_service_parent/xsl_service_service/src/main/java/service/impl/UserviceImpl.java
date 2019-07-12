@@ -46,8 +46,8 @@ public class UserviceImpl implements UserService {
 
 	@Resource
 	private ThreadPoolTaskExecutor userExecutor;
-	@Autowired
-	private TaskMqService taskMqService;
+//	@Autowired
+//	private TaskMqService taskMqService;
 
 	@Resource
 	private TaskInfoService taskInfoService;
@@ -308,6 +308,7 @@ public class UserviceImpl implements UserService {
         return XslResult.build(200, "修改成功！");
     }
 
+	@Override
 	public XslResult getHMinfo(UserReqVo userReqVo){
 		String userid = userReqVo.getUserid();
 		if(StringUtils.isEmpty(userid)){
@@ -470,7 +471,7 @@ public class UserviceImpl implements UserService {
 					updateTaskVo.setTxUrl(txUrl);
 				}
 				updateTaskVo.setTaskId(xslTask.getTaskid());
-				taskMqService.updateEsTask(updateTaskVo);
+//				taskMqService.updateEsTask(updateTaskVo);
 			}
 		}
 	}

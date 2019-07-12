@@ -2,7 +2,7 @@ package vo;
 
 import java.util.List;
 
-public class TaskInfoListResVo {
+public class XslTaskInfoListResVo {
 	private List<TaskInfo> taskInfoVos;
 
 	private Integer upFlag;

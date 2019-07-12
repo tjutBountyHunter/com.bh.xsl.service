@@ -19,18 +19,6 @@ import java.util.*;
 public class SupplementDataServiceImpl implements SupplementDataService {
 
     @Autowired
-    private XslTaskMapper xslTaskMapper;
-
-    @Autowired
-    private XslDateTaskMapper xslDateTaskMapperr;
-
-    @Autowired
-    private XslTaskTagMapper xslTaskTagMapper;
-    @Autowired
-    private XslTagMapper xslTagMapper;
-    @Autowired
-    private XslUpdateTagMapper xslUpdateTagMapper;
-    @Autowired
     private XslTaskCategoryMapper xslTaskCategoryMapper;
 
     /**
