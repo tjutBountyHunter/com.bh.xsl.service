@@ -10,8 +10,6 @@ import util.JedisClientUtil;
 import util.XslResult;
 import vo.JPushVo;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/xsl/test")
 public class testController {
@@ -45,12 +43,12 @@ public class testController {
 		return data;
 	}
 
-	@RequestMapping("/getTaskTag")
-	@ResponseBody
-	public List getTaskTag(String taskId) {
-		List taskTags = taskInfoService.getTaskTags(taskId);
-		return taskTags;
-	}
+//	@RequestMapping("/getTaskTag")
+//	@ResponseBody
+//	public List getTaskTag(String taskId) {
+//		List taskTags = taskInfoService.getTaskTags(taskId);
+//		return taskTags;
+//	}
 
 	@RequestMapping("/sendMq")
 	@ResponseBody

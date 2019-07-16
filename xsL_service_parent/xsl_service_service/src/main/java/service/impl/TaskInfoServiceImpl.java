@@ -39,12 +39,6 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 
 
 	@Override
-	public List<TagResVo> getTaskTags(String taskId) {
-		List<TagResVo> taskTags = taskInfoResource.getTaskTags(taskId);
-		return taskTags;
-	}
-
-	@Override
 	public XslResult sendMq(String msg) {
 		XslResult build = XslResult.build(500, "000");
 		jmsTemplate.send(mqTest, (session)->session.createObjectMessage(build));
@@ -53,7 +47,17 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 
 	@Override
 	public List<XslTask> getTaskByMasterId(String masterId) {
-		return null;
+
+		try {
+			TaskListResVo taskListResVo = taskInfoResource.getTaskByMasterId(masterId);
+			if(taskListResVo.getStatus()==200){
+				List<XslTask> taskList = copySendRecTaskVosList(taskListResVo.getSendRecTaskVoList());
+				return taskList;
+			}
+			return null;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -63,7 +67,8 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		try {
 			TaskInfoListResVo taskInfo = taskInfoResource.initTaskInfo(taskInfoListReqVo);
 			if(taskInfo.getStatus()==200){
-				XslTaskInfoListResVo xslTaskInfoListResVo = completeTaskInfoListResVoInfo(taskInfo);
+				Gson gson = GsonSingle.getGson();
+				XslTaskInfoListResVo xslTaskInfoListResVo = gson.fromJson(gson.toJson(taskInfo),XslTaskInfoListResVo.class);
 				return XslResult.ok(xslTaskInfoListResVo);
 			}
 
@@ -80,7 +85,8 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		try {
 			TaskInfoListResVo taskInfo = taskInfoResource.reloadTaskInfo(taskInfoListReqVo);
 			if(taskInfo.getStatus()==200){
-				XslTaskInfoListResVo xslTaskInfoListResVo = completeTaskInfoListResVoInfo(taskInfo);
+				Gson gson = GsonSingle.getGson();
+				XslTaskInfoListResVo xslTaskInfoListResVo = gson.fromJson(gson.toJson(taskInfo),XslTaskInfoListResVo.class);
 				return XslResult.ok(xslTaskInfoListResVo);
 			}
 
@@ -97,7 +103,6 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 			if(taskInfoResVo.getStatus()==200){
 				XslTaskInfoResVo xslTaskInfoResVo = new XslTaskInfoResVo();
 				BeanUtils.copyProperties(taskInfoResVo,xslTaskInfoResVo);
-
 				return XslResult.ok(xslTaskInfoResVo);
 			}
 
@@ -115,7 +120,7 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		try {
 			TaskListResVo taskListResVo = taskInfoResource.querySendTask(sendAndRecTaskReqVo);
 			if(taskListResVo.getStatus()==200){
-				List<XslTask> taskList = copyTaskList(taskListResVo.getTaskList());
+				List<XslTask> taskList = copySendRecTaskVosList(taskListResVo.getSendRecTaskVoList());
 				return XslResult.ok(taskList);
 			}
 
@@ -133,7 +138,7 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		try {
 			TaskListResVo taskListResVo = taskInfoResource.queryReceiveTask(sendAndRecTaskReqVo);
 			if(taskListResVo.getStatus()==200){
-				List<XslTask> taskList = copyTaskList(taskListResVo.getTaskList());
+				List<XslTask> taskList = copySendRecTaskVosList(taskListResVo.getSendRecTaskVoList());
 				return XslResult.ok(taskList);
 			}
 			return XslResult.build(taskListResVo.getStatus(),taskListResVo.getMsg());
@@ -173,9 +178,9 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		return taskInfo;
 	}
 
-	private List<XslTask> copyTaskList(List<Task> taskList){
+	private List<XslTask> copySendRecTaskVosList(List<SendRecTaskVo> sendRecTaskVos){
 		Gson gson = GsonSingle.getGson();
-		String tasks = gson.toJson(taskList);
+		String tasks = gson.toJson(sendRecTaskVos);
 		List<XslTask> xslTasks = gson.fromJson(tasks,new TypeToken<List<XslTask>>(){}.getType());
 		return xslTasks;
 	}

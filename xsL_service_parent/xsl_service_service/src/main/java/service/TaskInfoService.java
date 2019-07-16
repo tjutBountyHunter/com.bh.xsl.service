@@ -1,6 +1,5 @@
 package service;
 
-import com.xsl.task.vo.TagResVo;
 import pojo.XslTask;
 import util.XslResult;
 import vo.XslSendAndRecTaskReqVo;
@@ -10,12 +9,6 @@ import java.util.List;
 
 public interface TaskInfoService {
 
-	/**
-	 * 获取任务标签
-	 * @param taskId
-	 * @return
-	 */
-	List<TagResVo> getTaskTags(String taskId);
 
 	XslResult sendMq(String msg);
 

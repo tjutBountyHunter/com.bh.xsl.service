@@ -39,7 +39,7 @@ public interface TaskOperateService {
      * 取消超时任务
      * @return
      */
-    XslResult calcelTaskDDL();
+    XslResult cancelTaskDDL();
 
     /**
      * 任务搜索

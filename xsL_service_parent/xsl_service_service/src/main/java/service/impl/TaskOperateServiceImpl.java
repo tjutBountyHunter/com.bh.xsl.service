@@ -76,10 +76,10 @@ public class TaskOperateServiceImpl implements TaskOperateService {
     }
 
     @Override
-    public XslResult calcelTaskDDL() {
+    public XslResult cancelTaskDDL() {
 
         try {
-            ResBaseVo resBaseVo = taskOperateResource.calcelTaskDDL();
+            ResBaseVo resBaseVo = taskOperateResource.cancelTaskDDL();
             if(resBaseVo.getStatus()==200){
                 return XslResult.ok();
             }

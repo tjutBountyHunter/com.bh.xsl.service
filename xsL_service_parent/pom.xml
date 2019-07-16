@@ -65,7 +65,7 @@
             <dependency>
                 <groupId>com.bh.xsl.task</groupId>
                 <artifactId>xsl-task-export</artifactId>
-                <version>1.8.4</version>
+                <version>1.8.9</version>
             </dependency>
             <dependency>
                 <groupId>com.bh.xsl.search</groupId>
