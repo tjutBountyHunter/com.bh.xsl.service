@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.TagService;
 import util.XslResult;
-import vo.TagReqVo;
+import vo.XslTagReqVo;
 
 @Controller
 @RequestMapping("/xsl/tag")
 public class TagController {
 	@Autowired
 	private TagService tagService;
-
 
 	/**
 	 * 创建标签
@@ -23,8 +22,8 @@ public class TagController {
 	 */
 	@RequestMapping("/createTag")
 	@ResponseBody
-	public XslResult createTag(TagReqVo tagReqVo) {
-		XslResult xslResult = tagService.createTags(tagReqVo);
+	public XslResult createTag(XslTagReqVo xslTagReqVo) {
+		XslResult xslResult = tagService.createTags(xslTagReqVo);
 		return xslResult;
 	}
 
@@ -35,11 +34,9 @@ public class TagController {
 	 */
 	@RequestMapping("/queryTag")
 	@ResponseBody
-	public XslResult queryTag(@RequestBody TagReqVo tagReqVo) {
-		XslResult xslResult = tagService.queryTag(tagReqVo);
+	public XslResult queryTag(@RequestBody XslTagReqVo xslTagReqVo) {
+		XslResult xslResult = tagService.queryTag(xslTagReqVo);
 		return xslResult;
 	}
-
-
 
 }

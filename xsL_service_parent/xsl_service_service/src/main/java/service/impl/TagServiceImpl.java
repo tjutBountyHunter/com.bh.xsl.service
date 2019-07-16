@@ -1,83 +1,63 @@
 package service.impl;
 
-import example.XslTagExample;
-import mapper.*;
+import com.xsl.task.TagResource;
+import com.xsl.task.vo.TagReqVo;
+import com.xsl.task.vo.TagResVo;
+import com.xsl.task.vo.TagVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import pojo.XslTag;
 import service.TagService;
 import util.GsonSingle;
 import util.XslResult;
-import vo.TagReqVo;
-import vo.tagVo;
+import vo.XslTagReqVo;
+import vo.XslTagResVo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class TagServiceImpl implements TagService {
-	@Autowired
-	private XslTagMapper xslTagMapper;
+
+	@Resource
+	private TagResource tagResource;
 
 	private static final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
 
 	@Override
-	public XslResult createTags(TagReqVo tagReqVo) {
-		String tagName = tagReqVo.getTagName();
-
-		if(StringUtils.isEmpty(tagName)){
-			return XslResult.build(400, "参数错误");
-		}
-
+	public XslResult createTags(XslTagReqVo xslTagReqVo) {
+		TagReqVo tagReqVo = new TagReqVo();
+		BeanUtils.copyProperties(xslTagReqVo,tagReqVo);
 		try {
-				XslTagExample xslTagExample = new XslTagExample();
-				XslTagExample.Criteria criteria = xslTagExample.createCriteria();
-				criteria.andNameEqualTo(tagName);
-				List<XslTag> list = xslTagMapper.selectByExample(xslTagExample);
-				if(list != null && list.size()>0){
-					return XslResult.build(200, "标签创建成功");
-				}
-
-				XslTag xslTag = new XslTag();
-				xslTag.setTagid(UUID.randomUUID().toString().substring(0,6));
-				xslTag.setName(tagName);
-				xslTag.setCreatedate(new Date());
-				xslTagMapper.insertSelective(xslTag);
-
-			return XslResult.ok(xslTag.getTagid());
+			TagResVo tagResVo = tagResource.createTags(tagReqVo);
+			if(tagResVo.getStatus()==200){
+				XslTagResVo xslTagResVo = new XslTagResVo();
+				BeanUtils.copyProperties(tagResVo,xslTagResVo);
+				return XslResult.ok(xslTagResVo);
+			}
+			logger.info("创建标签失败：tagResVo is {}",GsonSingle.getGson().toJson(tagResVo));
+			return XslResult.build(tagResVo.getStatus(),tagResVo.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
-			return XslResult.build(500, "服务器异常");
+			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public XslResult queryTag(TagReqVo tagReqVo) {
-		Integer tagNum = tagReqVo.getTagNum();
-		List<String> obtainedTags = tagReqVo.getObtainedTags();
-		XslTagExample xslTagExample = new XslTagExample();
-		XslTagExample.Criteria criteria = xslTagExample.createCriteria();
-
-		if(obtainedTags != null && obtainedTags.size() > 0){
-			criteria.andTagidNotIn(obtainedTags);
+	public XslResult queryTag(XslTagReqVo xslTagReqVo) {
+		TagReqVo tagReqVo = new TagReqVo();
+		BeanUtils.copyProperties(xslTagReqVo,tagReqVo);
+		try {
+			List<TagVo> tagVos = tagResource.queryTag(tagReqVo);
+			if(tagVos==null||tagVos.size()<1){
+				return XslResult.build(403,"未查到可用标签");
+			}
+			return XslResult.ok(tagVos);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
-		List<XslTag> list = xslTagMapper.selectByExampleLimit(xslTagExample, tagNum);
-		List<tagVo> tagVos = new ArrayList<>();
-		for (XslTag xslTag : list){
-			tagVo tagVo = new tagVo();
-			tagVo.setTagid(xslTag.getTagid());
-			tagVo.setTagName(xslTag.getName());
-			tagVos.add(tagVo);
-		}
-
-		logger.info("queryTag.list msg:" + GsonSingle.getGson().toJson(tagVos));
-		return XslResult.ok(tagVos);
 	}
 }

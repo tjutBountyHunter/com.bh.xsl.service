@@ -1,6 +1,6 @@
 package vo;
 
-public class RecTaskReqVo {
+public class XslRecTaskReqVo {
 	private String taskId;
 	private String hunterid;
 

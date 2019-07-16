@@ -1,6 +1,6 @@
 package vo;
 
-public class tagVo {
+public class tagVo{
 	private String tagName;
 	private String tagid;
 

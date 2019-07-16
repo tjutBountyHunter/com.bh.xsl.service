@@ -29,6 +29,12 @@
 
     <dubbo:reference id="verifyCodeResource" check="false" interface="com.xsl.user.VerifyCodeResource" />
 
+    <dubbo:reference id="taskInfoResource" check="false" interface="com.xsl.task.TaskInfoResource"/>
+
+    <dubbo:reference id="taskOperateResource" check="false" interface="com.xsl.task.TaskOperateResource"/>
+
+    <dubbo:reference id="tagResource" check="false" interface="com.xsl.task.TagResource"/>
+
     <!--<bean id="taskInfoResource" class="resourceImpl.TaskInfoResourceImpl"/>-->
     <!--<dubbo:reference interface="resource.TaskInfoResource" ref="taskInfoResource" timeout="600000"/>-->
 

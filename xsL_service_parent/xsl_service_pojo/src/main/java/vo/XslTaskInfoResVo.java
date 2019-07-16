@@ -3,10 +3,9 @@ package vo;
 import pojo.XslTag;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
-public class TaskInfoResVo {
+public class XslTaskInfoResVo {
 	private Integer cid;
 
 	private String taskId;

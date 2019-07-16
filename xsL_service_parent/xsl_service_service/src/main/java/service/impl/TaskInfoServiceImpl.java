@@ -1,39 +1,31 @@
 package service.impl;
 
 import com.google.gson.Gson;
-import example.XslTagExample;
-import example.XslTaskExample;
-import example.XslTaskTagExample;
-import mapper.*;
+import com.google.gson.reflect.TypeToken;
+import com.xsl.task.TaskInfoResource;
+import com.xsl.task.vo.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import pojo.XslSchool;
-import pojo.XslTag;
 import pojo.XslTask;
-import service.*;
+import service.TaskInfoService;
 import util.GsonSingle;
-import util.JedisClientUtil;
-import util.ListUtil;
 import util.XslResult;
+import vo.TaskInfo;
+import vo.*;
 
 import javax.annotation.Resource;
 import javax.jms.Destination;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class TaskInfoServiceImpl implements TaskInfoService {
-	@Autowired
-	private XslTaskTagMapper xslTaskTagMapper;
-	@Autowired
-	private XslTaskMapper xslTaskMapper;
-	@Autowired
-	private XslTagMapper xslTagMapper;
+
+	@Resource
+	private TaskInfoResource taskInfoResource;
 
 	@Value("${TASK_TAG_INFO}")
 	private String TASK_TAG_INFO;
@@ -47,34 +39,6 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 
 
 	@Override
-	public List<XslTag> getTaskTags(String taskId) {
-		Gson gson = GsonSingle.getGson();
-		if(StringUtils.isEmpty(taskId)){
-			return new ArrayList<>();
-		}
-
-		String schoolInfo = JedisClientUtil.get(TASK_TAG_INFO + ":" + taskId);
-
-		if(!StringUtils.isEmpty(schoolInfo)){
-			XslTag[] xslArray = gson.fromJson(schoolInfo, XslTag[].class);
-			List<XslTag> xslTags = Arrays.asList(xslArray);
-			return xslTags;
-		}
-
-		XslTaskTagExample xslTaskTagExample = new XslTaskTagExample();
-		xslTaskTagExample.createCriteria().andTaskidEqualTo(taskId);
-		List<String> tagIds = xslTaskTagMapper.selectTagIdByExample(xslTaskTagExample);
-		XslTagExample xslTagExample = new XslTagExample();
-		xslTagExample.createCriteria().andTagidIn(tagIds);
-		List<XslTag> xslTags = xslTagMapper.selectByExample(xslTagExample);
-		if(ListUtil.isNotEmpty(xslTags)){
-			JedisClientUtil.setEx(TASK_TAG_INFO + ":" + taskId, gson.toJson(xslTags), 300);
-		}
-
-		return xslTags;
-	}
-
-	@Override
 	public XslResult sendMq(String msg) {
 		XslResult build = XslResult.build(500, "000");
 		jmsTemplate.send(mqTest, (session)->session.createObjectMessage(build));
@@ -83,11 +47,141 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 
 	@Override
 	public List<XslTask> getTaskByMasterId(String masterId) {
-		XslTaskExample xslTaskExample = new XslTaskExample();
-		xslTaskExample.createCriteria().andSendidEqualTo(masterId).andStateGreaterThan((byte) -1).andStateLessThan((byte) 2);
 
-		List<XslTask> taskList = xslTaskMapper.selectByExample(xslTaskExample);
+		try {
+			TaskListResVo taskListResVo = taskInfoResource.getTaskByMasterId(masterId);
+			if(taskListResVo.getStatus()==200){
+				List<XslTask> taskList = copySendRecTaskVosList(taskListResVo.getSendRecTaskVoList());
+				return taskList;
+			}
+			return null;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-		return taskList;
+	@Override
+	public XslResult initTaskInfo(XslTaskInfoListReqVo xslTaskInfoListReqVo) {
+		TaskInfoListReqVo taskInfoListReqVo = new TaskInfoListReqVo();
+		BeanUtils.copyProperties(xslTaskInfoListReqVo,taskInfoListReqVo);
+		try {
+			TaskInfoListResVo taskInfo = taskInfoResource.initTaskInfo(taskInfoListReqVo);
+			if(taskInfo.getStatus()==200){
+				Gson gson = GsonSingle.getGson();
+				XslTaskInfoListResVo xslTaskInfoListResVo = gson.fromJson(gson.toJson(taskInfo),XslTaskInfoListResVo.class);
+				return XslResult.ok(xslTaskInfoListResVo);
+			}
+
+			return XslResult.build(taskInfo.getStatus(),taskInfo.getMsg());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public XslResult reloadTaskInfo(XslTaskInfoListReqVo xslTaskInfoListReqVo) {
+		TaskInfoListReqVo taskInfoListReqVo = new TaskInfoListReqVo();
+		BeanUtils.copyProperties(xslTaskInfoListReqVo,taskInfoListReqVo);
+		try {
+			TaskInfoListResVo taskInfo = taskInfoResource.reloadTaskInfo(taskInfoListReqVo);
+			if(taskInfo.getStatus()==200){
+				Gson gson = GsonSingle.getGson();
+				XslTaskInfoListResVo xslTaskInfoListResVo = gson.fromJson(gson.toJson(taskInfo),XslTaskInfoListResVo.class);
+				return XslResult.ok(xslTaskInfoListResVo);
+			}
+
+			return XslResult.build(taskInfo.getStatus(),taskInfo.getMsg());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public XslResult taskInfo(String taskId) {
+		try {
+			TaskInfoResVo taskInfoResVo = taskInfoResource.taskInfo(taskId);
+			if(taskInfoResVo.getStatus()==200){
+				XslTaskInfoResVo xslTaskInfoResVo = new XslTaskInfoResVo();
+				BeanUtils.copyProperties(taskInfoResVo,xslTaskInfoResVo);
+				return XslResult.ok(xslTaskInfoResVo);
+			}
+
+			return XslResult.build(taskInfoResVo.getStatus(),taskInfoResVo.getMsg());
+		} catch (Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public XslResult querySendTask(XslSendAndRecTaskReqVo xslSendAndRecTaskReqVo) {
+		SendAndRecTaskReqVo sendAndRecTaskReqVo = new SendAndRecTaskReqVo();
+		BeanUtils.copyProperties(xslSendAndRecTaskReqVo,sendAndRecTaskReqVo);
+
+		try {
+			TaskListResVo taskListResVo = taskInfoResource.querySendTask(sendAndRecTaskReqVo);
+			if(taskListResVo.getStatus()==200){
+				List<XslTask> taskList = copySendRecTaskVosList(taskListResVo.getSendRecTaskVoList());
+				return XslResult.ok(taskList);
+			}
+
+			return XslResult.build(taskListResVo.getStatus(),taskListResVo.getMsg());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public XslResult queryReceiveTask(XslSendAndRecTaskReqVo xslSendAndRecTaskReqVo) {
+		SendAndRecTaskReqVo sendAndRecTaskReqVo = new SendAndRecTaskReqVo();
+		BeanUtils.copyProperties(xslSendAndRecTaskReqVo,sendAndRecTaskReqVo);
+
+		try {
+			TaskListResVo taskListResVo = taskInfoResource.queryReceiveTask(sendAndRecTaskReqVo);
+			if(taskListResVo.getStatus()==200){
+				List<XslTask> taskList = copySendRecTaskVosList(taskListResVo.getSendRecTaskVoList());
+				return XslResult.ok(taskList);
+			}
+			return XslResult.build(taskListResVo.getStatus(),taskListResVo.getMsg());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public XslResult UpCategoryHunter(String tagName, Integer type, Integer rows) {
+		try {
+			ResBaseVo resBaseVo = taskInfoResource.UpCategoryHunter(tagName,type,rows);
+			if(resBaseVo.getStatus()==200){
+				return XslResult.ok(resBaseVo.getExParam());
+			}
+
+			return XslResult.build(resBaseVo.getStatus(),resBaseVo.getMsg());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private XslTaskInfoListResVo completeTaskInfoListResVoInfo(TaskInfoListResVo taskInfoListResVo){
+		XslTaskInfoListResVo xslTaskInfoListResVo = new XslTaskInfoListResVo();
+		xslTaskInfoListResVo.setUpFlag(taskInfoListResVo.getUpFlag());
+		xslTaskInfoListResVo.setDownFlag(taskInfoListResVo.getDownFlag());
+		List<TaskInfoVo> taskInfoVos = taskInfoListResVo.getTaskInfoVos();
+		List<TaskInfo> taskInfos =  taskInfoVos.stream().collect(ArrayList::new,
+				(res,item)->res.add(completeTaskInfo(item)),ArrayList::addAll);
+		xslTaskInfoListResVo.setTaskInfoVos(taskInfos);
+		return xslTaskInfoListResVo;
+	}
+
+	private TaskInfo completeTaskInfo(TaskInfoVo taskInfoVo){
+		TaskInfo taskInfo = new TaskInfo();
+		BeanUtils.copyProperties(taskInfoVo,taskInfo);
+		return taskInfo;
+	}
+
+	private List<XslTask> copySendRecTaskVosList(List<SendRecTaskVo> sendRecTaskVos){
+		Gson gson = GsonSingle.getGson();
+		String tasks = gson.toJson(sendRecTaskVos);
+		List<XslTask> xslTasks = gson.fromJson(tasks,new TypeToken<List<XslTask>>(){}.getType());
+		return xslTasks;
 	}
 }

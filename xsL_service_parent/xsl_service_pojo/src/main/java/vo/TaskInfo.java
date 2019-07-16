@@ -1,10 +1,7 @@
 package vo;
 
-import pojo.XslTag;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 public class TaskInfo implements Serializable {

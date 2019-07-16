@@ -4,7 +4,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslSchoolTask;
 import example.XslSchoolTaskExample;
-import vo.TaskInfoListReqVo;
 
 public interface XslSchoolTaskMapper {
     int countByExample(XslSchoolTaskExample example);
