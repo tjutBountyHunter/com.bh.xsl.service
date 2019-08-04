@@ -5,29 +5,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.TaskInfoService;
-import service.jpushService;
 import util.JedisClientUtil;
 import util.XslResult;
-import vo.JPushVo;
 
 @Controller
 @RequestMapping("/xsl/test")
 public class testController {
-	@Autowired
-	private jpushService jpushService;
+//	@Autowired
+//	private jpushService jpushService;
 	@Autowired
 	private TaskInfoService taskInfoService;
 
-	@RequestMapping("/sendJpush")
-	@ResponseBody
-	public int sendToAll() {
-		JPushVo jPushVo = new JPushVo();
-		jPushVo.setNotificationTitle("老子是测试");
-		jPushVo.setMsgTitle("老子是测试");
-		jPushVo.setMsgContent("老子是测试");
-		jPushVo.setExtrasparam("");
-		return jpushService.sendToAll(jPushVo);
-	}
+//	@RequestMapping("/sendJpush")
+//	@ResponseBody
+//	public int sendToAll() {
+//		JPushVo jPushVo = new JPushVo();
+//		jPushVo.setNotificationTitle("老子是测试");
+//		jPushVo.setMsgTitle("老子是测试");
+//		jPushVo.setMsgContent("老子是测试");
+//		jPushVo.setExtrasparam("");
+//		return jpushService.sendToAll(jPushVo);
+//	}
 
 	@RequestMapping("/delCache")
 	@ResponseBody

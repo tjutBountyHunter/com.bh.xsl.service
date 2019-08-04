@@ -14,8 +14,6 @@ import util.XslResult;
 import vo.XslTagReqVo;
 import vo.XslTagResVo;
 
-import java.util.ArrayList;
-import java.util.Date;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -30,6 +28,7 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	public XslResult createTags(XslTagReqVo xslTagReqVo) {
+		logger.info("createTags InParam:{}",GsonSingle.getGson().toJson(xslTagReqVo));
 		TagReqVo tagReqVo = new TagReqVo();
 		BeanUtils.copyProperties(xslTagReqVo,tagReqVo);
 		try {
@@ -48,6 +47,7 @@ public class TagServiceImpl implements TagService {
 
 	@Override
 	public XslResult queryTag(XslTagReqVo xslTagReqVo) {
+		logger.info("queryTag InParam:{}",GsonSingle.getGson().toJson(xslTagReqVo));
 		TagReqVo tagReqVo = new TagReqVo();
 		BeanUtils.copyProperties(xslTagReqVo,tagReqVo);
 		try {

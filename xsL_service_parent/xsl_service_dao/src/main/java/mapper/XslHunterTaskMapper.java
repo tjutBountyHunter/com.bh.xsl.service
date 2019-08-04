@@ -1,10 +1,11 @@
 package mapper;
 
-import java.util.List;
+import example.XslHunterTaskExample;
 import org.apache.ibatis.annotations.Param;
 import pojo.XslHunterTask;
-import example.XslHunterTaskExample;
 import vo.XslSendAndRecTaskReqVo;
+
+import java.util.List;
 
 public interface XslHunterTaskMapper {
     int countByExample(XslHunterTaskExample example);
