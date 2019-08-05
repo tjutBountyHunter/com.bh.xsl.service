@@ -64,6 +64,19 @@ public class TaskOperateController {
 
     }
 
+    /**
+     * 任务终结
+     *
+     * @return
+     */
+    @RequestMapping("/okTask")
+    @ResponseBody
+    public XslResult okTask(XslConfirmTaskReqVo xslconfirmTaskReqVo){
+        xslconfirmTaskReqVo.setNowState((byte) 4);
+        xslconfirmTaskReqVo.setAfterState((byte) 3);
+        return taskOperateService.confirmTask(xslconfirmTaskReqVo);
+    }
+
     @RequestMapping("/cancelTask")
     @ResponseBody
     public XslResult cancelTask(String taskId){

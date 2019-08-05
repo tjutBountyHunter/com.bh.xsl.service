@@ -29,7 +29,7 @@ public interface TaskOperateService {
 
 
     /**
-     * 确认任务完成
+     * 猎人雇主确认任务完成
      * @return
      */
     XslResult confirmTask(XslConfirmTaskReqVo xslConfirmTaskReqVo);

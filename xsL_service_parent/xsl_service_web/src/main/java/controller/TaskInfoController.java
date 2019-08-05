@@ -52,7 +52,7 @@ public class TaskInfoController {
      */
     @RequestMapping("/queryTaskInfo")
     @ResponseBody
-    public XslResult taskInfo(String taskId){
+    public XslResult queryTaskInfo(String taskId){
         XslResult xslResult = taskInfoService.taskInfo(taskId);
         return xslResult;
     }
