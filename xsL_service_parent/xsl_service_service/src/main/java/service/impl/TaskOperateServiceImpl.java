@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import service.TaskOperateService;
 import util.GsonSingle;
+import util.GsonUtil;
 import util.XslResult;
 import vo.XslConfirmTaskReqVo;
 import vo.XslRecTaskReqVo;
@@ -93,7 +94,7 @@ public class TaskOperateServiceImpl implements TaskOperateService {
             if(resBaseVo.getStatus()==200){
                 return XslResult.ok();
             }
-
+            LOGGER.error("取消任务失败 resBaseVo is {}",GsonUtil.gsonToString(resBaseVo));
             return XslResult.build(resBaseVo.getStatus(),resBaseVo.getMsg());
         } catch (Exception e) {
             throw new RuntimeException(e);

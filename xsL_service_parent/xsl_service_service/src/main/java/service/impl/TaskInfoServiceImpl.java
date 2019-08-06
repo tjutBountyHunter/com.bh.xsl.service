@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import pojo.XslTask;
 import service.TaskInfoService;
 import util.GsonSingle;
+import util.GsonUtil;
 import util.XslResult;
 import vo.TaskInfo;
 import vo.*;
@@ -108,8 +109,7 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		try {
 			TaskInfoResVo taskInfoResVo = taskInfoResource.taskInfo(taskId);
 			if(taskInfoResVo.getStatus()==200){
-				XslTaskInfoResVo xslTaskInfoResVo = new XslTaskInfoResVo();
-				BeanUtils.copyProperties(taskInfoResVo,xslTaskInfoResVo);
+				XslTaskInfoResVo xslTaskInfoResVo = GsonUtil.gsonToObject(GsonUtil.gsonToString(taskInfoResVo),XslTaskInfoResVo.class);
 				LOGGER.info("taskInfo OutParam:{}",GsonSingle.getGson().toJson(xslTaskInfoResVo));
 				return XslResult.ok(xslTaskInfoResVo);
 			}

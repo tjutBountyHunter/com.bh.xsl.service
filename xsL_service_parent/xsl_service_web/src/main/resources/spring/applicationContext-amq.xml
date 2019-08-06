@@ -20,32 +20,6 @@
         <property name="connectionFactory" ref="connectionFactory" />
     </bean>
 
-
-    <!--**************生产者队列配置********************-->
-
-    <!--向搜索系统中增加一条数据 -->
-    <bean id="addTaskInfo" class="org.apache.activemq.command.ActiveMQTopic">
-        <constructor-arg value="addTaskInfo"/>
-    </bean>
-
-    <!--更新任务信息 -->
-    <bean id="updateTaskInfo" class="org.apache.activemq.command.ActiveMQTopic">
-        <constructor-arg value="updateTaskInfo"/>
-    </bean>
-
-<!--    创建订单-->
-    <bean id="createOrder" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="createOrder" />
-    </bean>
-
-    <!--updateNetwork -->
-    <bean id="updateNetwork" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg value="updateNetwork" />
-    </bean>
-
-
-
-
     <!--测试 -->
     <bean id="mqTest" class="org.apache.activemq.command.ActiveMQTopic">
         <constructor-arg value="mqTest"/>

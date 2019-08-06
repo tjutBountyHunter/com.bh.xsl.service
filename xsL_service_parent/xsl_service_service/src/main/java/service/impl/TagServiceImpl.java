@@ -12,7 +12,6 @@ import service.TagService;
 import util.GsonSingle;
 import util.XslResult;
 import vo.XslTagReqVo;
-import vo.XslTagResVo;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,9 +33,7 @@ public class TagServiceImpl implements TagService {
 		try {
 			TagResVo tagResVo = tagResource.createTags(tagReqVo);
 			if(tagResVo.getStatus()==200){
-				XslTagResVo xslTagResVo = new XslTagResVo();
-				BeanUtils.copyProperties(tagResVo,xslTagResVo);
-				return XslResult.ok(xslTagResVo);
+				return XslResult.ok(tagResVo.getTagid());
 			}
 			logger.info("创建标签失败：tagResVo is {}",GsonSingle.getGson().toJson(tagResVo));
 			return XslResult.build(tagResVo.getStatus(),tagResVo.getMsg());
