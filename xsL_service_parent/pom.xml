@@ -39,7 +39,7 @@
         <jedis.version>2.7.2</jedis.version>
         <httpclient.version>4.5.3</httpclient.version>
         <dubbo.version>2.5.3</dubbo.version>
-        <zookeeper.version>3.4.7</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
         <zkclient.version>0.1</zkclient.version>
         <jpush.version>3.2.3</jpush.version>
         <activemq.version>5.8.0</activemq.version>
